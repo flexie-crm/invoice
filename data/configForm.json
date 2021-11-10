@@ -1,0 +1,483 @@
+{
+  "display": "form",
+  "components": [
+    {
+      "label": "User Key (hidden)",
+      "hidden": true,
+      "defaultValue": "",
+      "inputNameString": "key",
+      "input": true,
+      "key": "key",
+      "type": "textfield"
+    },
+    {
+      "label": "User ID (hidden)",
+      "hidden": true,
+      "defaultValue": "",
+      "inputNameString": "id",
+      "input": true,
+      "key": "id",
+      "type": "textfield"
+    },
+    {
+      "conditional": {
+        "show": "",
+        "when": ""
+      },
+      "addButtonJustIcon": true,
+      "input": false,
+      "key": "Columns",
+      "tableView": false,
+      "label": "Columns",
+      "type": "columns",
+      "columns": [
+        {
+          "components": [
+            {
+              "inputMasks": [
+                {
+                  "label": "",
+                  "mask": ""
+                }
+              ],
+              "conditional": {
+                "show": "",
+                "when": ""
+              },
+              "label": "Emri",
+              "showWordCount": false,
+              "showCharCount": false,
+              "validate": {
+                "required": true,
+                "customMessage": "Emri duhet vendosur."
+              },
+              "addButtonJustIcon": true,
+              "allowMultipleMasks": false,
+              "defaultValue": "",
+              "inputNameString": "first_name",
+              "input": true,
+              "key": "first_name",
+              "queryString": "first_name",
+              "tableView": true,
+              "type": "textfield"
+            }
+          ],
+          "width": 6,
+          "offset": 0,
+          "push": 0,
+          "pull": 0,
+          "type": "column",
+          "input": false,
+          "hideOnChildrenHidden": false,
+          "key": "",
+          "tableView": true,
+          "label": ""
+        },
+        {
+          "components": [
+            {
+              "inputMasks": [
+                {
+                  "label": "",
+                  "mask": ""
+                }
+              ],
+              "conditional": {
+                "show": "",
+                "when": ""
+              },
+              "label": "Mbiemri",
+              "showWordCount": false,
+              "showCharCount": false,
+              "validate": {
+                "required": true,
+                "customMessage": "Mbiemri duhet vendosur."
+              },
+              "addButtonJustIcon": true,
+              "allowMultipleMasks": false,
+              "defaultValue": "",
+              "inputNameString": "last_name",
+              "input": true,
+              "key": "last_name",
+              "queryString": "last_name",
+              "tableView": true,
+              "type": "textfield"
+            }
+          ],
+          "width": 6,
+          "offset": 0,
+          "push": 0,
+          "pull": 0,
+          "type": "column",
+          "input": false,
+          "hideOnChildrenHidden": false,
+          "key": "",
+          "tableView": true,
+          "label": ""
+        }
+      ]
+    },
+    {
+      "conditional": {
+        "show": "",
+        "when": ""
+      },
+      "addButtonJustIcon": true,
+      "input": false,
+      "key": "Columns",
+      "tableView": false,
+      "label": "Columns",
+      "type": "columns",
+      "columns": [
+        {
+          "components": [
+            {
+              "conditional": {
+                "show": "",
+                "when": ""
+              },
+              "label": "Email Juaj",
+              "validate": {
+                "required": true,
+                "customMessage": "Email duhet te vendoset dhe te jete i sakte."
+              },
+              "addButtonJustIcon": true,
+              "defaultValue": "",
+              "inputNameString": "email",
+              "input": true,
+              "key": "email",
+              "queryString": "email",
+              "tableView": true,
+              "type": "email"
+            }
+          ],
+          "width": 6,
+          "offset": 0,
+          "push": 0,
+          "pull": 0,
+          "type": "column",
+          "input": false,
+          "hideOnChildrenHidden": false,
+          "key": "",
+          "tableView": true,
+          "label": ""
+        },
+        {
+          "components": [
+            {
+              "inputMasks": [
+                {
+                  "label": "",
+                  "mask": ""
+                }
+              ],
+              "conditional": {
+                "show": "",
+                "when": ""
+              },
+              "label": "Numri Telefonit (cel)",
+              "showWordCount": false,
+              "showCharCount": false,
+              "validate": {
+                "required": true,
+                "customMessage": "Numri telefonit duhet te vendoset dhe te jete i sakte."
+              },
+              "addButtonJustIcon": true,
+              "allowMultipleMasks": false,
+              "inputMask": "0699999999",
+              "defaultValue": "",
+              "inputNameString": "phone",
+              "input": true,
+              "key": "phone",
+              "queryString": "phone",
+              "tableView": true,
+              "type": "phoneNumber"
+            }
+          ],
+          "width": 6,
+          "offset": 0,
+          "push": 0,
+          "pull": 0,
+          "type": "column",
+          "input": false,
+          "hideOnChildrenHidden": false,
+          "key": "",
+          "tableView": true,
+          "label": ""
+        }
+      ]
+    },
+    {
+      "lineLabelPosition": "align-left",
+      "label": "Horizontal Line",
+      "addButtonJustIcon": true,
+      "hideLabel": true,
+      "input": false,
+      "key": "Horizontal Line",
+      "tableView": true,
+      "type": "line"
+    },
+    {
+      "conditional": {
+        "show": "",
+        "when": ""
+      },
+      "addButtonJustIcon": true,
+      "input": false,
+      "key": "Columns",
+      "tableView": false,
+      "label": "Columns",
+      "type": "columns",
+      "columns": [
+        {
+          "components": [
+            {
+              "inputMasks": [
+                {
+                  "label": "",
+                  "mask": ""
+                }
+              ],
+              "conditional": {
+                "show": "",
+                "when": ""
+              },
+              "label": "Njesia e Biznesit",
+              "showWordCount": false,
+              "showCharCount": false,
+              "validate": {
+                "required": true,
+                "customMessage": "Njesia e biznesit duhet te vendoset dhe te jete e sakte."
+              },
+              "addButtonJustIcon": true,
+              "allowMultipleMasks": false,
+              "inputMask": "AA999AA999",
+              "defaultValue": "",
+              "inputNameString": "business_unit",
+              "input": true,
+              "readOnly": true,
+              "key": "business_unit",
+              "queryString": "business_unit",
+              "tableView": true,
+              "type": "textfield"
+            }
+          ],
+          "width": 6,
+          "offset": 0,
+          "push": 0,
+          "pull": 0,
+          "type": "column",
+          "input": false,
+          "hideOnChildrenHidden": false,
+          "key": "",
+          "tableView": true,
+          "label": ""
+        },
+        {
+          "components": [
+            {
+              "inputMasks": [
+                {
+                  "label": "",
+                  "mask": ""
+                }
+              ],
+              "conditional": {
+                "show": "",
+                "when": ""
+              },
+              "label": "Kodi Operatorit",
+              "showWordCount": false,
+              "showCharCount": false,
+              "validate": {
+                "required": true,
+                "customMessage": "Kodi Operatorit duhet te vendoset dhe te jete i sakte."
+              },
+              "addButtonJustIcon": true,
+              "allowMultipleMasks": false,
+              "inputMask": "AA999AA999",
+              "defaultValue": "",
+              "inputNameString": "operator_code",
+              "input": true,
+              "key": "operator_code",
+              "queryString": "operator_code",
+              "tableView": true,
+              "type": "textfield"
+            }
+          ],
+          "width": 6,
+          "offset": 0,
+          "push": 0,
+          "pull": 0,
+          "type": "column",
+          "input": false,
+          "hideOnChildrenHidden": false,
+          "key": "",
+          "tableView": true,
+          "label": ""
+        }
+      ]
+    },
+    {
+      "lineLabelPosition": "align-left",
+      "label": "Horizontal Line2",
+      "hideLabel": true,
+      "input": false,
+      "key": "Horizontal Line2",
+      "tableView": true,
+      "type": "line"
+    },
+    {
+      "conditional": {
+        "show": "",
+        "when": ""
+      },
+      "content": "<div class=\"explain-success\"><p>Nese certifikata eshte duke skaduar, mund te ngarkoni certifikaten e re me poshte. Gjithsesi ju do te njoftoheni disa dite perpara skadimit te certifikates.</p></div>",
+      "input": false,
+      "key": "HTML",
+      "tableView": true,
+      "label": "HTML",
+      "type": "htmlelement"
+    },
+    {
+      "conditional": {
+        "show": "",
+        "when": ""
+      },
+      "label": "Ngarko Certifikaten Elektronike",
+      "validate": {
+        "required": false,
+        "customMessage": ""
+      },
+      "multipleUploads": false,
+      "addButtonJustIcon": true,
+      "input": true,
+      "key": "certificate",
+      "tableView": true,
+      "type": "file",
+      "url": "https://fatura.flexie.io/form/upload/27c6a040f75fcfaeae7d289a758cfcd6",
+      "storage": "url"
+    },
+    {
+      "conditional": {
+        "show": "",
+        "when": ""
+      },
+      "addButtonJustIcon": true,
+      "input": false,
+      "key": "Columns",
+      "tableView": false,
+      "label": "Columns",
+      "type": "columns",
+      "columns": [
+        {
+          "components": [
+            {
+              "inputMasks": [
+                {
+                  "label": "",
+                  "mask": ""
+                }
+              ],
+              "conditional": {
+                "show": "",
+                "when": ""
+              },
+              "label": "Fjalekalimi i Certifikates Elektronike",
+              "placeholder": "Fjalekalimi sic ju ka ardhur nga AKSHI",
+              "showWordCount": false,
+              "showCharCount": false,
+              "validate": {
+                "required": false,
+                "customMessage": ""
+              },
+              "addButtonJustIcon": true,
+              "allowMultipleMasks": false,
+              "defaultValue": "",
+              "input": true,
+              "key": "certificate_password",
+              "tableView": true,
+              "type": "textfield",
+              "mask": true
+            }
+          ],
+          "width": 6,
+          "offset": 0,
+          "push": 0,
+          "pull": 0,
+          "type": "column",
+          "input": false,
+          "hideOnChildrenHidden": false,
+          "key": "",
+          "tableView": true,
+          "label": ""
+        },
+        {
+          "components": [
+            {
+              "inputMasks": [
+                {
+                  "label": "",
+                  "mask": ""
+                }
+              ],
+              "conditional": {
+                "show": "",
+                "when": ""
+              },
+              "label": "NIPT",
+              "placeholder": "Vendos NIPT-in e subjektit",
+              "showWordCount": false,
+              "showCharCount": false,
+              "validate": {
+                "required": true,
+                "customMessage": "NIPT duhet te vendoset dhe te jete i sakte."
+              },
+              "addButtonJustIcon": true,
+              "allowMultipleMasks": false,
+              "inputMask": "A99999999A",
+              "defaultValue": "",
+              "readOnly": true,
+              "input": true,
+              "key": "nipt",
+              "queryString": "nipt",
+              "tableView": true,
+              "type": "textfield"
+            }
+          ],
+          "width": 6,
+          "offset": 0,
+          "push": 0,
+          "pull": 0,
+          "type": "column",
+          "input": false,
+          "hideOnChildrenHidden": false,
+          "key": "",
+          "tableView": true,
+          "label": ""
+        }
+      ]
+    },
+    {
+      "conditional": {
+        "show": "",
+        "when": ""
+      },
+      "label": "Ndrysho",
+      "addButtonJustIcon": true,
+      "showErrorSummary": false,
+      "input": false,
+      "key": "Ndrysho",
+      "type": "button",
+      "tableView": true,
+      "url": "https://fatura.flexie.io/form/push/27c6a040f75fcfaeae7d289a758cfcd6",
+      "headers": [
+        {
+          "header": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "action": "submit"
+    }
+  ]
+}

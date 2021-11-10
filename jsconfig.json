@@ -1,0 +1,42 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@components/*": [
+                "components/*",
+                "components/form/*",
+            ],
+            "@store/*": [
+                "store/*",
+            ],
+            "@libs/*": [
+                "libs/*"
+            ],
+            "@utilities/*": [
+                "utilities/*"
+            ],
+            "@data/*": [
+                "data/*"
+            ],
+            "@forms/*": [
+                "forms/*"
+            ],
+            "@shared/*": [
+                "components/shared/*",
+            ],
+            "@layout/*": [
+                "components/layout/*",
+            ],
+            "@invoice/*": [
+                "components/invoice/*",
+            ],
+            "@home/*": [
+                "components/home/*",
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
