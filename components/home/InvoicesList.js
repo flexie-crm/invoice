@@ -23,6 +23,7 @@ export default function InvoicesList({ invoices }) {
           method: "POST",
           body: JSON.stringify({
             page: page,
+            limit: 30,
           }),
         },
       }),
@@ -39,17 +40,19 @@ export default function InvoicesList({ invoices }) {
 
   return (
     <>
-      {invoices && (
+      {data && (
         <Wrapper>
-          {invoices.map((invoice) => {
+          {data.map((invoice) => {
             return (
               <InvoiceItem
                 key={invoice.id}
                 id={invoice.id}
-                paymentDue={invoice.paymentDue}
-                clientName={invoice.clientName}
-                total={invoice.total}
-                status={invoice.status}
+                issueDate={invoice.invoice_created_date}
+                clientName={invoice.company}
+                total={invoice.invoice_total_after_vat}
+                currency={invoice.currency}
+                invoiceType={invoice.invoice_type}
+                status="paguar"
               />
             );
           })}

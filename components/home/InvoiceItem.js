@@ -52,7 +52,7 @@ const Id = styled(Heading2)`
   }
 `;
 
-const PaymentDue = styled.div`
+const IssueDate = styled.div`
   ${fontStylesA}
 
   @media only screen and (min-width: 768px) {
@@ -78,6 +78,7 @@ const ClientName = styled.div`
 
 const Total = styled(Heading2)`
   font-size: 1rem;
+  white-space: nowrap;
 
   @media only screen and (min-width: 768px) {
     grid-column: 4 / 5;
@@ -110,8 +111,10 @@ const Arrow = styled.img`
 
 export default function InvoiceItem({
   id,
-  paymentDue,
+  issueDate,
   clientName,
+  invoiceType,
+  currency,
   total,
   status,
 }) {
@@ -119,13 +122,13 @@ export default function InvoiceItem({
     <Link href={`/invoice/${id}`} passHref={true} scroll={false}>
       <StyledLink>
         <Id>
-          <span>B2B</span>
+          <span>{invoiceType}</span>
         </Id>
-        <PaymentDue>
-          Leshuar {dayjs(paymentDue).format("DD/MM/YYYY")}
-        </PaymentDue>
-        <ClientName>{clientName}</ClientName>
-        <Total as="div">{total ? `€${addCommas(total)}` : ""}</Total>
+        <IssueDate>Leshuar {dayjs(issueDate).format("DD/MM/YYYY")}</IssueDate>
+        {clientName && <ClientName>{clientName}</ClientName>}
+        <Total as="div">
+          <span>{currency}</span> {addCommas(total)}
+        </Total>
         <StyledInvoiceStatus status={status} />
         <Arrow src="/images/icon-arrow-right.svg" alt="" />
       </StyledLink>
