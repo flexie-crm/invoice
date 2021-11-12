@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import serialize from "form-serialize";
 import { useSession } from "next-auth/react";
+import { useQueryClient } from "react-query";
 
 import Form from "@components/Form";
 import Fields from "@components/Fields";
@@ -29,6 +30,7 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
 
   // Get session, so we can sent user data to this invoice
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -67,7 +69,10 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
       ).json();
 
       if (sendInvoice) {
-        console.log(sendInvoice);
+        // Need to wait before triggering an update
+        setTimeout(() => queryClient.invalidateQueries("invoices"), 1000);
+
+        console.table(sendInvoice);
         setIsFormPosting(false);
         setIsOpen(false);
       }

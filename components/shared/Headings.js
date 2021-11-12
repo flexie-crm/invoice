@@ -18,7 +18,6 @@ export const Heading2 = styled.h2`
   ${baseStyles}
   font-size: ${(props) => props.size || "1.25rem"};
   line-height: 1.1;
-  letter-spacing: -0.63px;
 `;
 
 export const Heading3 = styled.h3`

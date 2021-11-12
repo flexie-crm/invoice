@@ -60,6 +60,7 @@ const Divider = styled.div`
 
 export default function Sidebar({ toggleTheme }) {
   const { data: session } = useSession();
+
   return (
     <Wrapper>
       <Logo className="sidebar-logo" />

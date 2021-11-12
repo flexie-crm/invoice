@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import InvoiceItem from "./InvoiceItem";
+import Button from "@shared/Buttons";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,8 +33,8 @@ export default function InvoicesList({ invoices }) {
     }).then((res) => res.json());
 
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
-    useQuery(["invoices", page], () => fetchInvoices(page), {
-      keepPreviousData: true,
+    useQuery("invoices", () => fetchInvoices(page), {
+      refetchOnWindowFocus: false,
     });
 
   useEffect(() => {
@@ -40,9 +43,19 @@ export default function InvoicesList({ invoices }) {
 
   return (
     <>
-      {data && (
-        <Wrapper>
-          {data.map((invoice) => {
+      <Wrapper>
+        {isLoading ? (
+          <div style={{ width: "100%" }}>
+            <Skeleton
+              baseColor="#FFF"
+              highlightColor="#dbd2fe"
+              count={20}
+              height={76}
+              style={{ display: "grid", width: "100%" }}
+            />
+          </div>
+        ) : (
+          data?.map((invoice) => {
             return (
               <InvoiceItem
                 key={invoice.id}
@@ -55,9 +68,19 @@ export default function InvoicesList({ invoices }) {
                 status="paguar"
               />
             );
-          })}
-        </Wrapper>
-      )}
+          })
+        )}
+
+        <Button
+          className="mt-10"
+          type="button"
+          secondary
+          wide
+          onClick={() => {}}
+        >
+          20 Faturat e tjera
+        </Button>
+      </Wrapper>
     </>
   );
 }

@@ -6,7 +6,7 @@ import InvoiceStatus from "@shared/InvoiceStatus";
 import { Heading2 } from "@shared/Headings";
 import { fontStylesA } from "@shared/Typography";
 
-import { addCommas } from "@utilities/Misc";
+import { formatCurrency, parseFloatExt } from "@utilities/Form";
 
 const StyledLink = styled.a`
   display: grid;
@@ -127,7 +127,8 @@ export default function InvoiceItem({
         <IssueDate>Leshuar {dayjs(issueDate).format("DD/MM/YYYY")}</IssueDate>
         {clientName && <ClientName>{clientName}</ClientName>}
         <Total as="div">
-          <span>{currency}</span> {addCommas(total)}
+          <span>{currency}</span>{" "}
+          {formatCurrency(parseFloatExt(total || 0).toFixed(2))}
         </Total>
         <StyledInvoiceStatus status={status} />
         <Arrow src="/images/icon-arrow-right.svg" alt="" />

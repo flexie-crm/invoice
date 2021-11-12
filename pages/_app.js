@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
 import Head from "next/head";
 import Store from "store";
 import data from "@data/data.json";
@@ -41,6 +43,7 @@ export default function App({ Component, pageProps, router, session }) {
             handleDelete={handleDelete}
             key={router.route}
           />
+          <ReactQueryDevtools position="bottom-right" />
         </Layout>
       </QueryClientProvider>
     </SessionProvider>
