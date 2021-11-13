@@ -2,7 +2,7 @@ import create from "zustand";
 import persist from "zustand/middleware";
 
 const persistent = {
-  currency: "LEK",
+  currency: "ALL",
 };
 
 const useTotals = create(

@@ -33,7 +33,7 @@ const LoginError = styled.div`
 
 const LoginButtonWrapper = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
 
   button {
     padding: 0.8rem 1.3rem;

@@ -488,9 +488,6 @@ export default function Settings({ initialOpenedItem, user }) {
         abortEarly: false,
       });
 
-      // Add user stuff to data
-      data["key"] = user?.key;
-
       // Fetch request here
       setIsFormPosting(true);
       const addBanks = await (
@@ -831,7 +828,7 @@ export default function Settings({ initialOpenedItem, user }) {
                 <Input
                   name="password"
                   type="password"
-                  label="Fjalekalimi"
+                  label="Fjalekalimi i ri"
                   onChange={(e) => setPassword(e.target.value)}
                   value={password}
                   valid={!passwordError}

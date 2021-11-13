@@ -69,12 +69,17 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
       ).json();
 
       if (sendInvoice) {
-        // Need to wait before triggering an update
-        setTimeout(() => queryClient.invalidateQueries("invoices"), 1000);
-
-        console.table(sendInvoice);
         setIsFormPosting(false);
         setIsOpen(false);
+
+        // Do an optimistic update right away
+        queryClient.setQueryData(["invoices", 0], (old) => ({
+          invoices: [sendInvoice, ...old.invoices],
+          total: old.total + 1,
+        }));
+
+        // Need to wait before triggering an update
+        setTimeout(() => queryClient.invalidateQueries(["invoices", 0]), 1500);
       }
     } catch (errors) {
       let addErrors = {};

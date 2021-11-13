@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import useTotals from "@store/totals";
+import shallow from "zustand/shallow";
 
 import Dropdown from "@home/Dropdown";
 import { Heading1 } from "@shared/Headings";
@@ -7,6 +9,7 @@ import { ButtonPlus } from "@shared/Buttons";
 import { invoicesMessage } from "@utilities/Misc";
 
 import useLoader from "@store/loaders";
+import { useEffect } from "react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,7 +54,9 @@ const Button = styled(ButtonPlus)`
 `;
 
 export default function Header({ invoices, filter, setFilter, setFormIsOpen }) {
-  const message = invoicesMessage(invoices && invoices.length, filter);
+  const invoiceTotalCount = useTotals((state) => state.invoiceTotalCount);
+
+  const message = invoicesMessage(invoiceTotalCount, filter);
   const setIsFormLoading = useLoader((state) => state.setIsFormLoading);
 
   return (

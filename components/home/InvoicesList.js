@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
+import useTotals from "@store/totals";
+
 import InvoiceItem from "./InvoiceItem";
 import Button from "@shared/Buttons";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
@@ -15,6 +17,9 @@ const Wrapper = styled.div`
 `;
 
 export default function InvoicesList({ invoices }) {
+  const updateInvoiceTotalCount = useTotals(
+    (state) => state.updateInvoiceTotalCount
+  );
   const [page, setPage] = useState(0);
 
   const fetchInvoices = (page = 0) =>
@@ -26,19 +31,20 @@ export default function InvoicesList({ invoices }) {
           method: "POST",
           body: JSON.stringify({
             page: page,
-            limit: 30,
+            limit: 20,
           }),
         },
       }),
     }).then((res) => res.json());
 
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
-    useQuery("invoices", () => fetchInvoices(page), {
+    useQuery(["invoices", page], () => fetchInvoices(page), {
+      keepPreviousData: true,
       refetchOnWindowFocus: false,
     });
 
   useEffect(() => {
-    console.log(isLoading, isError, error, data, isFetching, isPreviousData);
+    updateInvoiceTotalCount(data?.total || -1);
   }, [data]);
 
   return (
@@ -55,11 +61,11 @@ export default function InvoicesList({ invoices }) {
             />
           </div>
         ) : (
-          data?.map((invoice) => {
+          data?.invoices?.map((invoice) => {
             return (
               <InvoiceItem
-                key={invoice.id}
-                id={invoice.id}
+                key={invoice.nivf}
+                id={invoice.nivf}
                 issueDate={invoice.invoice_created_date}
                 clientName={invoice.company}
                 total={invoice.invoice_total_after_vat}
@@ -70,16 +76,37 @@ export default function InvoicesList({ invoices }) {
             );
           })
         )}
-
-        <Button
-          className="mt-10"
-          type="button"
-          secondary
-          wide
-          onClick={() => {}}
-        >
-          20 Faturat e tjera
-        </Button>
+        <div style={{ width: "100%" }} className="grid">
+          <div
+            style={{ justifyContent: "flex-start", padding: "0" }}
+            className="flex col"
+          >
+            {page > 0 && (
+              <Button
+                className="mt-10 mr-10"
+                type="button"
+                secondary
+                onClick={() => {
+                  setPage((old) => old - 20);
+                }}
+              >
+                20 Faturat e meparshme
+              </Button>
+            )}
+            {data?.total > page && data?.invoices.length === 20 && (
+              <Button
+                className="mt-10"
+                type="button"
+                onClick={() => {
+                  setPage((old) => old + 20);
+                }}
+                disabled={isPreviousData}
+              >
+                20 Faturat e tjera
+              </Button>
+            )}
+          </div>
+        </div>
       </Wrapper>
     </>
   );

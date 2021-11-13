@@ -99,7 +99,7 @@ const StyledInvoiceStatus = styled(InvoiceStatus)`
   }
 `;
 
-const Arrow = styled.img`
+const Arrow = styled.div`
   display: none;
 
   @media only screen and (min-width: 768px) {
@@ -131,7 +131,17 @@ export default function InvoiceItem({
           {formatCurrency(parseFloatExt(total || 0).toFixed(2))}
         </Total>
         <StyledInvoiceStatus status={status} />
-        <Arrow src="/images/icon-arrow-right.svg" alt="" />
+        <Arrow>
+          <svg width="7" height="10">
+            <path
+              d="M1 1l4 4-4 4"
+              stroke="#7C5DFA"
+              strokeWidth="2"
+              fill="none"
+              fillRule="evenodd"
+            />
+          </svg>
+        </Arrow>
       </StyledLink>
     </Link>
   );

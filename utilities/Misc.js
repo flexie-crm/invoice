@@ -3,7 +3,9 @@ export function addCommas(num) {
 }
 
 export function invoicesMessage(num, filter) {
-  if (num === 0 && !filter) {
+  if (num === -1) {
+    return "# fatura total";
+  } else if (num === 0 && !filter) {
     return "Nuk ka fatura.";
   } else if (num === 0 && filter) {
     return `Nuk ka fatura ${filter}.`;
@@ -12,8 +14,8 @@ export function invoicesMessage(num, filter) {
   } else if (num === 1 && filter) {
     return `Eshte vetem 1 fature ${filter}.`;
   } else if (!filter) {
-    return `${num} ne fatura total.`;
+    return `${num > 99 ? "+99" : num} fatura total.`;
   } else {
-    return `${num} fatura ${filter} ne total.`;
+    return `${num > 99 ? "+99" : num} fatura ${filter} ne total.`;
   }
 }

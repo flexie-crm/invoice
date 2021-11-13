@@ -43,7 +43,7 @@ export default function App({ Component, pageProps, router, session }) {
             handleDelete={handleDelete}
             key={router.route}
           />
-          <ReactQueryDevtools position="bottom-right" />
+          {/* <ReactQueryDevtools position="bottom-right" /> */}
         </Layout>
       </QueryClientProvider>
     </SessionProvider>
