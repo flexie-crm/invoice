@@ -23,43 +23,34 @@ export default function InvoicesList() {
   const [page, setPage] = useState(0);
   const themeContext = useContext(ThemeContext);
   const queryClient = useQueryClient();
-
-  const fetchInvoices = (page = 0) =>
-    fetch("/api/get/token", {
-      method: "POST",
-      body: JSON.stringify({
-        method: "FX_GET_INVOICES",
-        data: {
+  const { isLoading, isError, error, data, isFetching, isPreviousData } =
+    useQuery(
+      ["invoices", page],
+      () =>
+        fetch("/api/get/token", {
           method: "POST",
           body: JSON.stringify({
-            page: page,
-            limit: 20,
+            method: "FX_GET_INVOICES",
+            data: {
+              method: "POST",
+              body: JSON.stringify({
+                page: page || 0,
+                limit: 20,
+              }),
+            },
           }),
-        },
-      }),
-    }).then((res) => res.json());
-
-  const { isLoading, isError, error, data, isFetching, isPreviousData } =
-    useQuery(["invoices", page], () => fetchInvoices(page), {
-      keepPreviousData: true,
-      refetchOnWindowFocus: false,
-      staleTime: 1000 * 600,
-      onSuccess: (data) => {
-        data?.invoices.forEach((invoice) => {
-          let invoicePayload = {};
-          try {
-            invoicePayload = JSON.parse(invoice.payload);
-          } catch (e) {
-            // Nothing here
-          }
-
-          queryClient.setQueryData(["invoice", invoice.nivf], {
-            ...invoice,
-            payload: invoicePayload,
+        }).then((res) => res.json()),
+      {
+        keepPreviousData: true,
+        refetchOnWindowFocus: false,
+        staleTime: 1000 * 3600,
+        onSuccess: (data) => {
+          data?.invoices.forEach((invoice) => {
+            queryClient.setQueryData(["invoice", invoice.nivf], invoice);
           });
-        });
-      },
-    });
+        },
+      }
+    );
 
   useEffect(() => {
     updateInvoiceTotalCount(data?.total || -1);
@@ -118,7 +109,6 @@ export default function InvoicesList() {
                 onClick={() => {
                   setPage((old) => old + 20);
                 }}
-                disabled={isPreviousData}
               >
                 20 Faturat e tjera
               </Button>

@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
-import Head from "next/head";
 import { useRouter } from "next/router";
-import { useQuery, useQueryClient } from "react-query";
+import Head from "next/head";
+import { useQuery } from "react-query";
 
 import Wrapper from "@components/invoice/Wrapper";
 import HomeLink from "@components/invoice/HomeLink";
@@ -11,10 +10,10 @@ import InvoiceFooter from "@components/invoice/InvoiceFooter";
 
 export default function Invoice() {
   const router = useRouter();
-  const [id, setId] = useState(null);
+  const { id: invoiceId } = router.query;
 
-  const fetchInvoice = (id) => {
-    if (id)
+  const { isLoading, isError, error, data, isFetching, isPreviousData } =
+    useQuery(["invoice", invoiceId], () =>
       fetch("/api/get/token", {
         method: "POST",
         body: JSON.stringify({
@@ -22,30 +21,17 @@ export default function Invoice() {
           data: {
             method: "POST",
             body: JSON.stringify({
-              nivf: id,
+              nivf: invoiceId,
             }),
           },
         }),
-      }).then((res) => res.json());
-  };
-
-  const { isLoading, isError, error, data, isFetching, isPreviousData } =
-    useQuery(
-      ["invoice", router.query.id],
-      () => fetchInvoice(router.query.id),
-      {
-        refetchOnWindowFocus: false,
-      }
+      }).then((res) => res.json())
     );
-
-  useEffect(() => {
-    setId(router.query.id);
-  }, [router.query]);
 
   return (
     <>
       <Head>
-        <title>Fatura {router.query.id && `#${id}`} | Flexie CRM</title>
+        <title>Fatura {invoiceId && `#${invoiceId}`} | Flexie CRM</title>
       </Head>
       <Wrapper>
         <HomeLink />

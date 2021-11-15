@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import dayjs from "dayjs";
+import QRCode from "react-qr-code";
 
 import InvoiceTable from "./InvoiceTable";
 import { Heading1, Heading3 } from "@shared/Headings";
@@ -53,8 +54,9 @@ const Description = styled.span`
 `;
 
 // sender address
-const SenderAddress = styled.address`
+const QrCodeWrapper = styled.div`
   display: flex;
+  align-items: flex-end;
   flex-direction: column;
   ${fontStylesB}
   font-style: normal;
@@ -135,18 +137,18 @@ export default function InvoiceBody({ invoice }) {
     <Wrapper>
       <Title>
         <Id>
-          <span>#</span>
-          {23445234534}
+          <span>Fature Nr. </span>
+          {invoice.invoice_number}
         </Id>
-        <Description>FAture B2B</Description>
+        <Description>
+          <b>NIVF </b>
+          {invoice.nivf}
+        </Description>
       </Title>
 
-      <SenderAddress>
-        <span>Rruga Panorama</span>
-        <span>Tirane</span>
-        <span>1016</span>
-        <span>ALB</span>
-      </SenderAddress>
+      <QrCodeWrapper>
+        <QRCode size={128} value={invoice.qr_code_url} />
+      </QrCodeWrapper>
 
       <Dates>
         <Date>
@@ -180,6 +182,8 @@ export default function InvoiceBody({ invoice }) {
       <InvoiceTable
         className="invoice-table"
         items={invoice.payload.items}
+        currency={invoice.currency}
+        currencyRate={invoice.currency_rate}
         total={invoice.invoice_total_after_vat}
       />
     </Wrapper>

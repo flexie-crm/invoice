@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
 import { fontStylesB } from "../shared/Typography";
-import { addCommas } from "../../utilities/Misc";
+import { getJson } from "../../utilities/Misc";
+import { formatCurrency, parseFloatExt } from "@utilities/Form";
 
 const Wrapper = styled.div`
   border-radius: 8px;
@@ -116,6 +117,7 @@ const EmptyTd = styled.td`
 
 const Total = styled.td`
   padding: 2rem 2rem 2rem 0;
+  white-space: nowrap;
   color: white;
   font-size: 1.25rem;
   font-weight: bold;
@@ -126,37 +128,60 @@ const Total = styled.td`
   }
 `;
 
-export default function InvoiceTable({ className, items, total }) {
-  console.log(items);
+export default function InvoiceTable({
+  className,
+  items,
+  total,
+  currency,
+  currencyRate,
+}) {
   return (
     <Wrapper className={className}>
       <Table>
         <TableHead>
           <tr>
-            <th>Item Name</th>
-            <th>QTY.</th>
-            <th>Price</th>
+            <th>Artikulli</th>
+            <th>Sasia</th>
+            <th>Çmimi</th>
+            <th>TVSH</th>
             <th>Total</th>
           </tr>
         </TableHead>
         <TableBody>
           {items.map((item) => {
+            const getItem = getJson(item.item);
+            const itemName = getItem ? getItem.__label : item.item;
+
             return (
               <tr key={uuidv4()}>
-                <ItemName>{item.item}</ItemName>
+                <ItemName>{itemName}</ItemName>
                 <ItemQuantity>{item.qty}</ItemQuantity>
-                <ItemPrice>{`£${addCommas(item.price)}`}</ItemPrice>
-                <ItemTotal>{`£${addCommas(item.total)}`}</ItemTotal>
+                <ItemPrice>
+                  {formatCurrency(parseFloatExt(item.price).toFixed(2))}
+                </ItemPrice>
+                <ItemPrice>
+                  {formatCurrency(parseFloatExt(item.vat).toFixed(2))}
+                </ItemPrice>
+                <ItemTotal>
+                  {formatCurrency(parseFloatExt(item.total).toFixed(2))}
+                </ItemTotal>
               </tr>
             );
           })}
         </TableBody>
         <TableFooter>
           <tr>
-            <Amount>Amount Due</Amount>
+            <Amount>SHUMA PER T'U PAGUAR</Amount>
             <EmptyTd></EmptyTd>
             <EmptyTd></EmptyTd>
-            <Total>{total ? `£${addCommas(total)}` : ""}</Total>
+            <EmptyTd></EmptyTd>
+            <Total>
+              {total
+                ? `${currency} ${formatCurrency(
+                    parseFloatExt(total).toFixed(2)
+                  )}`
+                : ""}
+            </Total>
           </tr>
         </TableFooter>
       </Table>

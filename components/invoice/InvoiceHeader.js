@@ -45,14 +45,11 @@ export default function InvoiceHeader({
       <Status>Status</Status>
       <InvoiceStatus status={status} />
       <Buttons>
-        <Button secondary onClick={() => setFormIsOpen(true)}>
-          Edit
+        <Button alert onClick={() => {}}>
+          Anullo
         </Button>
-        <Button alert onClick={() => setPopupIsOpen(true)}>
-          Delete
-        </Button>
-        {status !== "paid" ? (
-          <Button onClick={handlePaid}>Mark As Paid</Button>
+        {status !== "Paguar" ? (
+          <Button onClick={handlePaid}>Fature e Paguar?</Button>
         ) : null}
       </Buttons>
     </Wrapper>

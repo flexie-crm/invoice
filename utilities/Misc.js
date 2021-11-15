@@ -19,3 +19,11 @@ export function invoicesMessage(num, filter) {
     return `${num > 99 ? "+99" : num} fatura ${filter} ne total.`;
   }
 }
+
+export function getJson(str) {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return false;
+  }
+}
