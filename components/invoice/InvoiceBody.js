@@ -136,53 +136,51 @@ export default function InvoiceBody({ invoice }) {
       <Title>
         <Id>
           <span>#</span>
-          {invoice.id}
+          {23445234534}
         </Id>
-        <Description>{invoice.description}</Description>
+        <Description>FAture B2B</Description>
       </Title>
 
       <SenderAddress>
-        <span>{invoice.senderAddress.street}</span>
-        <span>{invoice.senderAddress.city}</span>
-        <span>{invoice.senderAddress.postCode}</span>
-        <span>{invoice.senderAddress.country}</span>
+        <span>Rruga Panorama</span>
+        <span>Tirane</span>
+        <span>1016</span>
+        <span>ALB</span>
       </SenderAddress>
 
       <Dates>
         <Date>
-          <DateTitle>Invoice Date</DateTitle>
+          <DateTitle>Data fatures</DateTitle>
           <Subheading as="span">
-            {dayjs(invoice.createdAt).format("DD MMM YYYY")}
+            {dayjs(invoice.invoice_created_date).format("DD MMM YYYY")}
           </Subheading>
         </Date>
         <Date>
-          <DateTitle>Payment Due</DateTitle>
-          <Subheading as="span">
-            {dayjs(invoice.paymentDue).format("DD MMM YYYY")}
-          </Subheading>
+          <DateTitle>Afati pageses</DateTitle>
+          <Subheading as="span">24 Dhjetor 2021</Subheading>
         </Date>
       </Dates>
 
       <ClientAddress>
         <div>Bill To</div>
-        <Subheading as="div">{invoice.clientName}</Subheading>
-        <span>{invoice.clientAddress.street}</span>
-        <span>{invoice.clientAddress.city}</span>
-        <span>{invoice.clientAddress.postCode}</span>
-        <span>{invoice.clientAddress.country}</span>
+        <Subheading as="div">RT Software GROUP sh.p.k</Subheading>
+        <span>Rruga Barrikadave</span>
+        <span>Tirane</span>
+        <span>1016</span>
+        <span>ALB</span>
       </ClientAddress>
 
       <Email>
-        <EmailTitle>Sent to</EmailTitle>
-        <Subheading as="a" href={`mailto:${invoice.clientEmail}`}>
-          {invoice.clientEmail}
+        <EmailTitle>Derguar</EmailTitle>
+        <Subheading as="a" href={`mailto:sales@rtsg.io`}>
+          sales@rtsg.io
         </Subheading>
       </Email>
 
       <InvoiceTable
         className="invoice-table"
-        items={invoice.items}
-        total={invoice.total}
+        items={invoice.payload.items}
+        total={invoice.invoice_total_after_vat}
       />
     </Wrapper>
   );

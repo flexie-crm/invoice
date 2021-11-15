@@ -9,9 +9,10 @@ const Wrapper = styled.div`
   height: 2.5rem;
   border-radius: 6px;
   background: ${(props) => {
-    if (props.status === "paguar") return "rgba(51, 214, 159, .06)";
-    if (props.status === "ne pritje") return "rgba(255, 143, 0, .06)";
-    if (props.status === "draft") return props.theme.color.invoiceStatus.bg;
+    if (props.status === "Paguar" || props.status === "Paguar Pjeserisht")
+      return "rgba(51, 214, 159, .06)";
+    if (props.status === "Dorezuar") return "rgba(255, 143, 0, .06)";
+    if (props.status === "Refuzuar") return props.theme.color.invoiceStatus.bg;
   }};
 `;
 
@@ -21,18 +22,22 @@ const Circle = styled.div`
   margin-right: 0.5rem;
   border-radius: 50%;
   background: ${(props) => {
-    if (props.status === "paguar") return "#33D69F";
-    if (props.status === "ne pritje") return "#FF8F00";
-    if (props.status === "draft") return props.theme.color.invoiceStatus.text;
+    if (props.status === "Paguar" || props.status === "Paguar Pjeserisht")
+      return "#33D69F";
+    if (props.status === "Dorezuar") return "#FF8F00";
+    if (props.status === "Refuzuar")
+      return props.theme.color.invoiceStatus.text;
   }};
 `;
 
 const Text = styled.div`
   ${fontStylesA}
   color: ${(props) => {
-    if (props.status === "paguar") return "#33D69F";
-    if (props.status === "ne pritje") return "#FF8F00";
-    if (props.status === "draft") return props.theme.color.invoiceStatus.text;
+    if (props.status === "Paguar" || props.status === "Paguar Pjeserisht")
+      return "#33D69F";
+    if (props.status === "Dorezuar") return "#FF8F00";
+    if (props.status === "Refuzuar")
+      return props.theme.color.invoiceStatus.text;
   }};
   font-weight: bold;
   text-transform: capitalize;

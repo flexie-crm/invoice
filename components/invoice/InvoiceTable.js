@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 
 import { fontStylesB } from "../shared/Typography";
 import { addCommas } from "../../utilities/Misc";
@@ -126,6 +127,7 @@ const Total = styled.td`
 `;
 
 export default function InvoiceTable({ className, items, total }) {
+  console.log(items);
   return (
     <Wrapper className={className}>
       <Table>
@@ -140,9 +142,9 @@ export default function InvoiceTable({ className, items, total }) {
         <TableBody>
           {items.map((item) => {
             return (
-              <tr key={item.name}>
-                <ItemName>{item.name}</ItemName>
-                <ItemQuantity>{item.quantity}</ItemQuantity>
+              <tr key={uuidv4()}>
+                <ItemName>{item.item}</ItemName>
+                <ItemQuantity>{item.qty}</ItemQuantity>
                 <ItemPrice>{`£${addCommas(item.price)}`}</ItemPrice>
                 <ItemTotal>{`£${addCommas(item.total)}`}</ItemTotal>
               </tr>

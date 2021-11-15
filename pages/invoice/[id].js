@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useQuery, useQueryClient } from "react-query";
 
 import Wrapper from "@components/invoice/Wrapper";
 import HomeLink from "@components/invoice/HomeLink";
@@ -8,37 +9,50 @@ import InvoiceHeader from "@components/invoice/InvoiceHeader";
 import InvoiceBody from "@components/invoice/InvoiceBody";
 import InvoiceFooter from "@components/invoice/InvoiceFooter";
 
-import { markAsPaid } from "@utilities/Invoices";
-
-export default function Invoice({ invoices, setInvoices, handleDelete }) {
+export default function Invoice() {
   const router = useRouter();
   const [id, setId] = useState(null);
-  const [invoice, setInvoice] = useState(null);
+
+  const fetchInvoice = (id) => {
+    if (id)
+      fetch("/api/get/token", {
+        method: "POST",
+        body: JSON.stringify({
+          method: "FX_GET_INVOICE",
+          data: {
+            method: "POST",
+            body: JSON.stringify({
+              nivf: id,
+            }),
+          },
+        }),
+      }).then((res) => res.json());
+  };
+
+  const { isLoading, isError, error, data, isFetching, isPreviousData } =
+    useQuery(
+      ["invoice", router.query.id],
+      () => fetchInvoice(router.query.id),
+      {
+        refetchOnWindowFocus: false,
+      }
+    );
 
   useEffect(() => {
     setId(router.query.id);
-    setInvoice(invoices?.find((invoice) => router.query.id === invoice.id));
-  }, [router.query, invoices]);
-
-  function handlePaid() {
-    markAsPaid(id, invoices, setInvoices);
-  }
+  }, [router.query]);
 
   return (
     <>
       <Head>
-        <title>Fatura {id && `#${id}`} | Flexie CRM</title>
+        <title>Fatura {router.query.id && `#${id}`} | Flexie CRM</title>
       </Head>
       <Wrapper>
         <HomeLink />
-        <InvoiceHeader
-          className="invoice-page-header"
-          status={invoice?.status}
-          handlePaid={handlePaid}
-        />
-        {invoice && <InvoiceBody invoice={invoice} />}
+        <InvoiceHeader className="invoice-page-header" status={data?.status} />
+        {data && <InvoiceBody invoice={data} />}
       </Wrapper>
-      <InvoiceFooter status={invoice?.status} handlePaid={handlePaid} />
+      <InvoiceFooter status={data?.status} />
     </>
   );
 }

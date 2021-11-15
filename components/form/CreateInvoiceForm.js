@@ -50,7 +50,6 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
       data["operator_code"] = session?.user?.operator_code;
       data["business_unit"] = session?.user?.business_unit;
       data["nipt"] = session?.user?.nipt;
-      data["key"] = session?.user?.key;
       data["tcr_code"] = session?.user?.tcr_code;
 
       setIsFormPosting(true);
@@ -78,8 +77,11 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
           total: old.total + 1,
         }));
 
-        // Need to wait before triggering an update
-        setTimeout(() => queryClient.invalidateQueries(["invoices", 0]), 1500);
+        // Add invoce details into cache
+        queryClient.setQueryData(["invoice", sendInvoice.nivf], sendInvoice);
+
+        // Need to wait before triggering an update, and also clear cache
+        setTimeout(() => queryClient.invalidateQueries("invoices"), 1500);
       }
     } catch (errors) {
       let addErrors = {};

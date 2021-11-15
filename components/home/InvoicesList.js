@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import { useQuery } from "react-query";
+import { useState, useEffect, useContext } from "react";
+import styled, { ThemeContext } from "styled-components";
+import { useQuery, useQueryClient } from "react-query";
 import useTotals from "@store/totals";
 
 import InvoiceItem from "./InvoiceItem";
 import Button from "@shared/Buttons";
-import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
 const Wrapper = styled.div`
@@ -16,11 +16,13 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-export default function InvoicesList({ invoices }) {
+export default function InvoicesList() {
   const updateInvoiceTotalCount = useTotals(
     (state) => state.updateInvoiceTotalCount
   );
   const [page, setPage] = useState(0);
+  const themeContext = useContext(ThemeContext);
+  const queryClient = useQueryClient();
 
   const fetchInvoices = (page = 0) =>
     fetch("/api/get/token", {
@@ -41,6 +43,22 @@ export default function InvoicesList({ invoices }) {
     useQuery(["invoices", page], () => fetchInvoices(page), {
       keepPreviousData: true,
       refetchOnWindowFocus: false,
+      staleTime: 1000 * 600,
+      onSuccess: (data) => {
+        data?.invoices.forEach((invoice) => {
+          let invoicePayload = {};
+          try {
+            invoicePayload = JSON.parse(invoice.payload);
+          } catch (e) {
+            // Nothing here
+          }
+
+          queryClient.setQueryData(["invoice", invoice.nivf], {
+            ...invoice,
+            payload: invoicePayload,
+          });
+        });
+      },
     });
 
   useEffect(() => {
@@ -53,7 +71,7 @@ export default function InvoicesList({ invoices }) {
         {isLoading ? (
           <div style={{ width: "100%" }}>
             <Skeleton
-              baseColor="#FFF"
+              baseColor={themeContext.color.invoiceItem.bg}
               highlightColor="#dbd2fe"
               count={20}
               height={76}
@@ -71,7 +89,7 @@ export default function InvoicesList({ invoices }) {
                 total={invoice.invoice_total_after_vat}
                 currency={invoice.currency}
                 invoiceType={invoice.invoice_type}
-                status="paguar"
+                status={invoice.status}
               />
             );
           })

@@ -45,7 +45,8 @@ export default async function handler(req, res) {
         return res.status(400).json(await fxResponse.json());
       }
     } catch (e) {
-      // Decide what to do on exceptions
+      console.log(e);
+      return res.status(400).json({ ok: false });
     }
   }
 
