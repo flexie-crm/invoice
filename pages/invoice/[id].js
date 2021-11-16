@@ -13,7 +13,7 @@ export default function Invoice() {
   const { id: invoiceId } = router.query;
 
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
-    useQuery(["invoice", invoiceId], () =>
+    useQuery(["invoice", invoiceId || -1], () =>
       fetch("/api/get/token", {
         method: "POST",
         body: JSON.stringify({

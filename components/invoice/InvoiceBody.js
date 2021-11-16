@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import dayjs from "dayjs";
 import QRCode from "react-qr-code";
+import { useSession } from "next-auth/react";
 
 import InvoiceTable from "./InvoiceTable";
 import { Heading1, Heading3 } from "@shared/Headings";
@@ -49,20 +50,21 @@ const Id = styled(Heading1)`
   }
 `;
 
-const Description = styled.span`
+const Details = styled.span`
   ${fontStylesA}
 `;
 
 // sender address
 const QrCodeWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   flex-direction: column;
   ${fontStylesB}
   font-style: normal;
 
   @media only screen and (min-width: 768px) {
     text-align: end;
+    align-items: flex-end;
   }
 `;
 
@@ -96,7 +98,7 @@ const Subheading = styled(Heading3)`
 `;
 
 // client address
-const ClientAddress = styled.address`
+const Buyer = styled.address`
   grid-column: 2 / 3;
   grid-row: 3 / 4;
   display: flex;
@@ -114,11 +116,20 @@ const ClientAddress = styled.address`
 `;
 
 // client email
-const Email = styled.div`
+const Seller = styled.div`
   grid-column: 1 / 2;
   grid-row: 4 / 5;
   display: flex;
   flex-direction: column;
+  ${fontStylesB}
+
+  & *:nth-child(1) {
+    margin-bottom: 0.5rem;
+  }
+
+  & *:nth-child(2) {
+    margin-bottom: 0.25rem;
+  }
 
   @media only screen and (min-width: 768px) {
     grid-column: 3 / 4;
@@ -133,6 +144,8 @@ const EmailTitle = styled.span`
 `;
 
 export default function InvoiceBody({ invoice }) {
+  const { data: session } = useSession();
+
   return (
     <Wrapper>
       <Title>
@@ -140,10 +153,14 @@ export default function InvoiceBody({ invoice }) {
           <span>Fature Nr. </span>
           {invoice.invoice_number}
         </Id>
-        <Description>
+        <Details>
           <b>NIVF </b>
           {invoice.nivf}
-        </Description>
+        </Details>
+        <Details>
+          <b>NSLF </b>
+          {invoice.nslf}
+        </Details>
       </Title>
 
       <QrCodeWrapper>
@@ -157,27 +174,39 @@ export default function InvoiceBody({ invoice }) {
             {dayjs(invoice.invoice_created_date).format("DD MMM YYYY")}
           </Subheading>
         </Date>
-        <Date>
-          <DateTitle>Afati pageses</DateTitle>
-          <Subheading as="span">24 Dhjetor 2021</Subheading>
-        </Date>
+        {invoice.due_date && (
+          <Date>
+            <DateTitle>Afati pageses</DateTitle>
+            <Subheading as="span">
+              {dayjs(invoice.due_date).format("DD MMM YYYY")}
+            </Subheading>
+          </Date>
+        )}
       </Dates>
 
-      <ClientAddress>
-        <div>Bill To</div>
-        <Subheading as="div">RT Software GROUP sh.p.k</Subheading>
-        <span>Rruga Barrikadave</span>
-        <span>Tirane</span>
-        <span>1016</span>
-        <span>ALB</span>
-      </ClientAddress>
+      {invoice.company && (
+        <Buyer>
+          <div>BLERËSI</div>
+          <Subheading as="div">{invoice.company}</Subheading>
+          <span>{invoice.address}</span>
+          <span>
+            {invoice.city}, {invoice.country_code}
+          </span>
+          <span className="mt-5">
+            <b>NUIS</b> {invoice.nuis}
+          </span>
+        </Buyer>
+      )}
 
-      <Email>
-        <EmailTitle>Derguar</EmailTitle>
-        <Subheading as="a" href={`mailto:sales@rtsg.io`}>
-          sales@rtsg.io
-        </Subheading>
-      </Email>
+      <Seller>
+        <div>SHITËSI</div>
+        <Subheading as="div">{session?.user?.company}</Subheading>
+        <span>{session?.user?.address}</span>
+        <span>{session?.user?.city}, ALB</span>
+        <span className="mt-5">
+          <b>NUIS</b> {session?.user?.nipt}
+        </span>
+      </Seller>
 
       <InvoiceTable
         className="invoice-table"

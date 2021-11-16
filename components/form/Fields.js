@@ -227,16 +227,23 @@ const Fields = () => {
             <Checkbox
               name="invoice_type"
               type="radio"
-              label="Auto Fatura"
+              label="Auto"
               value="auto"
               defaultChecked={invoiceType === "auto"}
+            />
+            <Checkbox
+              name="invoice_type"
+              type="radio"
+              label="Export"
+              value="export"
+              defaultChecked={invoiceType === "export"}
             />
           </InvoiceTypeWrapper>
         </FieldSet>
 
-        {(invoiceType === "b2b" || invoiceType === "auto") && <Client />}
+        {invoiceType !== "b2c" && <Client />}
 
-        {invoiceType === "b2b" && (
+        {(invoiceType === "b2b" || invoiceType === "export") && (
           <Panel className="mb-30 mt-20">
             <PanelHeader
               opened={isCollapsedOpen}
