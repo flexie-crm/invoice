@@ -4,7 +4,6 @@ import Head from "next/head";
 import Main from "@home/Main";
 import Wrapper from "@home/Wrapper";
 import Header from "@home/Header";
-import NoInvoices from "@home/NoInvoices";
 import InvoicesList from "@home/InvoicesList";
 import dynamic from "next/dynamic";
 import { getSession } from "next-auth/react";
@@ -52,11 +51,7 @@ export default function Home({ invoices, setInvoices }) {
             setFilter={setFilter}
             setFormIsOpen={setFormIsOpen}
           />
-          {filteredInvoices?.length === 0 ? (
-            <NoInvoices />
-          ) : (
-            <InvoicesList invoices={filteredInvoices} />
-          )}
+          <InvoicesList />
         </Wrapper>
       </Main>
     </>

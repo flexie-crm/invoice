@@ -23,7 +23,6 @@ export const FlexieFormInput = css`
 
   ::placeholder {
     color: ${(props) => props.theme.color.text.placeholder};
-    transition: color 0.05s;
   }
 
   :focus {
@@ -63,7 +62,6 @@ export const SharedInput = css`
 
   ::placeholder {
     color: ${(props) => props.theme.color.text.placeholder};
-    transition: color 0.05s;
   }
 
   :focus {

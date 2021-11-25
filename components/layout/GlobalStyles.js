@@ -47,8 +47,32 @@ const GlobalStyles = createGlobalStyle`
       display: flex;
     }
 
-    .hidden {
+    @media only screen (max-width: 767px) {
+      .hidden-xs {
         display: none !important;
+      }
+    }
+
+    @media only screen (min-width: 768px) and (max-width: 991px) {
+      .hidden-sm {
+        display: none !important;
+      }
+    }
+
+    @media only screen (min-width: 992px) and (max-width: 1199px) {
+      .hidden-md {
+        display: none !important;
+      }
+    }
+
+    @media only screen (min-width: 1200px) {
+      .hidden-lg {
+        display: none !important;
+      }
+    }
+
+    .hidden {
+      display: none !important;
     }
 
     .p-absolute {

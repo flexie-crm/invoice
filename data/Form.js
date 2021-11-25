@@ -17,6 +17,7 @@ export const banksValidation = Yup.object().shape({
       bank: Yup.string().required("?"),
       iban: Yup.string().required("?"),
       currency: Yup.string().required("?"),
+      swift: Yup.string().required("?"),
     })
   ),
 });

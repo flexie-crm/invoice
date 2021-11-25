@@ -2,6 +2,7 @@ import React, { useRef, useEffect } from "react";
 import serialize from "form-serialize";
 import { useSession } from "next-auth/react";
 import { useQueryClient } from "react-query";
+import dayjs from "dayjs";
 
 import Form from "@components/Form";
 import Fields from "@components/Fields";
@@ -43,6 +44,47 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
 
       // Check also global has error
       if (hasErrors) {
+        return false;
+      }
+
+      // Check period start and period end
+      // as they are kind of complex to be handled from YUP
+      if (data.period_start && data.period_end) {
+        const startDate = dayjs(data.period_start, "YYYY-MM-DD");
+        const endDate = dayjs(data.period_end, "YYYY-MM-DD");
+
+        if (endDate.isBefore(startDate) || endDate.isSame(startDate)) {
+          setErrors({
+            period_start: "- duhet me heret.",
+            period_end: "- duhet me vone.",
+          });
+
+          return false;
+        }
+
+        if (!startDate.isSame(endDate, "month")) {
+          setErrors({
+            period_start: "- duhet brenda muajit.",
+            period_end: "- duhet brenda muajit.",
+          });
+
+          return false;
+        }
+      }
+
+      if (data.period_start && !data.period_end) {
+        setErrors({
+          period_end: "- duhet vendosur.",
+        });
+
+        return false;
+      }
+
+      if (!data.period_start && data.period_end) {
+        setErrors({
+          period_start: "- duhet vendosur.",
+        });
+
         return false;
       }
 

@@ -38,6 +38,7 @@ export default function InvoiceHeader({
   status,
   setPopupIsOpen,
   setFormIsOpen,
+  printHandler,
   handlePaid,
 }) {
   return (
@@ -48,9 +49,7 @@ export default function InvoiceHeader({
         <Button alert onClick={() => {}}>
           Anullo
         </Button>
-        {status !== "Paguar" ? (
-          <Button onClick={handlePaid}>Fature e Paguar?</Button>
-        ) : null}
+        <Button onClick={printHandler}>Printo</Button>
       </Buttons>
     </Wrapper>
   );

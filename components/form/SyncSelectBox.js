@@ -59,6 +59,10 @@ const sharedStyleForSelect = css`
     color: ${(props) => props.theme.color.text.heading};
   }
 
+  .Select__option.Select__option--is-focused:not(.Select__option--is-selected) {
+    color: #222 !important;
+  }
+
   .Select__indicator-separator {
     display: none;
   }

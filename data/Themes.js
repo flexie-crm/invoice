@@ -152,7 +152,7 @@ export const dark = {
       formLabel: "#a1a1a1",
       link: "#ffffff",
       linkHover: "#4f546b",
-      placeholder: "#fff",
+      placeholder: "#76777d",
       boxShadow: "0 0 0 1px #9277ff, 0 0 0 5px rgb(146 119 255 / 40%)",
     },
   },

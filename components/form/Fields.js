@@ -125,6 +125,7 @@ const paymentMethods = [
 ];
 
 const documentType = [
+  { label: "Fature Standarte P1", value: "P1", default: true },
   { label: "Fature Standarte P2", value: "P2", default: true },
   { label: "Fature Parapagimi P6", value: "P6" },
 ];
@@ -293,6 +294,7 @@ const Fields = () => {
                     valid={!errors?.period_start}
                     errorMessage={errors?.period_start}
                     dateFormat="yyyy-MM-dd"
+                    onChange={() => removeErrors(["period_start"])}
                   />
                 </div>
                 <div className="col col-sm col-md">
@@ -303,6 +305,7 @@ const Fields = () => {
                     valid={!errors?.period_end}
                     errorMessage={errors?.period_end}
                     dateFormat="yyyy-MM-dd"
+                    onChange={() => removeErrors(["period_end"])}
                   />
                 </div>
               </div>
@@ -341,9 +344,11 @@ const Fields = () => {
                 options={bankDetails}
                 valid={!errors?.bank}
                 errorMessage={errors?.bank}
-                isDisabled={["BANKNOTE", "CARD"].includes(
-                  invoiceSettings?.payment_method?.value
-                )}
+                isDisabled={
+                  ["BANKNOTE", "CARD"].includes(
+                    invoiceSettings?.payment_method?.value
+                  ) || invoiceType === "export"
+                }
               />
             </div>
             <div className="col col-sm">
@@ -359,11 +364,9 @@ const Fields = () => {
                 }
                 options={documentType}
                 isDisabled={
-                  invoiceType === "b2c" ||
-                  invoiceType === "auto" ||
                   ["BANKNOTE", "CARD"].includes(
                     invoiceSettings?.payment_method?.value
-                  )
+                  ) || invoiceType === "export"
                 }
                 valid={!errors?.invoice_type}
                 errorMessage={errors?.invoice_type}
@@ -371,7 +374,7 @@ const Fields = () => {
             </div>
           </div>
         </FieldSet>
-        <div className="mt-30">{<Items />}</div>
+        <div className="mt-30">{<Items invoiceType={invoiceType} />}</div>
         <Total />
       </Wrapper>
     </TouchScrollable>

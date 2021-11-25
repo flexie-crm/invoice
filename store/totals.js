@@ -1,4 +1,3 @@
-import { set } from "store";
 import create from "zustand";
 
 const totals = {

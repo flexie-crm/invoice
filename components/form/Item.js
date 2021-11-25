@@ -29,10 +29,9 @@ const vatOptions = [
   { label: "0% Tipi 1", value: "TYPE_1" },
   { label: "0% Tipi 2", value: "TYPE_2" },
   { label: "0% Margin", value: "MARGIN_SCHEME" },
-  { label: "0% Export", value: "EXPORT_OF_GOODS" },
 ];
 
-const Item = ({ index, onRemove, onChange, item, products }) => {
+const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
   const qtyInput = useRef();
   const vatInput = useRef();
   const [itemState, setItemState] = useState();
@@ -154,24 +153,26 @@ const Item = ({ index, onRemove, onChange, item, products }) => {
           />
         </div>
 
-        <div className="col col-2 col-md col-sm mb-10">
-          <SelectBox
-            ref={vatInput}
-            hideLabels={index > 0}
-            label="TVSH"
-            options={vatOptions}
-            name={`items[${index}][vat_rate]`}
-            onChangeCallback={handleVatOnChange}
-            value={item?.vatRate}
-            getOptionLabel={(option) => option.label}
-            getOptionValue={(option) => option.value}
-            valid={true}
-          />
-        </div>
+        {invoiceType !== "export" && (
+          <div className="col col-2 col-md col-sm mb-10">
+            <SelectBox
+              ref={vatInput}
+              hideLabels={index > 0}
+              label="TVSH"
+              options={vatOptions}
+              name={`items[${index}][vat_rate]`}
+              onChangeCallback={handleVatOnChange}
+              value={item?.vatRate}
+              getOptionLabel={(option) => option.label}
+              getOptionValue={(option) => option.value}
+              valid={true}
+            />
+          </div>
+        )}
 
         <div className="col col-2 col-md col-sm mb-10">
           <Input
-            label="Totali me TVSH"
+            label={invoiceType === "export" ? "Totali" : "Totali me TVSH"}
             type="number"
             name={`items[${index}][total]`}
             hideLabels={index > 0}

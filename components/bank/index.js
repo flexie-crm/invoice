@@ -23,13 +23,15 @@ const Bank = ({ index, bank, onRemove }) => {
       (currencyElement) => currencyElement.value === bank.currency
     ),
     [`banks[${index}][iban]`]: bank.iban,
+    [`banks[${index}][swift]`]: bank.swift,
   });
   const removeErrors = useValidation((state) => state.removeErrors);
-  const { bankError, currencyError, ibanError } = useValidation(
+  const { bankError, currencyError, ibanError, swiftError } = useValidation(
     (state) => ({
       bankError: state.errors?.[`banks[${index}].bank`],
       currencyError: state.errors?.[`banks[${index}].currency`],
       ibanError: state.errors?.[`banks[${index}].iban`],
+      swiftError: state.errors?.[`banks[${index}].swift`],
     }),
     shallow
   );
@@ -61,12 +63,36 @@ const Bank = ({ index, bank, onRemove }) => {
     removeErrors([`banks[${index}].iban`]);
   };
 
+  const handleSwiftOnChange = (e) => {
+    setBankState({
+      ...bankState,
+      [e.target.name]: e.target.value,
+    });
+
+    removeErrors([`banks[${index}].swift`]);
+  };
+
   const handleRemoveBank = () => {
     onRemove(bank.id);
   };
 
   return (
     <div className="grid">
+      <div className="col col-md col-sm col-2">
+        <SelectBox
+          instanceId={`currency_${index}`}
+          hideLabels={index > 0}
+          label="Monedha"
+          options={allCurrencyOptions}
+          name={`banks[${index}][currency]`}
+          onChangeCallback={handleCurrencyOnChange}
+          value={bankState?.[`banks[${index}][currency]`]}
+          getOptionLabel={(option) => option.label}
+          getOptionValue={(option) => option.value}
+          valid={!currencyError}
+          errorMessage={currencyError}
+        />
+      </div>
       <div className="col col-md col-sm col-4">
         <SelectBox
           instanceId={`bank_${index}`}
@@ -84,18 +110,16 @@ const Bank = ({ index, bank, onRemove }) => {
         />
       </div>
       <div className="col col-md col-sm col-2">
-        <SelectBox
-          instanceId={`currency_${index}`}
+        <Input
+          label="SWIFT"
+          type="text"
+          placeholder="SWIFT"
+          name={`banks[${index}][swift]`}
           hideLabels={index > 0}
-          label="Monedha"
-          options={allCurrencyOptions}
-          name={`banks[${index}][currency]`}
-          onChangeCallback={handleCurrencyOnChange}
-          value={bankState?.[`banks[${index}][currency]`]}
-          getOptionLabel={(option) => option.label}
-          getOptionValue={(option) => option.value}
-          valid={!currencyError}
-          errorMessage={currencyError}
+          value={bankState?.[`banks[${index}][swift]`] || ""}
+          onChange={handleSwiftOnChange}
+          valid={!swiftError}
+          errorMessage={swiftError}
         />
       </div>
       <div className="col col-md col-sm">

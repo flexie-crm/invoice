@@ -645,7 +645,7 @@ export default function Settings({ initialOpenedItem, user }) {
           // Show message from Flexie response
           switchFlexieForm(submission.type, submission)();
 
-          // Remove message after 2-3 seconds
+          // Remove message after few seconds
           // Only if submission.type == message so its not an error
           if (submission.type === "message")
             setTimeout(() => setSubmitMessage(false), 10000);

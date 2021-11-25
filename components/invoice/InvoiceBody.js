@@ -1,11 +1,17 @@
-import styled from "styled-components";
+import { useContext, useEffect, useState, useRef } from "react";
+import styled, { ThemeContext } from "styled-components";
 import dayjs from "dayjs";
-import QRCode from "react-qr-code";
+import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
+import "dayjs/locale/sq";
 
 import InvoiceTable from "./InvoiceTable";
 import { Heading1, Heading3 } from "@shared/Headings";
 import { fontStylesA, fontStylesB } from "@shared/Typography";
+import QrCode from "@components/invoice/QrCode";
+
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Wrapper = styled.section`
   display: grid;
@@ -52,20 +58,27 @@ const Id = styled(Heading1)`
 
 const Details = styled.span`
   ${fontStylesA}
+  line-height: 1.5;
 `;
 
 // sender address
 const QrCodeWrapper = styled.div`
   display: flex;
   align-items: flex-start;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
   ${fontStylesB}
   font-style: normal;
 
   @media only screen and (min-width: 768px) {
-    text-align: end;
+    text-align: center;
     align-items: flex-end;
   }
+`;
+
+const QrCodeSection = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 // dates
@@ -97,8 +110,7 @@ const Subheading = styled(Heading3)`
   }
 `;
 
-// client address
-const Buyer = styled.address`
+const Buyer = styled.div`
   grid-column: 2 / 3;
   grid-row: 3 / 4;
   display: flex;
@@ -115,7 +127,6 @@ const Buyer = styled.address`
   }
 `;
 
-// client email
 const Seller = styled.div`
   grid-column: 1 / 2;
   grid-row: 4 / 5;
@@ -144,7 +155,14 @@ const EmailTitle = styled.span`
 `;
 
 export default function InvoiceBody({ invoice }) {
+  dayjs.locale("sq");
   const { data: session } = useSession();
+  const themeContext = useContext(ThemeContext);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <Wrapper>
@@ -163,8 +181,53 @@ export default function InvoiceBody({ invoice }) {
         </Details>
       </Title>
 
-      <QrCodeWrapper>
-        <QRCode size={128} value={invoice.qr_code_url} />
+      <QrCodeWrapper
+        {...(!invoice.company ? { style: { justifyContent: "flex-end" } } : {})}
+      >
+        {invoice.company && (
+          <QrCodeSection>
+            {mounted ? (
+              <QrCode size={128} value={invoice.qr_code_url} />
+            ) : (
+              <Skeleton
+                baseColor={themeContext.color.invoiceItem.bg}
+                highlightColor="#dbd2fe"
+                inline={true}
+                count={1}
+                height={128}
+                width={128}
+                style={{
+                  display: "grid",
+                  width: "100%",
+                  paddingBottom: 0,
+                  marginBottom: 0,
+                }}
+              />
+            )}
+            <span className="mt-5">Pagesa e fatures</span>
+          </QrCodeSection>
+        )}
+        <QrCodeSection>
+          {mounted ? (
+            <QrCode size={128} value={invoice.qr_code_url} />
+          ) : (
+            <Skeleton
+              baseColor={themeContext.color.invoiceItem.bg}
+              highlightColor="#dbd2fe"
+              inline={true}
+              count={1}
+              height={128}
+              width={128}
+              style={{
+                display: "grid",
+                width: "100%",
+                paddingBottom: 0,
+                marginBottom: 0,
+              }}
+            />
+          )}
+          <span className="mt-5">Verifiko Faturen</span>
+        </QrCodeSection>
       </QrCodeWrapper>
 
       <Dates>
@@ -210,7 +273,7 @@ export default function InvoiceBody({ invoice }) {
 
       <InvoiceTable
         className="invoice-table"
-        items={invoice.payload.items}
+        items={invoice?.payload?.items || []}
         currency={invoice.currency}
         currencyRate={invoice.currency_rate}
         total={invoice.invoice_total_after_vat}

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 import dayjs from "dayjs";
+import "dayjs/locale/sq";
 
 import InvoiceStatus from "@shared/InvoiceStatus";
 import { Heading2 } from "@shared/Headings";
@@ -117,15 +118,22 @@ export default function InvoiceItem({
   currency,
   total,
   status,
+  invoiceNumber,
 }) {
+  dayjs.locale("sq");
+
   return (
     <Link href={`/invoice/${id}`} passHref={true} scroll={false}>
       <StyledLink>
         <Id>
           <span>{invoiceType}</span>
         </Id>
-        <IssueDate>Leshuar {dayjs(issueDate).format("DD/MM/YYYY")}</IssueDate>
-        {clientName && <ClientName>{clientName}</ClientName>}
+        <IssueDate>Leshuar {dayjs(issueDate).format("DD MMM YYYY")}</IssueDate>
+        {clientName && (
+          <ClientName
+            dangerouslySetInnerHTML={{ __html: clientName }}
+          ></ClientName>
+        )}
         <Total as="div">
           <span>{currency}</span>{" "}
           {formatCurrency(parseFloatExt(total || 0).toFixed(2))}

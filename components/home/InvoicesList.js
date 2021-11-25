@@ -4,6 +4,7 @@ import { useQuery, useQueryClient } from "react-query";
 import useTotals from "@store/totals";
 
 import InvoiceItem from "./InvoiceItem";
+import NoInvoices from "@home/NoInvoices";
 import Button from "@shared/Buttons";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -81,6 +82,7 @@ export default function InvoicesList() {
                 currency={invoice.currency}
                 invoiceType={invoice.invoice_type}
                 status={invoice.status}
+                invoiceNumber={invoice.invoice_number}
               />
             );
           })

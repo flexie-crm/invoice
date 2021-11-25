@@ -18,7 +18,7 @@ const Wrapper = styled.a`
     outline: 2px dotted #7c5dfa;
   }
 
-  img {
+  svg {
     margin-right: 1.5rem;
   }
 
@@ -32,7 +32,15 @@ export default function HomeLink({ className }) {
   return (
     <Link href="/" passHref={true} scroll={false}>
       <Wrapper className={className}>
-        <img src="/images/icon-arrow-left.svg" alt="" />
+        <svg width="7" height="10">
+          <path
+            d="M6.342.886L2.114 5.114l4.228 4.228"
+            stroke="#9277FF"
+            strokeWidth="2"
+            fill="none"
+            fillRule="evenodd"
+          />
+        </svg>
         <span>Shko mbrapa</span>
       </Wrapper>
     </Link>

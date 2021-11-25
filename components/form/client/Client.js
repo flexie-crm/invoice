@@ -9,7 +9,7 @@ import { fontStylesA } from "@shared/Typography";
 import countries from "@data/countriesFull.json";
 import useValidation from "@store/validations";
 import useClient from "@store/client";
-import debounce from "lodash.debounce";
+import throttle from "lodash.throttle";
 
 const ClientWrapper = styled.div``;
 
@@ -26,7 +26,7 @@ const FieldSet = styled.fieldset`
 
 // Check NUIS whenever it's being updated, so we can lookup in background
 // and trigger error message if neccessary.
-const verifyNuis = debounce(
+const verifyNuis = throttle(
   async (data, token) =>
     await (
       await fetch("/api/get/token", {
@@ -40,12 +40,11 @@ const verifyNuis = debounce(
         }),
       })
     ).json(),
-  200,
-  { leading: true }
+  500
 );
 
-const getClientsRequest = debounce(
-  async (params, token) =>
+const getClientsRequest = throttle(
+  (params, token) =>
     fetch("/api/get/token", {
       method: "POST",
       body: JSON.stringify({
@@ -55,11 +54,8 @@ const getClientsRequest = debounce(
           method: "GET",
         },
       }),
-    }),
-  100,
-  {
-    leading: true,
-  }
+    }).then((res) => res.json()),
+  800
 );
 
 const Client = () => {
@@ -71,11 +67,7 @@ const Client = () => {
 
   const [nuisLabel, setNuisLabel] = useState("NIPT");
   const getClients = (inputValue) => {
-    return (
-      getClientsRequest(`?__search=${inputValue}`, "FX_GET_CLIENTS").then(
-        (res) => res.json()
-      ) || []
-    );
+    return getClientsRequest(`?__search=${inputValue}`, "FX_GET_CLIENTS");
   };
 
   useEffect(() => {

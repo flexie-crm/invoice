@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDatePicker, {
   registerLocale,
   setDefaultLocale,
@@ -6,6 +6,7 @@ import ReactDatePicker, {
 import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
 
+import useValidation from "@store/validations";
 import { fontStylesA } from "../../shared/Typography";
 import { sq } from "./locale";
 
@@ -78,7 +79,8 @@ const CalendarIcon = styled.img`
 `;
 
 const DatePicker = ({ label, name, valid, errorMessage, ...rest }) => {
-  const [startDate, setStartDate] = useState();
+  const [date, setDate] = useState();
+  const removeErrors = useValidation((state) => state.removeErrors);
 
   return (
     <Wrapper>
@@ -87,8 +89,11 @@ const DatePicker = ({ label, name, valid, errorMessage, ...rest }) => {
       </Label>
       <DatePickerStyled
         {...rest}
-        selected={startDate}
-        onChange={(date) => setStartDate(date)}
+        selected={date}
+        onChange={(date) => {
+          setDate(date);
+          removeErrors([name]);
+        }}
         id={name}
         name={name}
         valid={valid}

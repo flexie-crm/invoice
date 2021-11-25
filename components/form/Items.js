@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import shallow from "zustand/shallow";
 
 import Button from "@shared/Buttons";
 import Item from "./Item";
 import { parseFloatExt } from "@utilities/Form";
 import useTotals from "@store/totals";
-import useClient from "@store/client";
-import debounce from "lodash.debounce";
+import throttle from "lodash.throttle";
 
 const Wrapper = styled.fieldset`
   border: none;
@@ -16,8 +14,8 @@ const Wrapper = styled.fieldset`
 
 const ItemList = styled.div``;
 
-const getProductsRequest = debounce(
-  async (params, token) =>
+const getProductsRequest = throttle(
+  (params, token) =>
     fetch("/api/get/token", {
       method: "POST",
       body: JSON.stringify({
@@ -27,17 +25,13 @@ const getProductsRequest = debounce(
           method: "GET",
         },
       }),
-    }),
-  100,
-  {
-    leading: true,
-  }
+    }).then((res) => res.json()),
+  800
 );
 
-const Items = () => {
+const Items = ({ invoiceType }) => {
   // Dummy state just to trigger useEffect
   const [addItem, setAddItem] = useState(Math.random());
-  const clientCountry = useClient((state) => state.client.country, shallow);
   const [items, setItems] = useState([
     {
       id: uuidv4(),
@@ -53,11 +47,7 @@ const Items = () => {
   const updateTotals = useTotals((state) => state.updateTotals);
 
   const getProducts = useCallback((inputValue) => {
-    return (
-      getProductsRequest(`?__search=${inputValue}`, "FX_GET_PRODUCTS").then(
-        (res) => res.json()
-      ) || []
-    );
+    return getProductsRequest(`?__search=${inputValue}`, "FX_GET_PRODUCTS");
   }, []);
 
   const handleRemove = useCallback((id) => {
@@ -123,6 +113,7 @@ const Items = () => {
         {items.map((item, index) => {
           return (
             <Item
+              invoiceType={invoiceType}
               products={getProducts}
               item={item}
               onRemove={handleRemove}
@@ -144,10 +135,7 @@ const Items = () => {
                 id: uuidv4(),
                 qty: "",
                 price: "",
-                vatRate:
-                  clientCountry?.length > 0 && clientCountry !== "ALB"
-                    ? { label: "0% Export", value: "EXPORT_OF_GOODS" }
-                    : { label: "20%", value: "0.20" },
+                vatRate: { label: "20%", value: "0.20" },
                 vat: 0,
                 totalBeforeVat: 0,
                 totalAfterVat: 0,
