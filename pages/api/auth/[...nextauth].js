@@ -116,6 +116,7 @@ const options = {
       return token;
     },
   },
+  secret: process.env.SECRET,
 };
 
 export default (req, res) => NextAuth(req, res, options);
