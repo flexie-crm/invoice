@@ -347,7 +347,7 @@ const Fields = () => {
                 isDisabled={
                   ["BANKNOTE", "CARD"].includes(
                     invoiceSettings?.payment_method?.value
-                  ) || invoiceType === "export"
+                  ) || invoiceType !== "b2b"
                 }
               />
             </div>
@@ -366,7 +366,7 @@ const Fields = () => {
                 isDisabled={
                   ["BANKNOTE", "CARD"].includes(
                     invoiceSettings?.payment_method?.value
-                  ) || invoiceType === "export"
+                  ) || invoiceType !== "b2b"
                 }
                 valid={!errors?.invoice_type}
                 errorMessage={errors?.invoice_type}
