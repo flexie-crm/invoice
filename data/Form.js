@@ -91,7 +91,7 @@ export const invoiceValidation = Yup.object().shape({
     then: Yup.number().required("- duhet vendosur."),
   }),
   bank: Yup.string().when("payment_method", {
-    is: (payment_method) =>
+    is: (payment_method, invoice_type) =>
       payment_method === "ACCOUNT" && invoice_type === "b2b",
     then: Yup.string().required("- duhet vendosur"),
   }),

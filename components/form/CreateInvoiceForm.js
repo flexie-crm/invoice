@@ -126,6 +126,7 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
         setTimeout(() => queryClient.invalidateQueries("invoices"), 1500);
       }
     } catch (errors) {
+      console.log(errors);
       let addErrors = {};
       errors?.inner?.map((err) => {
         addErrors = { ...addErrors, [err.path]: err.message };
