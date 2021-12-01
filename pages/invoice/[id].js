@@ -16,19 +16,26 @@ export default function InvoiceDetails() {
   const printInvoice = useRef();
 
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
-    useQuery(["invoice", invoiceId || 0], () =>
-      fetch("/api/get/token", {
-        method: "POST",
-        body: JSON.stringify({
-          method: "FX_GET_INVOICE",
-          data: {
-            method: "POST",
-            body: JSON.stringify({
-              nivf: invoiceId,
-            }),
-          },
-        }),
-      }).then((res) => res.json())
+    useQuery(
+      ["invoice", invoiceId || 0],
+      () =>
+        fetch("/api/get/token", {
+          method: "POST",
+          body: JSON.stringify({
+            method: "FX_GET_INVOICE",
+            data: {
+              method: "POST",
+              body: JSON.stringify({
+                nivf: invoiceId,
+              }),
+            },
+          }),
+        }).then((res) => res.json()),
+      {
+        staleTime: 5000,
+        keepPreviousData: true,
+        refetchOnWindowFocus: false,
+      }
     );
 
   const printHandler = useReactToPrint({

@@ -13,7 +13,7 @@ const allCurrencyOptions = [
   { label: "USD", value: "USD" },
 ];
 
-const Bank = ({ index, bank, onRemove }) => {
+const BankItem = ({ index, bank, onRemove }) => {
   const [bankState, setBankState] = useState({
     [`banks[${index}][id]`]: bank.id,
     [`banks[${index}][bank]`]: banks.filter(
@@ -162,4 +162,4 @@ const Bank = ({ index, bank, onRemove }) => {
   );
 };
 
-export default React.memo(Bank);
+export default React.memo(BankItem);

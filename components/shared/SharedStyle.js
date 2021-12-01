@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import styled, { css } from "styled-components";
 import { fontStylesA } from "@shared/Typography";
 
 export const FlexieFormInput = css`
@@ -111,4 +111,12 @@ export const ExplainSuccess = css`
   font-size: 0.8rem;
   line-height: 1.6;
   font-family: "Spartan", sans-serif;
+`;
+
+export const SubmissionMessage = styled.div`
+  margin-left: 8px;
+  margin-right: 8px;
+  flex: 100%;
+  ${(props) =>
+    props.messageType === "success" ? ExplainSuccess : ExplainError}
 `;

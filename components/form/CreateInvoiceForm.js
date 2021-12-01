@@ -1,4 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import Router from "next/router";
+
 import serialize from "form-serialize";
 import { useSession } from "next-auth/react";
 import { useQueryClient } from "react-query";
@@ -19,8 +21,11 @@ import { addInvoice } from "@utilities/Invoices";
 import useValidation from "@store/validations";
 import useLoader from "@store/loaders";
 
+import { SubmissionMessage } from "@shared/SharedStyle";
+
 const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
   const form = useRef();
+  const [invoiceSubmitError, setInvoiceSubmitError] = useState();
   const hasErrors = useValidation((state) => state.hasErrors);
   const setErrors = useValidation((state) => state.setErrors);
   const isFormPosting = useLoader((state) => state.isFormPosting);
@@ -109,10 +114,7 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
         })
       ).json();
 
-      if (sendInvoice) {
-        setIsFormPosting(false);
-        setIsOpen(false);
-
+      if (sendInvoice?.ok) {
         // Do an optimistic update right away
         queryClient.setQueryData(["invoices", 0], (old) => ({
           invoices: [sendInvoice, ...old.invoices],
@@ -124,10 +126,25 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
 
         // Need to wait before triggering an update, and also clear cache
         setTimeout(() => queryClient.invalidateQueries("invoices"), 1500);
+
+        // Redirect to invoice
+        Router.push(`/invoice/${sendInvoice.nivf}`);
+
+        setInvoiceSubmitError(false);
+        setIsFormPosting(false);
+        setIsOpen(false);
+      } else {
+        setIsFormPosting(false);
+        setInvoiceSubmitError({
+          type: "error",
+          message: sendInvoice?.fz_error_message
+            ? `Ndodhi nje problem me faturen: ${sendInvoice?.fz_error_message}`
+            : "Ndodhi nje problem me faturen, provoje perseri.",
+        });
       }
     } catch (errors) {
-      console.log(errors);
       let addErrors = {};
+
       errors?.inner?.map((err) => {
         addErrors = { ...addErrors, [err.path]: err.message };
       });
@@ -156,6 +173,13 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
       <Form ref={form} setIsOpen={setIsOpen} onSubmit={onSubmit}>
         {isFormPosting && <Loader />}
         <Fields />
+        {invoiceSubmitError && (
+          <SubmissionMessage
+            style={{ margin: "0 30px 0 30px" }}
+            messageType={invoiceSubmitError.type}
+            dangerouslySetInnerHTML={{ __html: invoiceSubmitError.message }}
+          ></SubmissionMessage>
+        )}
         <Buttons>
           <Button type="button" secondary onClick={() => setIsOpen(false)}>
             Mbyll

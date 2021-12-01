@@ -126,7 +126,7 @@ export default function InvoiceItem({
     <Link href={`/invoice/${id}`} passHref={true} scroll={false}>
       <StyledLink>
         <Id>
-          <span>{invoiceType}</span>
+          <span style={{ textTransform: "uppercase" }}>{invoiceType}</span>
         </Id>
         <IssueDate>Leshuar {dayjs(issueDate).format("DD MMM YYYY")}</IssueDate>
         {clientName && (
