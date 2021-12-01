@@ -4,57 +4,20 @@ import styled from "styled-components";
 import { fontStylesB } from "@shared/Typography";
 
 const InvoiceTableContainer = styled.table`
-  margin: 3rem 0;
+  margin: 1.5rem 0;
   font-size: 0.875rem;
-
-  @media print {
-    @page {
-      margin-top: 20px;
-      margin-bottom: 10px;
-      margin-left: 5px;
-      margin-right: 5px;
-    }
-
-    @page :first {
-      margin-top: 0;
-    }
-
-    @page {
-      @bottom-right {
-        content: "Gjeneruar nga Flexie CRM";
-      }
-    }
-
-    html,
-    body {
-      width: 100%;
-      margin: 0;
-    }
-
-    thead {
-      display: table-header-group;
-    }
-
-    table {
-      word-wrap: break-word;
-    }
-
-    table td {
-      word-break: break-all;
-    }
-  }
 
   th {
     ${fontStylesB}
     border-bottom: 2px solid #373b53;
-    padding: 10px 0 10px 0;
+    padding: 6px 0 2px 0;
     text-transform: uppercase;
   }
 
   td {
-    padding: 4px 0;
+    padding: 2px 0;
     ${fontStylesB}
-    font-size: 0.7rem;
+    font-size: 80%;
   }
 
   tbody tr:first-child td {
@@ -73,8 +36,8 @@ const InvoiceTableContainer = styled.table`
   `}
 `;
 
-const InvoiceTable = ({ headings, children, hasBottomBorder }) => (
-  <InvoiceTableContainer hasBottomBorder={hasBottomBorder}>
+const InvoiceTable = ({ headings, children, hasBottomBorder, ...rest }) => (
+  <InvoiceTableContainer hasBottomBorder={hasBottomBorder} {...rest}>
     <thead>
       <tr>{headings}</tr>
     </thead>

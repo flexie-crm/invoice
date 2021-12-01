@@ -8,7 +8,7 @@ import "dayjs/locale/sq";
 import InvoiceTable from "./InvoiceTable";
 import { Heading1, Heading3 } from "@shared/Headings";
 import { fontStylesA, fontStylesB } from "@shared/Typography";
-import QrCode from "@components/invoice/QrCode";
+import QrCode from "@components/inv/QrCode";
 
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";

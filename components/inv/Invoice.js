@@ -10,6 +10,7 @@ import InvoiceInfo from "./InvoiceInfo";
 import LineItems from "./LineItems";
 import Totals from "./Totals";
 import VatGroups from "./VatGroups";
+import Details from "./Details";
 
 const Container = styled.div`
   width: 100%;
@@ -33,8 +34,11 @@ const Invoice = (props, ref) => {
     <Container ref={ref}>
       <GlobalStyle />
       <InvoiceInfo
+        invoiceType={invoice.invoice_type}
         invoiceNumber={invoice.invoice_number}
-        invoiceDate={dayjs(invoice.invoice_created_date).format("DD MMM, YYYY")}
+        invoiceDate={dayjs(invoice.invoice_created_date).format(
+          "DD MMMM, YYYY"
+        )}
         nuis={invoice.nuis}
         companyName={invoice.company}
         address={invoice.address}
@@ -43,9 +47,10 @@ const Invoice = (props, ref) => {
         nivf={invoice.nivf}
         nslf={invoice.nslf}
         {...(invoice.due_date
-          ? { dueDate: `${dayjs(invoice.due_date).format("DD MMM, YYYY")}` }
+          ? { dueDate: `${dayjs(invoice.due_date).format("DD MMMM, YYYY")}` }
           : {})}
       />
+
       <LineItems items={invoice?.payload?.items || []} />
 
       <VatGroups
@@ -91,9 +96,11 @@ const Invoice = (props, ref) => {
           parseFloatExt(invoice.invoice_total_after_vat_all).toFixed(2)
         )}
         {...(invoice.due_date
-          ? { dueDate: `${dayjs(invoice.due_date).format("DD MMM, YYYY")}` }
+          ? { dueDate: `${dayjs(invoice.due_date).format("DD MMMM, YYYY")}` }
           : {})}
       />
+
+      <Details invoice={invoice} />
     </Container>
   );
 };

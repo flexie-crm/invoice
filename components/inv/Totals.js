@@ -54,7 +54,9 @@ const Totals = ({
     }
   >
     <tr>
-      <CurrencyInfo>{currency}</CurrencyInfo>
+      <CurrencyInfo>
+        <strong>{currency}</strong>
+      </CurrencyInfo>
       <Total>
         <Large>
           <strong>{totalAfterVat}</strong>
@@ -64,7 +66,7 @@ const Totals = ({
     {currency != "ALL" && (
       <tr>
         <CurrencyInfo style={{ paddingTop: "0" }}>
-          ALL - Kursi i këmbimit {currencyRate}
+          <strong>ALL</strong> - kursi i këmbimit {currencyRate}
         </CurrencyInfo>
         <Total style={{ paddingTop: "0" }}>
           <Large>
