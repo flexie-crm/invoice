@@ -14,7 +14,7 @@ const CreateInvoiceForm = dynamic(() =>
   import("@components/CreateInvoiceForm")
 );
 
-export default function Home({ invoices, setInvoices }) {
+export default function Home({ invoices }) {
   const [filter, setFilter] = useState(null);
   const [filteredInvoices, setFilteredInvoices] = useState(null);
   const [formIsOpen, setFormIsOpen] = useState(false);
@@ -37,13 +37,7 @@ export default function Home({ invoices, setInvoices }) {
         <title>Fatura | Flexie CRM</title>
       </Head>
       <Main>
-        {formIsOpen && (
-          <CreateInvoiceForm
-            invoices={invoices}
-            setInvoices={setInvoices}
-            setIsOpen={setFormIsOpen}
-          />
-        )}
+        {formIsOpen && <CreateInvoiceForm setIsOpen={setFormIsOpen} />}
         <Wrapper>
           <Header
             invoices={filteredInvoices}

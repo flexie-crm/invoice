@@ -15,15 +15,12 @@ import { invoiceValidation } from "@data/Form";
 import Backdrop from "@components/Backdrop";
 import Loader from "@components/layout/Loader";
 
-import { createInvoice } from "@utilities/Form";
-import { generateUniqueId } from "@utilities/Id";
-import { addInvoice } from "@utilities/Invoices";
 import useValidation from "@store/validations";
 import useLoader from "@store/loaders";
 
 import { SubmissionMessage } from "@shared/SharedStyle";
 
-const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
+const CreateInvoiceForm = ({ setIsOpen }) => {
   const form = useRef();
   const [invoiceSubmitError, setInvoiceSubmitError] = useState();
   const hasErrors = useValidation((state) => state.hasErrors);
@@ -162,15 +159,6 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
   useEffect(() => {
     setIsFormLoading(false);
   }, []);
-
-  function addDraft(values) {
-    const newInvoice = {
-      ...createInvoice("draft", values),
-      id: generateUniqueId(invoices),
-    };
-    addInvoice(newInvoice, invoices, setInvoices);
-    setIsOpen(false);
-  }
 
   return (
     <>
