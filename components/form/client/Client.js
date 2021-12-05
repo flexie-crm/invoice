@@ -102,6 +102,10 @@ const Client = () => {
         country: client.client_country || "",
       });
 
+      if (client.client_country !== "ALB") {
+        setNuisLabel("TAX ID");
+      }
+
       removeErrors(["client", "address", "city", "country", "nuis"]);
     } catch (e) {
       // Probably a new created company and the value is not JSON

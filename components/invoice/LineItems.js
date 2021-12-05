@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { isMobile } from "react-device-detect";
+
 import { getJson } from "@utilities/Misc";
 import { formatCurrency, parseFloatExt } from "@utilities/Form";
 
@@ -55,9 +57,9 @@ const LineItems = ({ items }) => (
     headings={
       <>
         <Description>Artikulli</Description>
-        <Quantity className="hidden-xs">Sasia</Quantity>
-        <Price className="hidden-xs">Çmimi</Price>
-        <Vat className="hidden-xs hidden-sm">TVSH</Vat>
+        {!isMobile && <Quantity>Sasia</Quantity>}
+        <Price>Çmimi</Price>
+        <Vat>TVSH</Vat>
         <TotalTitle>Totali</TotalTitle>
       </>
     }
@@ -69,11 +71,16 @@ const LineItems = ({ items }) => (
       return (
         <tr key={uuidv4()}>
           <td>{itemName}</td>
-          <RightAlignedCell className="hidden-xs">{item.qty}</RightAlignedCell>
-          <RightAlignedCell className="hidden-xs">
+          {!isMobile && <RightAlignedCell>{item.qty}</RightAlignedCell>}
+          <RightAlignedCell>
+            {isMobile && (
+              <span>
+                {item.qty} <b>x</b>{" "}
+              </span>
+            )}
             {formatCurrency(parseFloatExt(item.price).toFixed(2))}
           </RightAlignedCell>
-          <RightAlignedCell className="hidden-xs hidden-sm">
+          <RightAlignedCell>
             {formatCurrency(parseFloatExt(item.vat).toFixed(2))}
           </RightAlignedCell>
           <Total>

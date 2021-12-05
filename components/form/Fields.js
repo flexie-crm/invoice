@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding-right: 1.4rem;
-  padding-left: 0.8rem;
+  padding-left: 1.5rem;
   padding-bottom: 1rem;
   padding-top: 1.4rem;
   overflow-y: auto;

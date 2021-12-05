@@ -1,6 +1,6 @@
 import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 import Head from "next/head";
 
 import Layout from "@components/layout/Layout";
@@ -16,7 +16,7 @@ export default function App({ Component, pageProps, router, session }) {
         </Head>
         <Layout>
           <Component {...pageProps} key={router.route} />
-          <ReactQueryDevtools position="bottom-right" />
+          {/* <ReactQueryDevtools position="bottom-right" /> */}
         </Layout>
       </QueryClientProvider>
     </SessionProvider>

@@ -1,16 +1,22 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useContext, useState, useEffect } from "react";
+import styled, { ThemeContext } from "styled-components";
+import { isMobile } from "react-device-detect";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import "dayjs/locale/sq";
+
 import { formatCurrency, parseFloatExt } from "@utilities/Form";
+import { fontStylesB } from "@shared/Typography";
 
 import GlobalStyle from "./GlobalStyle";
 import InvoiceInfo from "./InvoiceInfo";
 import LineItems from "./LineItems";
 import Totals from "./Totals";
 import VatGroups from "./VatGroups";
-import Details from "./Details";
+import PaymentDetails from "./PaymentDetails";
+
+import QrCode from "@components/invoice/QrCode";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 const Container = styled.div`
   width: 100%;
@@ -25,15 +31,34 @@ const Container = styled.div`
   }
 `;
 
-const Invoice = (props, ref) => {
-  const { invoice } = props;
+const QrCodeSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 
+  span {
+    ${fontStylesB}
+    margin-top: 4px;
+    letter-spacing: 0.05rem;
+  }
+`;
+
+const Invoice = (props, ref) => {
+  const themeContext = useContext(ThemeContext);
+  const { invoice } = props;
   dayjs.locale("sq");
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <Container ref={ref}>
       <GlobalStyle />
       <InvoiceInfo
+        invoice={invoice}
         invoiceType={invoice.invoice_type}
         invoiceNumber={invoice.invoice_number}
         invoiceDate={dayjs(invoice.invoice_created_date).format(
@@ -100,7 +125,75 @@ const Invoice = (props, ref) => {
           : {})}
       />
 
-      <Details invoice={invoice} />
+      {invoice?.payload?.payment_method == "ACCOUNT" &&
+        invoice.invoice_type == "b2b" &&
+        invoice.country_code == "ALB" && (
+          <PaymentDetails
+            invoice={invoice}
+            payload={invoice?.payload}
+            {...(invoice.due_date
+              ? {
+                  dueDate: `${dayjs(invoice.due_date).format("DD MMMM, YYYY")}`,
+                }
+              : {})}
+          />
+        )}
+
+      {isMobile && (
+        <div className="grid">
+          <div className="col col-6 mb-0">
+            <QrCodeSection>
+              {mounted ? (
+                <QrCode size={120} value={invoice?.qr_code_url || "UNKNOWN"} />
+              ) : (
+                <Skeleton
+                  baseColor={themeContext.color.invoiceItem.bg}
+                  highlightColor="#dbd2fe"
+                  inline={true}
+                  count={1}
+                  height={120}
+                  width={120}
+                  style={{
+                    display: "grid",
+                    width: "100%",
+                    paddingBottom: 0,
+                    marginBottom: 0,
+                  }}
+                />
+              )}
+              <span>Detajet e faturës</span>
+            </QrCodeSection>
+          </div>
+          {invoice?.qr_code_payment_details && (
+            <div
+              className="col col-6 mb-0"
+              style={{ display: "flex", justifyContent: "flex-end" }}
+            >
+              <QrCodeSection>
+                {mounted ? (
+                  <QrCode size={120} value={invoice?.qr_code_payment_details} />
+                ) : (
+                  <Skeleton
+                    baseColor={themeContext.color.invoiceItem.bg}
+                    highlightColor="#dbd2fe"
+                    inline={true}
+                    count={1}
+                    height={120}
+                    width={120}
+                    style={{
+                      display: "grid",
+                      width: "100%",
+                      paddingBottom: 0,
+                      marginBottom: 0,
+                    }}
+                  />
+                )}
+                <span>Detajet e pagesës</span>
+              </QrCodeSection>
+            </div>
+          )}
+        </div>
+      )}
     </Container>
   );
 };

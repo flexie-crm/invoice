@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { isMobile } from "react-device-detect";
 
 import InvoiceTable from "./InvoiceTable";
 
@@ -33,8 +34,6 @@ const TotalTitle = styled.th`
 `;
 
 const Totals = ({
-  accountNumber,
-  routingNumber,
   dueDate,
   totalVat,
   totalVatAll,
@@ -66,7 +65,8 @@ const Totals = ({
     {currency != "ALL" && (
       <tr>
         <CurrencyInfo style={{ paddingTop: "0" }}>
-          <strong>ALL</strong> - kursi i këmbimit {currencyRate}
+          <strong>ALL</strong>{" "}
+          {!isMobile && `- kursi i këmbimit ${currencyRate}`}
         </CurrencyInfo>
         <Total style={{ paddingTop: "0" }}>
           <Large>

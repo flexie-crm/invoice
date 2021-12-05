@@ -9,19 +9,15 @@ const Wrapper = styled.a`
   margin-bottom: 2rem;
   text-decoration: none;
   cursor: pointer;
-
   :hover span {
     color: ${(props) => props.theme.color.text.linkHover};
   }
-
   :focus-visible {
     outline: 2px dotted #7c5dfa;
   }
-
   svg {
     margin-right: 1.5rem;
   }
-
   span {
     ${fontStylesA}
     color: ${(props) => props.theme.color.text.link};

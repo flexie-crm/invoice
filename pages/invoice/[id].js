@@ -6,8 +6,7 @@ import { useReactToPrint } from "react-to-print";
 
 import Wrapper from "@components/invoice/Wrapper";
 import HomeLink from "@components/invoice/HomeLink";
-import InvoiceFooter from "@components/invoice/InvoiceFooter";
-import Invoice from "@components/inv/Invoice";
+import Invoice from "@components/invoice/Invoice";
 import InvoiceHeader from "@components/invoice/InvoiceHeader";
 
 export default function InvoiceDetails() {
@@ -57,7 +56,6 @@ export default function InvoiceDetails() {
         {/* {data && <InvoiceBody invoice={data} />} */}
         {data && <Invoice ref={printInvoice} invoice={data} />}
       </Wrapper>
-      {/* <InvoiceFooter status={data?.status} /> */}
     </>
   );
 }

@@ -97,7 +97,12 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
       data["operator_code"] = session?.user?.operator_code;
       data["business_unit"] = session?.user?.business_unit;
       data["nipt"] = session?.user?.nipt;
-      data["tcr_code"] = session?.user?.tcr_code;
+      data["company_name"] = session?.user?.company;
+
+      // Check if CASH so we should send TCR
+      if (data.payment_method != "ACCOUNT") {
+        data["tcr_code"] = session?.user?.tcr_code;
+      }
 
       setIsFormPosting(true);
 
@@ -181,11 +186,8 @@ const CreateInvoiceForm = ({ invoices, setInvoices, setIsOpen }) => {
           ></SubmissionMessage>
         )}
         <Buttons>
-          <Button type="button" secondary onClick={() => setIsOpen(false)}>
+          <Button type="button" tertiary onClick={() => setIsOpen(false)}>
             Mbyll
-          </Button>
-          <Button type="button" tertiary onClick={() => addDraft(values)}>
-            Draft
           </Button>
           <Button disabled={isFormPosting} type="submit">
             {isFormPosting ? "Fiskalizo..." : "Fiskalizo"}

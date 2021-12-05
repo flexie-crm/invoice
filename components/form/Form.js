@@ -20,16 +20,8 @@ const StyledForm = styled.form`
   height: calc(100vh - 5rem);
   width: 100vw;
   max-width: 900px;
-  padding: 0 0 0 0.8rem;
+  padding: 0;
   position: relative;
-
-  @media only screen and (min-width: 500px) {
-    padding: 2.5rem 2rem 0 2.5rem;
-  }
-
-  @media only screen and (min-width: 600px) {
-    padding: 0;
-  }
 
   @media only screen and (min-width: 900px) {
     height: 100vh;

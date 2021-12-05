@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
+import { isMobile } from "react-device-detect";
 
 import InvoiceTable from "./InvoiceTable";
 import { formatCurrency, parseFloatExt } from "@utilities/Form";
@@ -33,8 +34,9 @@ const VatGroups = ({
     <InvoiceTable
       headings={
         <>
-          <ExTitle>Arsyeja e perjashtimit nga TVSH</ExTitle>
-          <LeftAlignTh>Kodi TVSH</LeftAlignTh>
+          {!isMobile && <ExTitle>Arsyeja e perjashtimit nga TVSH</ExTitle>}
+          <LeftAlignTh>Artikuj</LeftAlignTh>
+          {!isMobile && <LeftAlignTh>Kodi TVSH</LeftAlignTh>}
           <LeftAlignTh>Vlera Tatueshme</LeftAlignTh>
           <LeftAlignTh>Niveli TVSH</LeftAlignTh>
           <LeftAlignTh>Vlera TVSH</LeftAlignTh>
@@ -44,8 +46,9 @@ const VatGroups = ({
       {vatGroups?.map((vatData) => {
         return (
           <tr key={uuidv4()}>
-            <ExReason>{vatData.Ex ? vatData.Ex : "--"}</ExReason>
-            <LeftAlignTd>{vatData.VatCode}</LeftAlignTd>
+            {!isMobile && <ExReason>{vatData.Ex ? vatData.Ex : "--"}</ExReason>}
+            <LeftAlignTd>{vatData.NumOfItems}</LeftAlignTd>
+            {!isMobile && <LeftAlignTd>{vatData.VatCode}</LeftAlignTd>}
             <LeftAlignTd>
               {formatCurrency(parseFloatExt(vatData.PriceBefVAT).toFixed(2))}
             </LeftAlignTd>
@@ -58,15 +61,12 @@ const VatGroups = ({
       })}
 
       <tr>
-        <td></td>
-        <td></td>
-        <LeftAlignTd>
+        <LeftAlignTd colSpan={isMobile ? 2 : 4}>
           <strong>
             {currency} {totalBeforeVat}
           </strong>
         </LeftAlignTd>
-        <td></td>
-        <LeftAlignTd>
+        <LeftAlignTd colSpan="2">
           <strong>
             {currency} {totalVat}
           </strong>
@@ -75,13 +75,10 @@ const VatGroups = ({
 
       {currency != "ALL" && (
         <tr>
-          <td></td>
-          <td></td>
-          <LeftAlignTd>
+          <LeftAlignTd colSpan={isMobile ? 2 : 4}>
             <strong>ALL {totalBeforeVatAll}</strong>
           </LeftAlignTd>
-          <td></td>
-          <LeftAlignTd>
+          <LeftAlignTd colSpan="2">
             <strong>ALL {totalVatAll}</strong>
           </LeftAlignTd>
         </tr>

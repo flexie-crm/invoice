@@ -17,7 +17,6 @@ const Wrapper = styled.div`
 const Status = styled.span`
   ${fontStylesA}
   margin-right: auto;
-
   @media only screen and (min-width: 650px) {
     margin-right: 1rem;
   }
@@ -25,7 +24,6 @@ const Status = styled.span`
 
 const Buttons = styled.div`
   display: none;
-
   @media only screen and (min-width: 650px) {
     display: flex;
     gap: 0.5rem;

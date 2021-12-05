@@ -35,47 +35,6 @@ const GlobalStyles = createGlobalStyle`
         -webkit-border-radius: 2px;
     }
 
-    @media print {
-      .hidden-print {
-        display: none !important;
-      }
-      
-      @page {
-        margin-top: 20px;
-        margin-bottom: 10px;
-        margin-left: 5px;
-        margin-right: 5px;
-      }
-
-      @page :first {
-        margin-top: 0;
-      }
-
-      @page {
-        @bottom-right {
-          content: "Gjeneruar nga Flexie CRM";
-        }
-      }
-
-      html,
-      body {
-        width: 100%;
-        margin: 0;
-      }
-
-      thead {
-        display: table-header-group;
-      }
-
-      table {
-        word-wrap: break-word;
-      }
-
-      table td {
-        word-break: break-all;
-      }
-    }
-
     body {
         background: ${(props) => props.theme.color.body.bg};
         font-family: 'Spartan', sans-serif;
