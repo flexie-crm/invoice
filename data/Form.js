@@ -1,16 +1,5 @@
 import * as Yup from "yup";
 
-export const initialValues = {
-  client: "",
-  nuis: "",
-  address: "",
-  city: "",
-  createdAt: new Date(),
-  paymentTerms: "30",
-  description: "",
-  items: [],
-};
-
 export const banksValidation = Yup.object().shape({
   banks: Yup.array().of(
     Yup.object().shape({
