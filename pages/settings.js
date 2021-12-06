@@ -8,6 +8,7 @@ import BankList from "@components/settings/bank/BankList";
 import ChangePassword from "@components/settings/password/ChangePassword";
 import ChangeConfig from "@components/settings/config/ChangeConfig";
 import HomeLink from "@components/invoice/HomeLink";
+import TcrOperations from "@components/settings/tcr/TcrOperations";
 
 const SettingsWrapper = styled.div`
   display: flex;
@@ -143,6 +144,16 @@ export default function Settings({ initialOpenedItem, user }) {
               }`}
             >
               <ChangePassword />
+            </div>
+
+            <div
+              className={`grid ${
+                (cookies?.openedItem || initialOpenedItem) !== "arka"
+                  ? "hidden"
+                  : ""
+              }`}
+            >
+              <TcrOperations />
             </div>
           </div>
         </SettingItemsWrapper>

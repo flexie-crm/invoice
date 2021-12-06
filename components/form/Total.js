@@ -109,7 +109,7 @@ const Total = () => {
               style={{ marginLeft: "-8px", marginRight: "-8px" }}
             >
               <Input
-                label="Kursi i dites"
+                label="Kursi i ditës"
                 name="currency_rate"
                 value={currencyRate || ""}
                 onChange={handleCurrencyRateChange}

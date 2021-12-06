@@ -1,5 +1,14 @@
 import * as Yup from "yup";
 
+export const tcrValidation = Yup.object().shape({
+  tcr_operation: Yup.string().required("- Duhet zgjedhur."),
+  tcr_total: Yup.number().required("- duhet vendosur."),
+  currency_rate: Yup.number().when("currency", {
+    is: (currency) => currency !== "ALL",
+    then: Yup.number().required("- duhet vendosur."),
+  }),
+});
+
 export const banksValidation = Yup.object().shape({
   banks: Yup.array().of(
     Yup.object().shape({
