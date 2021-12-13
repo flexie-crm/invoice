@@ -170,12 +170,12 @@ const Total = () => {
           <Input type="hidden" name="total_discount" value={0} />
           <Input
             type="hidden"
-            name="total_without_vat"
+            name="total_before_vat"
             value={totals.totalBeforeVat}
           />
           <Input
             type="hidden"
-            name="total_with_vat"
+            name="total_after_vat"
             value={totals.totalAfterVat}
           />
         </WrapperNumbers>

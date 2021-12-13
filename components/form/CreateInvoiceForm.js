@@ -90,6 +90,27 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
         return false;
       }
 
+      // Define CASH/NONCASH payment_type
+      switch (data["payment_method"]) {
+        case "BANKNOTE":
+        case "CARD":
+        case "CHECK":
+        case "SVOUCHER":
+        case "COMPANY":
+        case "ORDER":
+          data["payment_type"] = "CASH";
+          break;
+        case "ACCOUNT":
+        case "FACTORING":
+        case "COMPENSATION":
+        case "TRANSFER":
+        case "WAIVER":
+        case "KIND":
+        case "OTHER":
+          data["payment_type"] = "NONCASH";
+          break;
+      }
+
       // Add user stuff to data
       data["operator_code"] = session?.user?.operator_code;
       data["business_unit"] = session?.user?.business_unit;

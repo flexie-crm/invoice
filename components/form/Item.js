@@ -201,20 +201,20 @@ const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
         <Input
           hideLabels={true}
           type="hidden"
-          name={`items[${index}][vat]`}
+          name={`items[${index}][vat_total]`}
           value={item?.vat}
           readOnly
         />
         <Input
           hideLabels={true}
           type="hidden"
-          name={`items[${index}][item_total_without_vat]`}
+          name={`items[${index}][total_before_vat]`}
           value={item?.totalBeforeVat}
         />
         <Input
           hideLabels={true}
           type="hidden"
-          name={`items[${index}][item_total_with_vat]`}
+          name={`items[${index}][total_after_vat]`}
           value={item?.totalAfterVat}
         />
       </div>
