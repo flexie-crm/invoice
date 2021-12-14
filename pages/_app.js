@@ -7,10 +7,6 @@ import Layout from "@components/layout/Layout";
 
 const queryClient = new QueryClient();
 
-export function reportWebVitals(metric) {
-  console.table(metric);
-}
-
 export default function App({ Component, pageProps, router, session }) {
   return (
     <SessionProvider session={session}>

@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { getSession } from "next-auth/react";
 import { useQuery } from "react-query";
 import { useReactToPrint } from "react-to-print";
 
@@ -57,4 +58,21 @@ export default function InvoiceDetails() {
       </Wrapper>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }

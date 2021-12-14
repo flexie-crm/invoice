@@ -81,6 +81,7 @@ export default function Login({ csrfToken }) {
         setIsFormPosting(false);
         setErrorLogin(error);
       } else {
+        // window.location.href = url;
         Router.push(url);
       }
     } catch (errors) {
