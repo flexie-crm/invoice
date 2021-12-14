@@ -53,7 +53,6 @@ export default function InvoiceDetails() {
           status={data?.status}
           printHandler={printHandler}
         />
-        {/* {data && <InvoiceBody invoice={data} />} */}
         {data && <Invoice ref={printInvoice} invoice={data} />}
       </Wrapper>
     </>

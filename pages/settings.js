@@ -3,12 +3,23 @@ import { getSession } from "next-auth/react";
 import styled, { css } from "styled-components";
 import Cookies from "cookies";
 import { useCookies } from "react-cookie";
+import dynamic from "next/dynamic";
 
-import BankList from "@components/settings/bank/BankList";
-import ChangePassword from "@components/settings/password/ChangePassword";
-import ChangeConfig from "@components/settings/config/ChangeConfig";
 import HomeLink from "@components/invoice/HomeLink";
-import TcrOperations from "@components/settings/tcr/TcrOperations";
+
+const BankList = dynamic(() => import("@components/settings/bank/BankList"));
+
+const ChangePassword = dynamic(() =>
+  import("@components/settings/password/ChangePassword")
+);
+
+const TcrOperations = dynamic(() =>
+  import("@components/settings/tcr/TcrOperations")
+);
+
+const ChangeConfig = dynamic(() =>
+  import("@components/settings/config/ChangeConfig")
+);
 
 const SettingsWrapper = styled.div`
   display: flex;
