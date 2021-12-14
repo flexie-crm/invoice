@@ -11,6 +11,7 @@ import Checkbox from "@components/Checkbox";
 import SelectBox from "@components/SyncSelectBox";
 
 import useValidation from "@store/validations";
+import { parseFloatExt } from "@utilities/Form";
 
 import { SubmissionMessage, ExplainSuccess } from "@shared/SharedStyle";
 import { fontStylesA } from "@shared/Typography";
@@ -100,7 +101,9 @@ const TcrOperations = () => {
               method: "POST",
               body: JSON.stringify({
                 operation: data.tcr_operation,
-                amount: data.tcr_total,
+                amount: (
+                  parseFloatExt(data.tcr_total * currencyRate || 1) || 0
+                ).toFixed(2),
               }),
             },
           }),
