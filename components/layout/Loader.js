@@ -45,7 +45,7 @@ const LoaderMessage = styled.div`
   line-height: 50px;
   text-align: center;
   position: absolute;
-  top: 50%;
+  top: calc(50% - 40px);
   left: 50%;
   transform: translate(-50%, -50%);
   color: #fff;

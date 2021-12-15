@@ -9,7 +9,7 @@ import dayjs from "dayjs";
 import Form from "@components/Form";
 import Fields from "@components/Fields";
 import Button from "@shared/Buttons";
-import { CreateInvoiceFormButtons as Buttons } from "@components/Components";
+import { CreateInvoiceFormButtons } from "@components/Components";
 
 import { invoiceValidation } from "@data/Form";
 import Backdrop from "@components/Backdrop";
@@ -17,8 +17,12 @@ import Loader from "@components/layout/Loader";
 
 import useValidation from "@store/validations";
 import useLoader from "@store/loaders";
+import styled from "styled-components";
 
-import { SubmissionMessage } from "@shared/SharedStyle";
+const Buttons = styled(CreateInvoiceFormButtons)`
+  margin-top: auto;
+  width: 100%;
+`;
 
 const CreateInvoiceForm = ({ setIsOpen }) => {
   const form = useRef();
@@ -186,14 +190,7 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
       <Backdrop />
       <Form ref={form} setIsOpen={setIsOpen} onSubmit={onSubmit}>
         {isFormPosting && <Loader />}
-        <Fields />
-        {invoiceSubmitError && (
-          <SubmissionMessage
-            style={{ margin: "0 30px 0 30px" }}
-            messageType={invoiceSubmitError.type}
-            dangerouslySetInnerHTML={{ __html: invoiceSubmitError.message }}
-          ></SubmissionMessage>
-        )}
+        <Fields invoiceSubmitError={invoiceSubmitError} />
         <Buttons>
           <Button type="button" tertiary onClick={() => setIsOpen(false)}>
             Mbyll

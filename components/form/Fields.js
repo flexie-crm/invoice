@@ -9,6 +9,8 @@ import SelectBox from "../form/SyncSelectBox";
 import Checkbox from "./Checkbox";
 
 import { fontStylesA } from "@shared/Typography";
+import { SubmissionMessage } from "@shared/SharedStyle";
+
 import DatePicker from "./DatePicker";
 import Client from "./client/Client";
 import Collapse from "@kunukn/react-collapse";
@@ -16,8 +18,14 @@ import Total from "./Total";
 import localState from "@libs/localState";
 import useValidation from "@store/validations";
 
+const ErrorMessage = styled(SubmissionMessage)`
+  margin-bottom: 15px;
+  flex: none;
+`;
+
 const Wrapper = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding-right: 1.4rem;
@@ -111,6 +119,14 @@ const InvoiceTypeWrapper = styled.div`
   gap: 1rem;
 `;
 
+const autoInvoiceType = [
+  { label: "Marreveshje mes paleve", value: "AGREEMENT", default: true },
+  { label: "Blerje nga fermeret e zones", value: "DOMESTIC" },
+  { label: "Blerje nga sherbimet jashte vendit", value: "ABROAD" },
+  { label: "Vetë-konsumi", value: "SELF" },
+  { label: "Te tjera", value: "OTHER" },
+];
+
 const dueDate = [
   { label: "Neser", value: 1 },
   { label: "Per 1 Jave", value: 7 },
@@ -130,7 +146,7 @@ const documentType = [
   { label: "Fature Parapagimi P6", value: "P6" },
 ];
 
-const Fields = () => {
+const Fields = ({ invoiceSubmitError }) => {
   const errors = useValidation((state) => state.errors);
   const removeErrors = useValidation((state) => state.removeErrors);
   const [isCollapsedOpen, setIsCollapsedOpen] = localState(
@@ -207,42 +223,77 @@ const Fields = () => {
       <Wrapper id="fields-wrapper">
         <FieldSet>
           <Legend>Tipi i fatures</Legend>
-          <InvoiceTypeWrapper
-            onChange={handleInvoiceTypeChange}
-            className="mb-30"
-          >
-            <Checkbox
-              name="invoice_type"
-              type="radio"
-              label="B2B"
-              value="b2b"
-              defaultChecked={invoiceType === "b2b"}
-            />
-            <Checkbox
-              name="invoice_type"
-              type="radio"
-              label="B2C"
-              value="b2c"
-              defaultChecked={invoiceType === "b2c"}
-            />
-            <Checkbox
-              name="invoice_type"
-              type="radio"
-              label="Auto"
-              value="auto"
-              defaultChecked={invoiceType === "auto"}
-            />
-            <Checkbox
-              name="invoice_type"
-              type="radio"
-              label="Export"
-              value="export"
-              defaultChecked={invoiceType === "export"}
-            />
-          </InvoiceTypeWrapper>
+          <div className="grid" style={{ marginBottom: "14px" }}>
+            <div className="col col-12">
+              <InvoiceTypeWrapper onChange={handleInvoiceTypeChange}>
+                <Checkbox
+                  name="invoice_type"
+                  type="radio"
+                  label="B2B"
+                  value="b2b"
+                  defaultChecked={invoiceType === "b2b"}
+                />
+                <Checkbox
+                  name="invoice_type"
+                  type="radio"
+                  label="B2C"
+                  value="b2c"
+                  defaultChecked={invoiceType === "b2c"}
+                />
+                <Checkbox
+                  name="invoice_type"
+                  type="radio"
+                  label="Auto"
+                  value="auto"
+                  defaultChecked={invoiceType === "auto"}
+                />
+                <Checkbox
+                  name="invoice_type"
+                  type="radio"
+                  label="Export"
+                  value="export"
+                  defaultChecked={invoiceType === "export"}
+                />
+              </InvoiceTypeWrapper>
+            </div>
+
+            {invoiceType === "auto" && (
+              <div
+                className="col col-4 col-sm col-md"
+                style={
+                  invoiceSettings?.auto_invoice_type?.value === "SELF"
+                    ? { marginBottom: 0 }
+                    : {}
+                }
+              >
+                <SelectBox
+                  isSearchable={false}
+                  label="Lloji i Vete-Faturimit"
+                  name="auto_invoice_type"
+                  onChangeCallback={handleSelectOnChange}
+                  value={
+                    invoiceSettings?.auto_invoice_type && {
+                      label: invoiceSettings?.auto_invoice_type?.label,
+                      value: invoiceSettings?.auto_invoice_type?.value,
+                    }
+                  }
+                  options={autoInvoiceType}
+                  valid={!errors?.auto_invoice_type}
+                  errorMessage={errors?.auto_invoice_type}
+                />
+              </div>
+            )}
+          </div>
         </FieldSet>
 
-        {invoiceType !== "b2c" && <Client />}
+        {invoiceType === "b2b" ||
+        invoiceType === "export" ||
+        (invoiceType === "auto" &&
+          invoiceSettings?.auto_invoice_type?.value !== "SELF") ? (
+          <Client />
+        ) : (
+          ""
+        )}
 
         {(invoiceType === "b2b" || invoiceType === "export") && (
           <Panel className="mb-30 mt-20">
@@ -272,6 +323,7 @@ const Fields = () => {
               <div className="grid pt-10">
                 <div className="col col-sm col-md">
                   <SelectBox
+                    isSearchable={false}
                     label="Afati Pageses"
                     name="due_date"
                     onChangeCallback={handleSelectOnChange}
@@ -318,6 +370,7 @@ const Fields = () => {
           <div className="grid">
             <div className="col col-sm">
               <SelectBox
+                isSearchable={false}
                 label="Menyra e Pageses"
                 name="payment_method"
                 options={paymentMethods}
@@ -331,6 +384,7 @@ const Fields = () => {
             </div>
             <div className="col col-sm">
               <SelectBox
+                isSearchable={false}
                 label="Banka"
                 name="bank"
                 placeholder="Zgjidh Banken"
@@ -353,6 +407,7 @@ const Fields = () => {
             </div>
             <div className="col col-sm">
               <SelectBox
+                isSearchable={false}
                 label="Tipi Fatures"
                 name="business_process"
                 onChangeCallback={handleSelectOnChange}
@@ -376,6 +431,12 @@ const Fields = () => {
         </FieldSet>
         <div className="mt-30">{<Items invoiceType={invoiceType} />}</div>
         <Total />
+        {invoiceSubmitError && (
+          <ErrorMessage
+            messageType={invoiceSubmitError.type}
+            dangerouslySetInnerHTML={{ __html: invoiceSubmitError.message }}
+          ></ErrorMessage>
+        )}
       </Wrapper>
     </TouchScrollable>
   );

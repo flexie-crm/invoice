@@ -16,7 +16,9 @@ const Wrapper = styled.div`
 `;
 
 const StyledForm = styled.form`
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
   height: calc(100vh - 5rem);
   width: 100vw;
   max-width: 900px;

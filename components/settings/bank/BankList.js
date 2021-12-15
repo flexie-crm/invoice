@@ -96,28 +96,29 @@ const BankList = () => {
     // Get banks from local storage
     if (Store.get("@banks") !== undefined) {
       setBanks(Store.get("@banks"));
-    } else {
-      // Do another try by asking in Flexie if there are any
-      try {
-        const getBanks = await (
-          await fetch("/api/get/token", {
-            method: "POST",
-            body: JSON.stringify({
-              method: "FX_GET_BANKS",
-              data: {
-                method: "GET",
-              },
-            }),
-          })
-        ).json();
+    }
 
-        if (getBanks?.length > 0) {
-          setBanks(getBanks);
-          Store.set("@banks", getBanks);
-        }
-      } catch (e) {
-        // Decide what to do on exceptions
+    // Get banks anyway, so we can refresh whats in localstorage
+    // Do another try by asking in Flexie if there are any
+    try {
+      const getBanks = await (
+        await fetch("/api/get/token", {
+          method: "POST",
+          body: JSON.stringify({
+            method: "FX_GET_BANKS",
+            data: {
+              method: "GET",
+            },
+          }),
+        })
+      ).json();
+
+      if (getBanks?.length > 0) {
+        setBanks(getBanks);
+        Store.set("@banks", getBanks);
       }
+    } catch (e) {
+      // Decide what to do on exceptions
     }
 
     // Firing on mount/render only

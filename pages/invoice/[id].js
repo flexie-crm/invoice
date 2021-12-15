@@ -1,14 +1,17 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { useQuery } from "react-query";
 import { useReactToPrint } from "react-to-print";
+import dynamic from "next/dynamic";
+import Router from "next/router";
 
 import Wrapper from "@components/invoice/Wrapper";
 import HomeLink from "@components/invoice/HomeLink";
-import Invoice from "@components/invoice/Invoice";
 import InvoiceHeader from "@components/invoice/InvoiceHeader";
+
+const Invoice = dynamic(() => import("@components/invoice/Invoice"));
 
 export default function InvoiceDetails() {
   const router = useRouter();
@@ -54,7 +57,7 @@ export default function InvoiceDetails() {
           status={data?.status}
           printHandler={printHandler}
         />
-        {data && <Invoice ref={printInvoice} invoice={data} />}
+        {data && data?.nivf && <Invoice ref={printInvoice} invoice={data} />}
       </Wrapper>
     </>
   );

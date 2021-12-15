@@ -55,10 +55,7 @@ const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
       setItemState({
         ...itemState,
         [`items[${index}][price]`]: item?.base_price || "",
-        [`items[${index}][vat_rate]`]:
-          clientCountry?.length > 0 && clientCountry !== "ALB"
-            ? "EXPORT_OF_GOODS"
-            : item?.vat_rate || "",
+        [`items[${index}][vat_rate]`]: item?.vat_rate || "",
       });
 
       removeErrors([
@@ -156,9 +153,11 @@ const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
         {invoiceType !== "export" && (
           <div className="col col-2 col-md col-sm mb-10">
             <SelectBox
+              isSearchable={false}
               ref={vatInput}
               hideLabels={index > 0}
               label="TVSH"
+              placeholder="Zgjidh"
               options={vatOptions}
               name={`items[${index}][vat_rate]`}
               onChangeCallback={handleVatOnChange}

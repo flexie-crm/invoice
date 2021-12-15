@@ -12,6 +12,7 @@ const InvoiceTableContainer = styled.table`
     border-bottom: 2px solid #373b53;
     padding: 6px 0 2px 0;
     text-transform: uppercase;
+    vertical-align: bottom;
   }
 
   td {

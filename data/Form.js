@@ -40,34 +40,49 @@ export const loginValidation = Yup.object().shape({
 });
 
 export const invoiceValidation = Yup.object().shape({
-  client: Yup.string().when("invoice_type", {
-    is: "b2b",
+  client: Yup.string().when(["invoice_type", "auto_invoice_type"], {
+    is: (invoice_type, auto_invoice_type) =>
+      invoice_type === "b2b" ||
+      invoice_type === "export" ||
+      (invoice_type === "auto" && auto_invoice_type !== "SELF"),
     then: Yup.string().required("- Zgjidhni klientin per faturen B2B."),
   }),
 
-  address: Yup.string().when("invoice_type", {
-    is: "b2b",
+  address: Yup.string().when(["invoice_type", "auto_invoice_type"], {
+    is: (invoice_type, auto_invoice_type) =>
+      invoice_type === "b2b" ||
+      invoice_type === "export" ||
+      (invoice_type === "auto" && auto_invoice_type !== "SELF"),
     then: Yup.string().required("- duhet vendosur."),
   }),
 
-  city: Yup.string().when("invoice_type", {
-    is: "b2b",
+  city: Yup.string().when(["invoice_type", "auto_invoice_type"], {
+    is: (invoice_type, auto_invoice_type) =>
+      invoice_type === "b2b" ||
+      invoice_type === "export" ||
+      (invoice_type === "auto" && auto_invoice_type !== "SELF"),
     then: Yup.string().required("- duhet vendosur."),
   }),
 
-  country: Yup.string().when("invoice_type", {
-    is: "b2b",
+  country: Yup.string().when(["invoice_type", "auto_invoice_type"], {
+    is: (invoice_type, auto_invoice_type) =>
+      invoice_type === "b2b" ||
+      invoice_type === "export" ||
+      (invoice_type === "auto" && auto_invoice_type !== "SELF"),
     then: Yup.string().required("- duhet vendosur."),
   }),
 
   nuis: Yup.string()
-    .when("invoice_type", {
-      is: "b2b",
+    .when(["invoice_type", "auto_invoice_type"], {
+      is: (invoice_type, auto_invoice_type) =>
+        invoice_type === "b2b" ||
+        invoice_type === "export" ||
+        (invoice_type === "auto" && auto_invoice_type !== "SELF"),
       then: Yup.string().required("- duhet vendosur."),
     })
     .when(["invoice_type", "country"], {
       is: (invoice_type, country) =>
-        invoice_type === "b2b" && (country === "ALB" || !country),
+        invoice_type !== "b2c" && (country === "ALB" || !country),
       then: Yup.string()
         .matches(
           /^[a-zA-Z](.*[a-zA-Z])?$/,

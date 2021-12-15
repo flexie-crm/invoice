@@ -3,6 +3,7 @@ import Store from "store";
 import styled, { ThemeProvider } from "styled-components";
 import { light, dark } from "../../data/Themes";
 
+import { fontStylesB } from "@shared/Typography";
 import GlobalStyles from "./GlobalStyles";
 import Sidebar from "./Sidebar";
 
@@ -19,15 +20,23 @@ const Wrapper = styled.div`
 
 const CopyRightNoticeWrapper = styled.div`
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
-  padding-top: 1rem;
+  bottom: 1.6rem;
+  display: block;
+  width: 100%;
+
+  p {
+    text-align: center;
+  }
 `;
 
 const CopyRightNotice = styled.p`
-  color: #4f546b;
+  ${fontStylesB}
   font-size: 0.7rem;
   line-height: 1.125;
+
+  a {
+    ${fontStylesB}
+  }
 `;
 
 export default function Layout({ children }) {

@@ -81,7 +81,7 @@ const LineItems = ({ items }) => (
             {formatCurrency(parseFloatExt(item.price).toFixed(2))}
           </RightAlignedCell>
           <RightAlignedCell>
-            {formatCurrency(parseFloatExt(item.vat).toFixed(2))}
+            {formatCurrency(parseFloatExt(item.vat_total).toFixed(2))}
           </RightAlignedCell>
           <Total>
             <strong>

@@ -8,12 +8,12 @@ const StyledWrapper = styled.div`
   max-width: 75.85rem;
   height: 100%;
   margin: 0 auto;
-  padding: 2rem 1.5rem 3.5rem 1.5rem;
+  padding: 2rem 1.5rem 4.5rem 1.5rem;
   .invoice-page-header {
     margin-bottom: 1rem;
   }
   @media only screen and (min-width: 768px) {
-    padding: 3.5rem 3rem;
+    padding: 4.5rem 3rem;
     .invoice-page-header {
       margin-bottom: 1.5rem;
     }

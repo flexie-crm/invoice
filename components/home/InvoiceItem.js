@@ -13,9 +13,9 @@ const StyledLink = styled.a`
   display: grid;
   grid-template-rows: max-content 1fr;
 
-  width: 100%;
+  width: calc(100% + 50px);
   border: 2px solid transparent;
-  border-radius: 8px;
+  border-radius: none;
   padding: 1rem 1.5rem;
   background: ${(props) => props.theme.color.invoiceItem.bg};
 
@@ -35,6 +35,8 @@ const StyledLink = styled.a`
     grid-template-columns: 5rem 9rem 1fr min-content min-content min-content;
     grid-template-rows: min-content;
     align-items: center;
+    width: 100%;
+    border-radius: 8px;
   }
 `;
 
@@ -129,10 +131,12 @@ export default function InvoiceItem({
           <span style={{ textTransform: "uppercase" }}>{invoiceType}</span>
         </Id>
         <IssueDate>Leshuar {dayjs(issueDate).format("DD MMM YYYY")}</IssueDate>
-        {clientName && (
+        {clientName ? (
           <ClientName
             dangerouslySetInnerHTML={{ __html: clientName }}
           ></ClientName>
+        ) : (
+          <ClientName></ClientName>
         )}
         <Total as="div">
           <span>{currency}</span>{" "}
