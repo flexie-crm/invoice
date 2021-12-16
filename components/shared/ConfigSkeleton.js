@@ -1,4 +1,9 @@
-export const ConfigSkeleton = () => (
+import dayjs from "dayjs";
+import "dayjs/locale/sq";
+
+dayjs.locale("sq");
+
+export const ConfigSkeleton = ({ certIssued, certExpire }) => (
   <div style={{ visibility: "visible", position: "relative" }}>
     <div className="row flexieForm-component-columns">
       <div className="col col-sm-6">
@@ -74,6 +79,15 @@ export const ConfigSkeleton = () => (
           Nese certifikata eshte duke skaduar, mund te ngarkoni certifikaten e
           re me poshte. Gjithsesi ju do te njoftoheni disa dite perpara skadimit
           te certifikates.
+        </p>
+        <br />
+        <p>
+          Certifikata krijuar me:{" "}
+          <b>{dayjs(certIssued * 1000).format("DD MMMM, YYYY")}</b>
+        </p>
+        <p>
+          Certifikata skadon me:{" "}
+          <b>{dayjs(certExpire * 1000).format("DD MMMM, YYYY")}</b>
         </p>
       </div>
     </div>

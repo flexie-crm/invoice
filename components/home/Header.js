@@ -65,7 +65,7 @@ export default function Header({ invoices, filter, setFilter, setFormIsOpen }) {
         <Heading>Faturat</Heading>
         <Subheading>{message}</Subheading>
       </TextWrapper>
-      <Dropdown setFilter={setFilter} />
+      {/* <Dropdown setFilter={setFilter} /> */}
       <Button
         onClick={() => {
           setIsFormLoading(true);

@@ -17,13 +17,17 @@ const LoginWrapper = styled.div`
   padding-left: 0.7rem;
   padding-right: 0.7rem;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+
   .grid {
     margin: 0;
   }
 
   .login-col {
     max-width: 40rem;
-    padding-top: 4.5rem;
   }
 `;
 

@@ -332,7 +332,7 @@
         "show": "",
         "when": ""
       },
-      "content": "<div class=\"explain-success\"><p>Nese certifikata eshte duke skaduar, mund te ngarkoni certifikaten e re me poshte. Gjithsesi ju do te njoftoheni disa dite perpara skadimit te certifikates.</p></div>",
+      "content": "<div class=\"explain-success\"><p>Nese certifikata eshte duke skaduar, mund te ngarkoni certifikaten e re me poshte. Gjithsesi ju do te njoftoheni disa dite perpara skadimit te certifikates.</p> {CERT_DATE}</div>",
       "input": false,
       "key": "HTML",
       "tableView": true,

@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+
 import { signIn, getSession } from "next-auth/react";
 import styled from "styled-components";
 import configForm from "@data/configForm.json";
 import { ConfigSkeleton } from "@shared/ConfigSkeleton";
+
+import dayjs from "dayjs";
+import "dayjs/locale/sq";
+
+dayjs.locale("sq");
 
 import {
   FlexieFormInput,
@@ -347,10 +353,31 @@ const ChangeConfig = ({ user }) => {
   };
 
   useEffect(async () => {
+    const certDate = `
+      <br />
+      <p>
+        Certifikata krijuar me: <b>${dayjs(
+          user?.cert_issue_timestamp * 1000
+        ).format("DD MMMM, YYYY")}</b>
+      </p>
+      <p>
+        Certifikata skadon me: <b>${dayjs(
+          user?.cert_expire_timestamp * 1000
+        ).format("DD MMMM, YYYY")}</b>
+      </p>
+    `;
+
+    const configFormTransformed = JSON.parse(
+      JSON.stringify(configForm).replace(
+        "{CERT_DATE}",
+        certDate.replace(/\n|\r/g, "")
+      )
+    );
+
     await import("@libs/formRender");
 
     let submittedData = {};
-    FlexieForm.createForm(formRef.current, configForm, {
+    FlexieForm.createForm(formRef.current, configFormTransformed, {
       i18n: {
         en: {
           "Drop files, or": "Hidh certifikaten ketu, ose",
@@ -444,7 +471,10 @@ const ChangeConfig = ({ user }) => {
 
       {!formLoaded && (
         <FlexieFormWrapper className="col col-12 mb-0">
-          <ConfigSkeleton />
+          <ConfigSkeleton
+            certIssued={user?.cert_issue_timestamp}
+            certExpire={user?.cert_expire_timestamp}
+          />
         </FlexieFormWrapper>
       )}
 
