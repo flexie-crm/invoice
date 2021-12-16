@@ -45,7 +45,7 @@ export const invoiceValidation = Yup.object().shape({
       invoice_type === "b2b" ||
       invoice_type === "export" ||
       (invoice_type === "auto" && auto_invoice_type !== "SELF"),
-    then: Yup.string().required("- Zgjidhni klientin per faturen B2B."),
+    then: Yup.string().required("- Zgjidhni klientin."),
   }),
 
   address: Yup.string().when(["invoice_type", "auto_invoice_type"], {

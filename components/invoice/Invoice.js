@@ -96,8 +96,6 @@ const Invoice = (props, ref) => {
       />
 
       <Totals
-        accountNumber="123567744"
-        routingNumber="120000547"
         currency={invoice.currency}
         currencyRate={formatCurrency(
           parseFloatExt(invoice.currency_rate).toFixed(2)

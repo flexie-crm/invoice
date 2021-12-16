@@ -1,17 +1,14 @@
-import { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { useQuery } from "react-query";
 import { useReactToPrint } from "react-to-print";
-import dynamic from "next/dynamic";
-import Router from "next/router";
 
 import Wrapper from "@components/invoice/Wrapper";
 import HomeLink from "@components/invoice/HomeLink";
 import InvoiceHeader from "@components/invoice/InvoiceHeader";
-
-const Invoice = dynamic(() => import("@components/invoice/Invoice"));
+import Invoice from "@components/invoice/Invoice";
 
 export default function InvoiceDetails() {
   const router = useRouter();
