@@ -9,7 +9,7 @@ const baseStyles = css`
 
 export const Heading1 = styled.h1`
   ${baseStyles}
-  font-size: ${(props) => props.size || "2rem"};
+  font-size: ${(props) => props.size || "1.5rem"};
   line-height: 1.125;
   letter-spacing: -1px;
 `;

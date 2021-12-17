@@ -112,14 +112,16 @@ const Icon = styled.img`
   height: 0.625rem;
 `;
 
-export function ButtonPlus({ children, ...rest }) {
+export function ButtonPlus({ children, hidePlus, ...rest }) {
   const isFormLoading = useLoader((state) => state.isFormLoading);
 
   return (
     <StyledButtonPlus {...rest}>
-      <IconWrapper>
-        <Icon isLoading={isFormLoading} src="/images/icon-plus.svg" alt="" />
-      </IconWrapper>
+      {!hidePlus && (
+        <IconWrapper>
+          <Icon isLoading={isFormLoading} src="/images/icon-plus.svg" alt="" />
+        </IconWrapper>
+      )}
       {children}
     </StyledButtonPlus>
   );

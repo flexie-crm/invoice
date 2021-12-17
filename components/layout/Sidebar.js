@@ -9,7 +9,7 @@ import ThemeToggle from "./ThemeToggle";
 const Wrapper = styled.aside`
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 90;
   display: flex;
   align-items: center;
   background: ${(props) => props.theme.color.sidebar.bg};
