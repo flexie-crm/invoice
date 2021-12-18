@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
 import styled, { ThemeContext } from "styled-components";
-import { isMobile } from "react-device-detect";
+import { isMobile as detectMobile } from "react-device-detect";
 import dayjs from "dayjs";
 import "dayjs/locale/sq";
 
 import { formatCurrency, parseFloatExt } from "@utilities/Form";
 import { fontStylesB } from "@shared/Typography";
+import localState from "@libs/localState";
 
 import GlobalStyle from "./GlobalStyle";
 import InvoiceInfo from "./InvoiceInfo";
@@ -45,19 +46,26 @@ const QrCodeSection = styled.div`
 
 const Invoice = (props, ref) => {
   const themeContext = useContext(ThemeContext);
-  const { invoice } = props;
+  const { invoice, printing } = props;
   dayjs.locale("sq");
 
   const [mounted, setMounted] = useState(false);
+  const [printingMode] = localState("@printingMode", "A4");
+  const [isMobile, setIsMobile] = useState(detectMobile);
 
   useEffect(() => {
     setMounted(true);
+
+    if (printing && printingMode === "thermal") {
+      setIsMobile(true);
+    }
   }, []);
 
   return (
     <Container ref={ref}>
       <GlobalStyle />
       <InvoiceInfo
+        printing={printing}
         invoice={invoice}
         invoiceType={invoice.invoice_type}
         invoiceNumber={invoice.invoice_number}
@@ -76,9 +84,10 @@ const Invoice = (props, ref) => {
           : {})}
       />
 
-      <LineItems items={invoice?.payload?.items || []} />
+      <LineItems printing={printing} items={invoice?.payload?.items || []} />
 
       <VatGroups
+        printing={printing}
         vatGroups={invoice.vat_groups}
         currency={invoice.currency}
         totalVat={formatCurrency(
@@ -96,6 +105,7 @@ const Invoice = (props, ref) => {
       />
 
       <Totals
+        printing={printing}
         currency={invoice.currency}
         currencyRate={formatCurrency(
           parseFloatExt(invoice.currency_rate).toFixed(2)
@@ -127,6 +137,7 @@ const Invoice = (props, ref) => {
         invoice.invoice_type == "b2b" &&
         invoice.country_code == "ALB" && (
           <PaymentDetails
+            printing={printing}
             invoice={invoice}
             payload={invoice?.payload}
             {...(invoice.due_date

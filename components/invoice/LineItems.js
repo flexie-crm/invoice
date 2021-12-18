@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile } from "react-device-detect";
+import { isMobile as detectMobile } from "react-device-detect";
 
+import localState from "@libs/localState";
 import { getJson } from "@utilities/Misc";
 import { formatCurrency, parseFloatExt } from "@utilities/Form";
 
@@ -52,46 +53,57 @@ const Total = styled.td`
   vertical-align: top;
 `;
 
-const LineItems = ({ items }) => (
-  <InvoiceTable
-    headings={
-      <>
-        <Description>Artikulli</Description>
-        {!isMobile && <Quantity>Sasia</Quantity>}
-        <Price>Çmimi</Price>
-        <Vat>TVSH</Vat>
-        <TotalTitle>Totali</TotalTitle>
-      </>
-    }
-  >
-    {items.map((item, i) => {
-      const getItem = getJson(item.item);
-      const itemName = getItem ? getItem.__label : item.item;
+const LineItems = ({ items, printing }) => {
+  const [printingMode] = localState("@printingMode", "A4");
+  const [isMobile, setIsMobile] = useState(detectMobile);
 
-      return (
-        <tr key={uuidv4()}>
-          <td>{itemName}</td>
-          {!isMobile && <RightAlignedCell>{item.qty}</RightAlignedCell>}
-          <RightAlignedCell>
-            {isMobile && (
-              <span>
-                {item.qty} <b>x</b>{" "}
-              </span>
-            )}
-            {formatCurrency(parseFloatExt(item.price).toFixed(2))}
-          </RightAlignedCell>
-          <RightAlignedCell>
-            {formatCurrency(parseFloatExt(item.vat_total).toFixed(2))}
-          </RightAlignedCell>
-          <Total>
-            <strong>
-              {formatCurrency(parseFloatExt(item.total).toFixed(2))}
-            </strong>
-          </Total>
-        </tr>
-      );
-    })}
-  </InvoiceTable>
-);
+  useEffect(() => {
+    if (printing && printingMode === "thermal") {
+      setIsMobile(true);
+    }
+  }, []);
+
+  return (
+    <InvoiceTable
+      headings={
+        <>
+          <Description>Artikulli</Description>
+          {!isMobile && <Quantity>Sasia</Quantity>}
+          <Price>Çmimi</Price>
+          <Vat>TVSH</Vat>
+          <TotalTitle>Totali</TotalTitle>
+        </>
+      }
+    >
+      {items.map((item, i) => {
+        const getItem = getJson(item.item);
+        const itemName = getItem ? getItem.__label : item.item;
+
+        return (
+          <tr key={uuidv4()}>
+            <td>{itemName}</td>
+            {!isMobile && <RightAlignedCell>{item.qty}</RightAlignedCell>}
+            <RightAlignedCell>
+              {isMobile && (
+                <span>
+                  {item.qty} <b>x</b>{" "}
+                </span>
+              )}
+              {formatCurrency(parseFloatExt(item.price).toFixed(2))}
+            </RightAlignedCell>
+            <RightAlignedCell>
+              {formatCurrency(parseFloatExt(item.vat_total).toFixed(2))}
+            </RightAlignedCell>
+            <Total>
+              <strong>
+                {formatCurrency(parseFloatExt(item.total).toFixed(2))}
+              </strong>
+            </Total>
+          </tr>
+        );
+      })}
+    </InvoiceTable>
+  );
+};
 
 export default LineItems;

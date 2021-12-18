@@ -21,6 +21,10 @@ const ChangeConfig = dynamic(() =>
   import("@components/settings/config/ChangeConfig")
 );
 
+const SetPrinting = dynamic(() =>
+  import("@components/settings/printing/SetPriting")
+);
+
 const SettingsWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -118,6 +122,14 @@ export default function Settings({ initialOpenedItem, user }) {
               Arka
             </SettingItem>
             <SettingItem
+              onClick={(e) => handleSettingOpenedItem("printimi")}
+              isSelected={
+                (cookies?.openedItem || initialOpenedItem) === "printimi"
+              }
+            >
+              Printimi
+            </SettingItem>
+            <SettingItem
               onClick={(e) => handleSettingOpenedItem("abonimi")}
               isSelected={
                 (cookies?.openedItem || initialOpenedItem) === "abonimi"
@@ -165,6 +177,16 @@ export default function Settings({ initialOpenedItem, user }) {
               }`}
             >
               <TcrOperations />
+            </div>
+
+            <div
+              className={`grid ${
+                (cookies?.openedItem || initialOpenedItem) !== "printimi"
+                  ? "hidden"
+                  : ""
+              }`}
+            >
+              <SetPrinting />
             </div>
           </div>
         </SettingItemsWrapper>

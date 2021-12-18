@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from "react";
 import styled, { ThemeContext } from "styled-components";
-import { isMobile } from "react-device-detect";
+import { isMobile as detectMobile } from "react-device-detect";
 
 import { fontStylesB } from "@shared/Typography";
 
@@ -8,6 +8,7 @@ import QrCode from "@components/invoice/QrCode";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 
+import localState from "@libs/localState";
 import { useSession } from "next-auth/react";
 import InvoiceTable from "./InvoiceTable";
 
@@ -48,6 +49,7 @@ const InfoBranding = styled.th`
   text-transform: none !important;
   padding: 0 !important;
   font-weight: normal;
+  min-width: 50%;
 
   span {
     display: none;
@@ -65,7 +67,7 @@ const InfoLabel = styled.td`
 const InfoValue = styled.td`
   text-align: left;
   vertical-align: top;
-  padding-left: ${isMobile ? "0" : "10px"} !important;
+  padding-left: ${(props) => (props.isMobile ? "0" : "10px")} !important;
 `;
 
 const InvoiceInfo = ({
@@ -80,15 +82,22 @@ const InvoiceInfo = ({
   dueDate,
   nivf,
   nslf,
+  printing,
 }) => {
   dayjs.locale("sq");
 
   const { data: session } = useSession();
   const themeContext = useContext(ThemeContext);
   const [mounted, setMounted] = useState(false);
+  const [printingMode] = localState("@printingMode", "A4");
+  const [isMobile, setIsMobile] = useState(detectMobile);
 
   useEffect(() => {
     setMounted(true);
+
+    if (printing && printingMode === "thermal") {
+      setIsMobile(true);
+    }
   }, []);
 
   return (
@@ -97,10 +106,10 @@ const InvoiceInfo = ({
         style={{ marginTop: "0px" }}
         headings={
           <>
-            <InfoHeading colSpan="2">
+            <InfoHeading>
               <span>Faturë Tatimore</span>
             </InfoHeading>
-            <InfoBranding className="print-branding">
+            <InfoBranding colSpan="2" className="print-branding">
               <span>Gjeneruar nga Flexie CRM</span>
             </InfoBranding>
           </>
@@ -108,7 +117,7 @@ const InvoiceInfo = ({
       >
         <tr>
           {!isMobile && <InfoLabel>Data e faturës:</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Data e faturës</b>
@@ -144,7 +153,7 @@ const InvoiceInfo = ({
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Numri i faturës:</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Numri i faturës</b>
@@ -155,7 +164,7 @@ const InvoiceInfo = ({
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Monedha e faturës:</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Monedha e faturës</b>
@@ -168,7 +177,7 @@ const InvoiceInfo = ({
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Njësia e biznesit</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Njësia e biznesit</b>
@@ -179,7 +188,7 @@ const InvoiceInfo = ({
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Kodi i operatorit</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Kodi i operatorit</b>
@@ -191,7 +200,7 @@ const InvoiceInfo = ({
         {invoice.payload?.tcr_code && (
           <tr>
             {!isMobile && <InfoLabel>Kodi i arkës</InfoLabel>}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>Kodi i arkës</b>
@@ -206,7 +215,7 @@ const InvoiceInfo = ({
             {!isMobile && (
               <InfoLabel>Fillimi i periudhës së faturimit</InfoLabel>
             )}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>Fillimi i periudhës së faturimit</b>
@@ -221,7 +230,7 @@ const InvoiceInfo = ({
             {!isMobile && (
               <InfoLabel>Mbarimi i periudhës së faturimit</InfoLabel>
             )}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>Mbarimi i periudhës së faturimit</b>
@@ -233,7 +242,7 @@ const InvoiceInfo = ({
         )}
         <tr>
           {!isMobile && <InfoLabel>NSLF</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>NSLF</b>
@@ -244,7 +253,7 @@ const InvoiceInfo = ({
         </tr>
         <tr>
           {!isMobile && <InfoLabel>NIVF</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>NIVF</b>
@@ -267,7 +276,7 @@ const InvoiceInfo = ({
       >
         <tr>
           {!isMobile && <InfoLabel>Emri Tregtar</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Emri Tregtar</b>
@@ -278,7 +287,7 @@ const InvoiceInfo = ({
         </tr>
         <tr>
           {!isMobile && <InfoLabel>NIPT</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>NIPT</b>
@@ -289,7 +298,7 @@ const InvoiceInfo = ({
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Adresa</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Adresa</b>
@@ -300,7 +309,7 @@ const InvoiceInfo = ({
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Qyteti</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Qyteti</b>
@@ -324,7 +333,7 @@ const InvoiceInfo = ({
         >
           <tr>
             {!isMobile && <InfoLabel>Emri Tregtar</InfoLabel>}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>Emri Tregtar</b>
@@ -335,7 +344,7 @@ const InvoiceInfo = ({
           </tr>
           <tr>
             {!isMobile && <InfoLabel>NIPT</InfoLabel>}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>NIPT</b>
@@ -346,7 +355,7 @@ const InvoiceInfo = ({
           </tr>
           <tr>
             {!isMobile && <InfoLabel>Adresa</InfoLabel>}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>Adresa</b>
@@ -357,7 +366,7 @@ const InvoiceInfo = ({
           </tr>
           <tr>
             {!isMobile && <InfoLabel>Qyteti</InfoLabel>}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>Qyteti</b>

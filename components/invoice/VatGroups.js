@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
-import { isMobile } from "react-device-detect";
+import { isMobile as detectMobile } from "react-device-detect";
 
+import localState from "@libs/localState";
 import InvoiceTable from "./InvoiceTable";
 import { formatCurrency, parseFloatExt } from "@utilities/Form";
 
@@ -15,11 +16,11 @@ const ExReason = styled.td`
 `;
 
 const LeftAlignTh = styled.th`
-  text-align: right;
+  text-align: ${(props) => (props.isMobile ? "left" : "right")};
 `;
 
 const LeftAlignTd = styled.td`
-  text-align: right;
+  text-align: ${(props) => (props.isMobile ? "left" : "right")};
 `;
 
 const VatGroups = ({
@@ -29,13 +30,23 @@ const VatGroups = ({
   totalVat,
   totalVatAll,
   currency,
+  printing,
 }) => {
+  const [printingMode] = localState("@printingMode", "A4");
+  const [isMobile, setIsMobile] = useState(detectMobile);
+
+  useEffect(() => {
+    if (printing && printingMode === "thermal") {
+      setIsMobile(true);
+    }
+  }, []);
+
   return (
     <InvoiceTable
       headings={
         <>
           {!isMobile && <ExTitle>Arsyeja e perjashtimit nga TVSH</ExTitle>}
-          <LeftAlignTh>Artikuj</LeftAlignTh>
+          <LeftAlignTh isMobile={isMobile}>Artikuj</LeftAlignTh>
           {!isMobile && <LeftAlignTh>Kodi TVSH</LeftAlignTh>}
           <LeftAlignTh>Vlera Tatueshme</LeftAlignTh>
           <LeftAlignTh>Niveli TVSH</LeftAlignTh>
@@ -47,7 +58,7 @@ const VatGroups = ({
         return (
           <tr key={uuidv4()}>
             {!isMobile && <ExReason>{vatData.Ex ? vatData.Ex : "--"}</ExReason>}
-            <LeftAlignTd>{vatData.NumOfItems}</LeftAlignTd>
+            <LeftAlignTd isMobile={isMobile}>{vatData.NumOfItems}</LeftAlignTd>
             {!isMobile && <LeftAlignTd>{vatData.VatCode}</LeftAlignTd>}
             <LeftAlignTd>
               {formatCurrency(parseFloatExt(vatData.PriceBefVAT).toFixed(2))}

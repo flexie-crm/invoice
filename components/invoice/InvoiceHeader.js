@@ -32,6 +32,7 @@ const Buttons = styled.div`
 `;
 
 const Button = styled(ButtonPlus)`
+  padding: 0.7rem;
   @media only screen and (min-width: 550px) {
     .btn-plus-invoice {
       display: initial;
@@ -67,7 +68,7 @@ export default function InvoiceHeader({
             style={{
               fill: "#fff",
               width: "20px",
-              marginLeft: "6px",
+              marginLeft: "3px",
               marginRight: "6px",
             }}
           >

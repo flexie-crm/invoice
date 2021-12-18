@@ -1,7 +1,8 @@
 import { useContext, useState, useEffect } from "react";
 import styled, { ThemeContext } from "styled-components";
-import { isMobile } from "react-device-detect";
+import { isMobile as detectMobile } from "react-device-detect";
 
+import localState from "@libs/localState";
 import { fontStylesB } from "@shared/Typography";
 import InvoiceTable from "./InvoiceTable";
 import QrCode from "@components/invoice/QrCode";
@@ -32,7 +33,7 @@ const InfoLabel = styled.td`
 const InfoValue = styled.td`
   text-align: left;
   vertical-align: top;
-  padding-left: ${isMobile ? "0" : "10px"} !important;
+  padding-left: ${(props) => (props.isMobile ? "0" : "10px")} !important;
 `;
 
 const QrCodeSection = styled.div`
@@ -46,12 +47,18 @@ const QrCodeSection = styled.div`
   }
 `;
 
-const PaymentDetails = ({ invoice, payload, dueDate }) => {
+const PaymentDetails = ({ invoice, payload, dueDate, printing }) => {
   const themeContext = useContext(ThemeContext);
   const [mounted, setMounted] = useState(false);
+  const [printingMode] = localState("@printingMode", "A4");
+  const [isMobile, setIsMobile] = useState(detectMobile);
 
   useEffect(() => {
     setMounted(true);
+
+    if (printing && printingMode === "thermal") {
+      setIsMobile(true);
+    }
   }, []);
 
   let bank = {};
@@ -74,7 +81,11 @@ const PaymentDetails = ({ invoice, payload, dueDate }) => {
       >
         <tr>
           {!isMobile && <InfoLabel>Afati i pagesës</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue
+            isMobile={isMobile}
+            isMobile={isMobile}
+            {...(isMobile && { colSpan: 2 })}
+          >
             {isMobile && (
               <p>
                 <b>Afati i pagesës</b>
@@ -116,7 +127,7 @@ const PaymentDetails = ({ invoice, payload, dueDate }) => {
         {bank?.bank && (
           <tr>
             {!isMobile && <InfoLabel>Emri i bankës</InfoLabel>}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>Emri i bankës</b>
@@ -130,7 +141,7 @@ const PaymentDetails = ({ invoice, payload, dueDate }) => {
         {bank?.iban && (
           <tr>
             {!isMobile && <InfoLabel>IBAN</InfoLabel>}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>IBAN</b>
@@ -144,7 +155,7 @@ const PaymentDetails = ({ invoice, payload, dueDate }) => {
         {bank?.swift && (
           <tr>
             {!isMobile && <InfoLabel>SWIFT</InfoLabel>}
-            <InfoValue {...(isMobile && { colSpan: 2 })}>
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
               {isMobile && (
                 <p>
                   <b>SWIFT</b>
@@ -157,7 +168,7 @@ const PaymentDetails = ({ invoice, payload, dueDate }) => {
 
         <tr>
           {!isMobile && <InfoLabel>Monedha</InfoLabel>}
-          <InfoValue {...(isMobile && { colSpan: 2 })}>
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
             {isMobile && (
               <p>
                 <b>Monedha</b>

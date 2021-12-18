@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import Head from "next/head";
@@ -73,7 +73,10 @@ export default function InvoiceDetails() {
               status={data?.status}
               printHandler={printHandler}
             />
-            <Invoice ref={printInvoice} invoice={data} />
+            <Invoice invoice={data} />
+            <div style={{ display: "none" }}>
+              <Invoice ref={printInvoice} invoice={data} printing={true} />
+            </div>
           </>
         ) : (
           !isLoading &&

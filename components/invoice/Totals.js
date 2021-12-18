@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { isMobile } from "react-device-detect";
+import { isMobile as detectMobile } from "react-device-detect";
 
+import localState from "@libs/localState";
 import InvoiceTable from "./InvoiceTable";
 
 const CurrencyInfo = styled.td`
@@ -43,39 +44,51 @@ const Totals = ({
   totalAfterVatAll,
   currency,
   currencyRate,
-}) => (
-  <InvoiceTable
-    headings={
-      <>
-        <CurrencyTitle>Monedha</CurrencyTitle>
-        <TotalTitle>SHUMA PER T'U PAGUAR</TotalTitle>
-      </>
+  printing,
+}) => {
+  const [printingMode] = localState("@printingMode", "A4");
+  const [isMobile, setIsMobile] = useState(detectMobile);
+
+  useEffect(() => {
+    if (printing && printingMode === "thermal") {
+      setIsMobile(true);
     }
-  >
-    <tr>
-      <CurrencyInfo>
-        <strong>{currency}</strong>
-      </CurrencyInfo>
-      <Total>
-        <Large>
-          <strong>{totalAfterVat}</strong>
-        </Large>
-      </Total>
-    </tr>
-    {currency != "ALL" && (
+  }, []);
+
+  return (
+    <InvoiceTable
+      headings={
+        <>
+          <CurrencyTitle>Monedha</CurrencyTitle>
+          <TotalTitle>SHUMA PER T'U PAGUAR</TotalTitle>
+        </>
+      }
+    >
       <tr>
-        <CurrencyInfo style={{ paddingTop: "0" }}>
-          <strong>ALL</strong>{" "}
-          {!isMobile && `- kursi i këmbimit ${currencyRate}`}
+        <CurrencyInfo>
+          <strong>{currency}</strong>
         </CurrencyInfo>
-        <Total style={{ paddingTop: "0" }}>
+        <Total>
           <Large>
-            <strong>{totalAfterVatAll}</strong>
+            <strong>{totalAfterVat}</strong>
           </Large>
         </Total>
       </tr>
-    )}
-  </InvoiceTable>
-);
+      {currency != "ALL" && (
+        <tr>
+          <CurrencyInfo style={{ paddingTop: "0" }}>
+            <strong>ALL</strong>{" "}
+            {!isMobile && `- kursi i këmbimit ${currencyRate}`}
+          </CurrencyInfo>
+          <Total style={{ paddingTop: "0" }}>
+            <Large>
+              <strong>{totalAfterVatAll}</strong>
+            </Large>
+          </Total>
+        </tr>
+      )}
+    </InvoiceTable>
+  );
+};
 
 export default Totals;
