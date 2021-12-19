@@ -46,7 +46,6 @@ export const ConfigSkeleton = ({ certIssued, certExpire, isInVat }) => (
     <div className="form-check form-group has-feedback flexieForm-component flexieForm-component-checkbox fx-checkbox">
       <label className="control-label form-check-label fx-checkbox check-bounce">
         <input
-          name="data"
           type="checkbox"
           className="form-check-input fx-checkbox"
           lang="en"

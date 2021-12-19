@@ -228,9 +228,9 @@
       },
       "addButtonJustIcon": true,
       "defaultValue": true,
-      "inputNameString": "is_vat",
+      "inputNameString": "vat_enabled",
       "input": true,
-      "key": "is_vat",
+      "key": "vat_enabled",
       "tableView": true,
       "type": "checkbox"
     },

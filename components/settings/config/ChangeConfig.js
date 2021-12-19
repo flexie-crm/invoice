@@ -452,6 +452,7 @@ const ChangeConfig = ({ user }) => {
     }[type]);
 
   const setValue = (user, form) => {
+    console.log(user);
     form.getComponent("first_name").setValue(user.first_name);
     form.getComponent("last_name").setValue(user.last_name);
     form.getComponent("business_unit").setValue(user.business_unit);
@@ -461,7 +462,9 @@ const ChangeConfig = ({ user }) => {
     form.getComponent("operator_code").setValue(user.operator_code);
     form.getComponent("phone").setValue(user.phone);
     form.getComponent("nipt").setValue(user.nipt);
-    form.getComponent("is_vat").setValue(user.vat_enabled === "1");
+    form
+      .getComponent("vat_enabled")
+      .setValue(user.vat_enabled === "1" || user.vat_enabled === true);
   };
 
   useEffect(async () => {
