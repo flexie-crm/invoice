@@ -40,7 +40,6 @@ const SetPrinting = () => {
   );
 
   const handlePrintingModeChange = (e) => {
-    console.log("got here");
     setPringingMode(e.target.value);
   };
 
