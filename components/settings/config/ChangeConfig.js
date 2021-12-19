@@ -461,7 +461,7 @@ const ChangeConfig = ({ user }) => {
     form.getComponent("operator_code").setValue(user.operator_code);
     form.getComponent("phone").setValue(user.phone);
     form.getComponent("nipt").setValue(user.nipt);
-    form.getComponent("is_vat").setValue(user.vat_enabled);
+    form.getComponent("is_vat").setValue(user.vat_enabled === "1");
   };
 
   useEffect(async () => {
@@ -586,7 +586,7 @@ const ChangeConfig = ({ user }) => {
           <ConfigSkeleton
             certIssued={user?.cert_issue_timestamp}
             certExpire={user?.cert_expire_timestamp}
-            isInVat={user?.vat_enabled}
+            isInVat={user?.vat_enabled === "1"}
           />
         </FlexieFormWrapper>
       )}
