@@ -222,6 +222,23 @@
         "show": "",
         "when": ""
       },
+      "label": "Biznesi im është në regjistrin e TVSH-së",
+      "validate": {
+        "customMessage": ""
+      },
+      "addButtonJustIcon": true,
+      "defaultValue": true,
+      "inputNameString": "is_vat",
+      "input": true,
+      "key": "is_vat",
+      "tableView": true,
+      "type": "checkbox"
+    },
+    {
+      "conditional": {
+        "show": "",
+        "when": ""
+      },
       "addButtonJustIcon": true,
       "input": false,
       "key": "Columns",
