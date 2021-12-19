@@ -52,10 +52,8 @@ const SetPrinting = () => {
     <>
       <ExplainBox className="col col-md col-sm col-12">
         <p>
-          Zgjidhni modelin e printimit qe deshironi per faturat. Gjithashtu ju
-          mund te zgjidhni printimin direkt pasi behet fatura, ne kete modalitet
-          dialogu i printimit ne paisjen tuaj do te shfaqet menjehere pasi
-          fatura te jete fiskaliziar
+          Zgjidhni modelin e printimit qe deshironi per faturat. Modeli Standard
+          A4 eshte me i pershtatshem per faturat B2B.
         </p>
       </ExplainBox>
       <div className="col col-md col-sm col-12">
