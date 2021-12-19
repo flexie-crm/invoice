@@ -3,7 +3,7 @@ import "dayjs/locale/sq";
 
 dayjs.locale("sq");
 
-export const ConfigSkeleton = ({ certIssued, certExpire }) => (
+export const ConfigSkeleton = ({ certIssued, certExpire, isInVat }) => (
   <div style={{ visibility: "visible", position: "relative" }}>
     <div className="row flexieForm-component-columns">
       <div className="col col-sm-6">
@@ -41,6 +41,24 @@ export const ConfigSkeleton = ({ certIssued, certExpire }) => (
     </div>
     <div className="flexieForm-component">
       <h2 className="mt-20 horizontal-rule align-left " />
+    </div>
+
+    <div className="form-check form-group has-feedback flexieForm-component flexieForm-component-checkbox fx-checkbox">
+      <label className="control-label form-check-label fx-checkbox check-bounce">
+        <input
+          name="data"
+          type="checkbox"
+          className="form-check-input fx-checkbox"
+          lang="en"
+          value="1"
+          checked={isInVat}
+          onChange={(e) => {}}
+        />
+        <svg viewBox="0 0 18 18">
+          <polyline points="4 10.74 7.5 14.25 14 7"></polyline>
+        </svg>
+        <span>Biznesi im është në regjistrin e TVSH-së</span>
+      </label>
     </div>
 
     <div className="row flexieForm-component-columns">

@@ -181,11 +181,12 @@ const FlexieFormWrapper = styled.div`
     stroke-linejoin: round;
     stroke: var(--stroke, var(--border-active));
     position: absolute;
-    top: 0;
+    top: -1px;
     left: 0;
     width: 18px;
     height: 18px;
     transform: scale(var(--scale, 1)) translateZ(0);
+    z-index: 31;
   }
   .flexieForm-component-checkbox .fx-checkbox.path input:checked {
     --s: 2px;
@@ -207,23 +208,10 @@ const FlexieFormWrapper = styled.div`
     --s: 11px;
   }
   .flexieForm-component-checkbox .fx-checkbox.check-bounce input:checked + svg {
-    -webkit-animation: check-bounce 0.4s linear forwards 0.2s;
     animation: check-bounce 0.4s linear forwards 0.2s;
   }
   .flexieForm-component-checkbox .fx-checkbox.check-bounce svg {
     --scale: 0;
-  }
-
-  @-webkit-keyframes check-bounce {
-    50% {
-      transform: scale(1.2);
-    }
-    75% {
-      transform: scale(0.9);
-    }
-    100% {
-      transform: scale(1);
-    }
   }
 
   @keyframes check-bounce {
@@ -473,6 +461,7 @@ const ChangeConfig = ({ user }) => {
     form.getComponent("operator_code").setValue(user.operator_code);
     form.getComponent("phone").setValue(user.phone);
     form.getComponent("nipt").setValue(user.nipt);
+    form.getComponent("is_vat").setValue(user.vat_enabled);
   };
 
   useEffect(async () => {
@@ -597,6 +586,7 @@ const ChangeConfig = ({ user }) => {
           <ConfigSkeleton
             certIssued={user?.cert_issue_timestamp}
             certExpire={user?.cert_expire_timestamp}
+            isInVat={user?.vat_enabled}
           />
         </FlexieFormWrapper>
       )}

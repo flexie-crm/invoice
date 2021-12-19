@@ -20,7 +20,7 @@ const options = {
             iss: process.env.FX_AUTH_KEY,
           },
           process.env.FX_AUTH_SECRET,
-          { algorithm: "HS256", expiresIn: "1d" }
+          { algorithm: "HS256", expiresIn: "1h" }
         );
 
         try {
