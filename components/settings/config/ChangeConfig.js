@@ -452,7 +452,6 @@ const ChangeConfig = ({ user }) => {
     }[type]);
 
   const setValue = (user, form) => {
-    console.log(user);
     form.getComponent("first_name").setValue(user.first_name);
     form.getComponent("last_name").setValue(user.last_name);
     form.getComponent("business_unit").setValue(user.business_unit);
