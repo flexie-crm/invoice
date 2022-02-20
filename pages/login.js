@@ -38,6 +38,7 @@ const LoginError = styled.div`
 const LoginButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-start;
+  gap: 0.5rem;
 
   button {
     padding: 0.8rem 1.3rem;
@@ -55,6 +56,8 @@ export default function Login({ csrfToken }) {
     setIsFormPosting: state.setIsFormPosting,
   }));
 
+  const [forgotPass, setForgotPass] = useState(false);
+
   const { emailError, passwordError } = useValidation(
     (state) => ({
       emailError: state.errors?.email,
@@ -62,6 +65,18 @@ export default function Login({ csrfToken }) {
     }),
     shallow
   );
+
+  const showForgotPass = async (e) => {
+    e.preventDefault();
+
+    setForgotPass(true);
+  };
+
+  const hideForgotPass = async (e) => {
+    e.preventDefault();
+
+    setForgotPass(false);
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -141,24 +156,44 @@ export default function Login({ csrfToken }) {
                 errorMessage={emailError}
               />
 
-              <div className="mt-15">
-                <Input
-                  label="Fjalekalimi"
-                  type="password"
-                  name="password"
-                  placeholder="Vendos Fjalekalimin"
-                  onChange={(e) => setPassword(e.target.value)}
-                  value={password}
-                  valid={!passwordError}
-                  errorMessage={passwordError}
-                />
-              </div>
+              {!forgotPass && (
+                <div className="mt-15">
+                  <Input
+                    label="Fjalekalimi"
+                    type="password"
+                    name="password"
+                    placeholder="Vendos Fjalekalimin"
+                    onChange={(e) => setPassword(e.target.value)}
+                    value={password}
+                    valid={!passwordError}
+                    errorMessage={passwordError}
+                  />
+                </div>
+              )}
 
-              <LoginButtonWrapper className="mt-15">
-                <Button disabled={isFormPosting} onClick={handleLogin}>
-                  {isFormPosting ? "Hyrja..." : "Hyrja"}
-                </Button>
-              </LoginButtonWrapper>
+              {!forgotPass && (
+                <LoginButtonWrapper className="mt-15">
+                  <Button disabled={isFormPosting} onClick={handleLogin}>
+                    {isFormPosting ? "Hyrja..." : "Hyrja"}
+                  </Button>
+
+                  <Button secondary onClick={showForgotPass}>
+                    Harrova Fjalekalimin
+                  </Button>
+                </LoginButtonWrapper>
+              )}
+
+              {forgotPass && (
+                <LoginButtonWrapper className="mt-15">
+                  <Button disabled={isFormPosting} onClick={handleLogin}>
+                    {isFormPosting ? "Fjalekalim i ri..." : "Fjalekalim i ri"}
+                  </Button>
+
+                  <Button secondary onClick={hideForgotPass}>
+                    Kthehu Mbrapa
+                  </Button>
+                </LoginButtonWrapper>
+              )}
             </form>
           </div>
         </div>
