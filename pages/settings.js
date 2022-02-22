@@ -129,14 +129,14 @@ export default function Settings({ initialOpenedItem, user }) {
             >
               Printimi
             </SettingItem>
-            <SettingItem
+            {/* <SettingItem
               onClick={(e) => handleSettingOpenedItem("abonimi")}
               isSelected={
                 (cookies?.openedItem || initialOpenedItem) === "abonimi"
               }
             >
               Abonimi
-            </SettingItem>
+            </SettingItem> */}
           </div>
           <div className="col col-md col-sm col-9">
             <div

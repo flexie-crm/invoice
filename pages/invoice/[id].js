@@ -1,16 +1,23 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import Head from "next/head";
 import { getSession } from "next-auth/react";
 import { useQuery } from "react-query";
 import { useReactToPrint } from "react-to-print";
+import dynamic from "next/dynamic";
 
 import Wrapper from "@components/invoice/Wrapper";
 import HomeLink from "@components/invoice/HomeLink";
 import InvoiceHeader from "@components/invoice/InvoiceHeader";
 import Invoice from "@components/invoice/Invoice";
 import NothingHere from "@shared/NothingHere";
+
+// Heavy component, should be imported dynamically
+// so we can have a better user experience
+const CorrectInvoiceForm = dynamic(() =>
+  import("@components/CorrectInvoiceForm")
+);
 
 const NothingHereOverride = styled(NothingHere)`
   &.nothing-here-override {
@@ -31,6 +38,7 @@ export default function InvoiceDetails() {
   const router = useRouter();
   const { id: invoiceId } = router.query;
   const printInvoice = useRef();
+  const [correctiveIsOpen, setCorrectiveIsOpen] = useState(false);
 
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
     useQuery(
@@ -64,6 +72,12 @@ export default function InvoiceDetails() {
       <Head>
         <title>Fatura {invoiceId && `#${invoiceId}`} | Flexie CRM</title>
       </Head>
+      {correctiveIsOpen && (
+        <CorrectInvoiceForm
+          setIsOpen={setCorrectiveIsOpen}
+          invoiceToCorrect={data}
+        />
+      )}
       <Wrapper>
         {data && data?.nivf ? (
           <>
@@ -72,6 +86,7 @@ export default function InvoiceDetails() {
               className="invoice-page-header"
               status={data?.status}
               printHandler={printHandler}
+              setCorrectiveIsOpen={setCorrectiveIsOpen}
             />
             <Invoice invoice={data} />
             <div style={{ display: "none" }}>

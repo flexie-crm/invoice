@@ -43,7 +43,7 @@ export const ConfigSkeleton = ({ certIssued, certExpire, isInVat }) => (
       <h2 className="mt-20 horizontal-rule align-left " />
     </div>
 
-    <div className="form-check form-group has-feedback flexieForm-component flexieForm-component-checkbox fx-checkbox">
+    {/* <div className="form-check form-group has-feedback flexieForm-component flexieForm-component-checkbox fx-checkbox">
       <label className="control-label form-check-label fx-checkbox check-bounce">
         <input
           type="checkbox"
@@ -58,7 +58,7 @@ export const ConfigSkeleton = ({ certIssued, certExpire, isInVat }) => (
         </svg>
         <span>Biznesi im është në regjistrin e TVSH-së</span>
       </label>
-    </div>
+    </div> */}
 
     <div className="row flexieForm-component-columns">
       <div className="col col-sm-6">

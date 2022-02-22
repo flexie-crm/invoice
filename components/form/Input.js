@@ -6,7 +6,6 @@ import { SharedInput } from "@shared/SharedStyle";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   ${fontStylesA}
 
   :focus-within label {

@@ -29,20 +29,74 @@ const getProductsRequest = throttle(
   800
 );
 
-const Items = ({ invoiceType }) => {
+const vatOptions = [
+  { label: "20%", value: "0.20" },
+  { label: "10%", value: "0.10" },
+  { label: "6%", value: "0.06" },
+  { label: "0% Z-VAT", value: "0.00" },
+  { label: "0% Tipi 1", value: "TYPE_1" },
+  { label: "0% Tipi 2", value: "TYPE_2" },
+  { label: "0% Margin", value: "MARGIN_SCHEME" },
+  { label: "0% Export", value: "EXPORT_OF_GOODS" },
+];
+
+const Items = ({ invoiceType, isCorrective, invoiceToCorrect }) => {
   // Dummy state just to trigger useEffect
   const [addItem, setAddItem] = useState(Math.random());
-  const [items, setItems] = useState([
-    {
-      id: uuidv4(),
-      qty: "",
-      price: "",
-      vatRate: { label: "20%", value: "0.20" },
-      vat: 0,
-      totalBeforeVat: 0,
-      totalAfterVat: 0,
-    },
-  ]);
+  const [items, setItems] = useState(() => {
+    if (isCorrective) {
+      return invoiceToCorrect?.payload?.items?.map((item) => {
+        try {
+          const itemToCorrect = JSON.parse(item.item);
+
+          return {
+            id: uuidv4(),
+            itemName: itemToCorrect.__label,
+            itemHidden: item.item,
+            qty: item.qty,
+            price: item.price,
+            vatRate: vatOptions.filter((p) => p.value === item.vat_rate)[0] || {
+              label: "20%",
+              value: "0.20",
+            },
+            vat: item.vat_total,
+            totalBeforeVat: item.total_before_vat,
+            totalAfterVat: item.total_after_vat,
+          };
+        } catch (e) {
+          console.warn(e);
+        }
+
+        return {
+          id: uuidv4(),
+          qty: "",
+          price: "",
+          vatRate:
+            invoiceType === "export"
+              ? { label: "0% Export", value: "EXPORT_OF_GOODS" }
+              : { label: "20%", value: "0.20" },
+          vat: 0,
+          totalBeforeVat: 0,
+          totalAfterVat: 0,
+        };
+      });
+    }
+
+    return [
+      {
+        id: uuidv4(),
+        qty: "",
+        price: "",
+        vatRate:
+          invoiceType === "export"
+            ? { label: "0% Export", value: "EXPORT_OF_GOODS" }
+            : { label: "20%", value: "0.20" },
+        vat: 0,
+        totalBeforeVat: 0,
+        totalAfterVat: 0,
+      },
+    ];
+  });
 
   const updateTotals = useTotals((state) => state.updateTotals);
 
@@ -113,6 +167,7 @@ const Items = ({ invoiceType }) => {
         {items.map((item, index) => {
           return (
             <Item
+              isCorrective={isCorrective}
               invoiceType={invoiceType}
               products={getProducts}
               item={item}
@@ -135,7 +190,10 @@ const Items = ({ invoiceType }) => {
                 id: uuidv4(),
                 qty: "",
                 price: "",
-                vatRate: { label: "20%", value: "0.20" },
+                vatRate:
+                  invoiceType === "export"
+                    ? { label: "0% Export", value: "EXPORT_OF_GOODS" }
+                    : { label: "20%", value: "0.20" },
                 vat: 0,
                 totalBeforeVat: 0,
                 totalAfterVat: 0,

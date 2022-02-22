@@ -58,7 +58,7 @@ const getClientsRequest = throttle(
   800
 );
 
-const Client = () => {
+const Client = ({ isCorrective, invoiceToCorrect }) => {
   const errors = useValidation((state) => state.errors);
   const removeErrors = useValidation((state) => state.removeErrors);
   const setErrors = useValidation((state) => state.setErrors);
@@ -165,63 +165,126 @@ const Client = () => {
       <FieldSet>
         <Legend>Te dhenat e klientit</Legend>
         <ClientWrapper className="grid">
-          <AsyncSelectBox
-            wrapperClassName="col col-8 col-md"
-            isCreatable={true}
-            label="Kerko ose Shto Klient"
-            name="client"
-            placeholder="Kerko ose Shto"
-            options={getClients}
-            onChangeCallback={handleOnChangeCallback}
-            valid={!errors?.client}
-            errorMessage={errors?.client}
-          />
-          <Input
-            wrapperClassName="col col-4 col-md"
-            valid={!errors?.nuis}
-            errorMessage={errors?.nuis}
-            label={nuisLabel}
-            name="nuis"
-            value={clientData?.nuis || ""}
-            onChange={clientDataOnChange}
-          />
+          {isCorrective ? (
+            <>
+              <Input
+                wrapperClassName="col col-8 col-md"
+                valid={true}
+                label="Klienti"
+                name="dummy_client"
+                value={invoiceToCorrect?.company}
+                readOnly={true}
+              />
+              <Input
+                hideLabels={true}
+                type="hidden"
+                name="client"
+                value={invoiceToCorrect?.payload?.client}
+              />
+            </>
+          ) : (
+            <AsyncSelectBox
+              wrapperClassName="col col-8 col-md"
+              isCreatable={true}
+              label="Kerko ose Shto Klient"
+              name="client"
+              placeholder="Kerko ose Shto"
+              options={getClients}
+              onChangeCallback={handleOnChangeCallback}
+              valid={!errors?.client}
+              errorMessage={errors?.client}
+            />
+          )}
+          {isCorrective ? (
+            <Input
+              wrapperClassName="col col-4 col-md"
+              valid={true}
+              label={nuisLabel}
+              name="nuis"
+              value={invoiceToCorrect?.nuis || ""}
+              readOnly={true}
+            />
+          ) : (
+            <Input
+              wrapperClassName="col col-4 col-md"
+              valid={!errors?.nuis}
+              errorMessage={errors?.nuis}
+              label={nuisLabel}
+              name="nuis"
+              value={clientData?.nuis || ""}
+              onChange={clientDataOnChange}
+            />
+          )}
         </ClientWrapper>
         <ClientWrapper className="grid">
-          <Input
-            wrapperClassName="col col-6 col-md"
-            label="Adresa"
-            name="address"
-            value={clientData?.address || ""}
-            onChange={clientDataOnChange}
-            valid={!errors?.address}
-            errorMessage={errors?.address}
-          />
-          <Input
-            wrapperClassName="col col-3 col-md"
-            label="Qyteti"
-            name="city"
-            value={clientData?.city || ""}
-            onChange={clientDataOnChange}
-            valid={!errors?.city}
-            errorMessage={errors?.city}
-          />
+          {isCorrective ? (
+            <Input
+              wrapperClassName="col col-6 col-md"
+              label="Adresa"
+              name="address"
+              value={invoiceToCorrect?.address || ""}
+              valid={true}
+              readOnly={true}
+            />
+          ) : (
+            <Input
+              wrapperClassName="col col-6 col-md"
+              label="Adresa"
+              name="address"
+              value={clientData?.address || ""}
+              onChange={clientDataOnChange}
+              valid={!errors?.address}
+              errorMessage={errors?.address}
+            />
+          )}
+          {isCorrective ? (
+            <Input
+              wrapperClassName="col col-3 col-md"
+              label="Qyteti"
+              name="city"
+              value={invoiceToCorrect?.city || ""}
+              valid={true}
+              readOnly={true}
+            />
+          ) : (
+            <Input
+              wrapperClassName="col col-3 col-md"
+              label="Qyteti"
+              name="city"
+              value={clientData?.city || ""}
+              onChange={clientDataOnChange}
+              valid={!errors?.city}
+              errorMessage={errors?.city}
+            />
+          )}
 
-          <SelectBox
-            isCreatable
-            wrapperClassName="col col-3 col-md"
-            label="Shteti"
-            placeholder="Kerko ose Shto Kodin"
-            options={getCountries}
-            name="country"
-            onChangeCallback={handleCountryOnChange}
-            value={getCountries.find(
-              (option) => option.value === clientData?.country
-            )}
-            getOptionLabel={(country) => country.label}
-            getOptionValue={(country) => country.value}
-            valid={!errors?.country}
-            errorMessage={errors?.country}
-          />
+          {isCorrective ? (
+            <Input
+              wrapperClassName="col col-3 col-md"
+              label="Shteti"
+              name="country"
+              value={invoiceToCorrect?.country_code || ""}
+              valid={true}
+              readOnly={true}
+            />
+          ) : (
+            <SelectBox
+              isCreatable
+              wrapperClassName="col col-3 col-md"
+              label="Shteti"
+              placeholder="Kerko ose Shto Kodin"
+              options={getCountries}
+              name="country"
+              onChangeCallback={handleCountryOnChange}
+              value={getCountries.find(
+                (option) => option.value === clientData?.country
+              )}
+              getOptionLabel={(country) => country.label}
+              getOptionValue={(country) => country.value}
+              valid={!errors?.country}
+              errorMessage={errors?.country}
+            />
+          )}
         </ClientWrapper>
       </FieldSet>
     </>

@@ -9,7 +9,6 @@ import { fontStylesA } from "../shared/Typography";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
   ${fontStylesA}
 
   ${(props) =>

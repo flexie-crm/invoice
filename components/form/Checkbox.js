@@ -4,6 +4,7 @@ import { fontStylesA } from "../shared/Typography";
 
 const Wrapper = styled.div`
   ${fontStylesA}
+  line-height: 1.225;
 
   --background: ${(props) => props.theme.color.form.fieldBg};
   --border: ${(props) => props.theme.color.form.fieldBorder};

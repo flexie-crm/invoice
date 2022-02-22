@@ -9,7 +9,7 @@ export const fontStylesA = css`
   ${baseStyles}
   color: ${(props) => props.color || props.theme.color.text.bodyA};
   font-size: ${(props) => props.size || ".75rem"};
-  line-height: 1.125;
+  line-height: 1.51;
 `;
 
 export const fontStylesB = css`

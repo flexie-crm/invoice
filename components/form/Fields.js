@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import Items from "./Items";
 import SelectBox from "../form/SyncSelectBox";
 import Checkbox from "./Checkbox";
+import Input from "@components/Input";
 
 import { fontStylesA } from "@shared/Typography";
 import { SubmissionMessage } from "@shared/SharedStyle";
@@ -146,7 +147,7 @@ const documentType = [
   { label: "Fature Parapagimi P6", value: "P6" },
 ];
 
-const Fields = ({ invoiceSubmitError }) => {
+const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
   const errors = useValidation((state) => state.errors);
   const removeErrors = useValidation((state) => state.removeErrors);
   const [isCollapsedOpen, setIsCollapsedOpen] = localState(
@@ -226,34 +227,46 @@ const Fields = ({ invoiceSubmitError }) => {
           <div className="grid" style={{ marginBottom: "14px" }}>
             <div className="col col-12">
               <InvoiceTypeWrapper onChange={handleInvoiceTypeChange}>
-                <Checkbox
-                  name="invoice_type"
-                  type="radio"
-                  label="B2B"
-                  value="b2b"
-                  defaultChecked={invoiceType === "b2b"}
-                />
-                <Checkbox
-                  name="invoice_type"
-                  type="radio"
-                  label="B2C"
-                  value="b2c"
-                  defaultChecked={invoiceType === "b2c"}
-                />
-                <Checkbox
-                  name="invoice_type"
-                  type="radio"
-                  label="Auto"
-                  value="auto"
-                  defaultChecked={invoiceType === "auto"}
-                />
-                <Checkbox
-                  name="invoice_type"
-                  type="radio"
-                  label="Export"
-                  value="export"
-                  defaultChecked={invoiceType === "export"}
-                />
+                {isCorrective ? (
+                  <Checkbox
+                    name="invoice_type"
+                    type="radio"
+                    label="Korrigjuese"
+                    value="corrective"
+                    defaultChecked={true}
+                  />
+                ) : (
+                  <>
+                    <Checkbox
+                      name="invoice_type"
+                      type="radio"
+                      label="B2B"
+                      value="b2b"
+                      defaultChecked={invoiceType === "b2b"}
+                    />
+                    <Checkbox
+                      name="invoice_type"
+                      type="radio"
+                      label="B2C"
+                      value="b2c"
+                      defaultChecked={invoiceType === "b2c"}
+                    />
+                    <Checkbox
+                      name="invoice_type"
+                      type="radio"
+                      label="Auto"
+                      value="auto"
+                      defaultChecked={invoiceType === "auto"}
+                    />
+                    <Checkbox
+                      name="invoice_type"
+                      type="radio"
+                      label="Export"
+                      value="export"
+                      defaultChecked={invoiceType === "export"}
+                    />
+                  </>
+                )}
               </InvoiceTypeWrapper>
             </div>
 
@@ -286,16 +299,32 @@ const Fields = ({ invoiceSubmitError }) => {
           </div>
         </FieldSet>
 
-        {invoiceType === "b2b" ||
-        invoiceType === "export" ||
-        (invoiceType === "auto" &&
-          invoiceSettings?.auto_invoice_type?.value !== "SELF") ? (
-          <Client />
+        {isCorrective ? (
+          <>
+            {invoiceToCorrect?.company?.length > 0 && (
+              <Client
+                isCorrective={isCorrective}
+                invoiceToCorrect={invoiceToCorrect}
+              />
+            )}
+          </>
         ) : (
-          ""
+          <>
+            {invoiceType === "b2b" ||
+            invoiceType === "export" ||
+            (invoiceType === "auto" &&
+              invoiceSettings?.auto_invoice_type?.value !== "SELF") ? (
+              <Client
+                isCorrective={isCorrective}
+                invoiceToCorrect={invoiceToCorrect}
+              />
+            ) : (
+              ""
+            )}
+          </>
         )}
 
-        {(invoiceType === "b2b" || invoiceType === "export") && (
+        {!isCorrective && (invoiceType === "b2b" || invoiceType === "export") && (
           <Panel className="mb-30 mt-20">
             <PanelHeader
               opened={isCollapsedOpen}
@@ -365,22 +394,39 @@ const Fields = ({ invoiceSubmitError }) => {
           </Panel>
         )}
 
-        <FieldSet className={invoiceType === "auto" && "mt-15"}>
+        <FieldSet
+          className={(invoiceType === "auto" || isCorrective) && "mt-15"}
+        >
           <Legend>Detajet e farures</Legend>
           <div className="grid">
             <div className="col col-sm">
-              <SelectBox
-                isSearchable={false}
-                label="Menyra e Pageses"
-                name="payment_method"
-                options={paymentMethods}
-                valid={!errors?.payment_method}
-                errorMessage={errors?.payment_method}
-                onChangeCallback={handleSelectOnChange}
-                value={invoiceSettings?.payment_method}
-                getOptionLabel={(option) => option.label}
-                getOptionValue={(option) => option.value}
-              />
+              {isCorrective ? (
+                <Input
+                  label="Menyra e Pageses"
+                  name="payment_method"
+                  value={
+                    paymentMethods.filter(
+                      (item) =>
+                        item.value === invoiceToCorrect?.payload?.payment_method
+                    )[0].label || ""
+                  }
+                  valid={true}
+                  readOnly={true}
+                />
+              ) : (
+                <SelectBox
+                  isSearchable={false}
+                  label="Menyra e Pageses"
+                  name="payment_method"
+                  options={paymentMethods}
+                  valid={!errors?.payment_method}
+                  errorMessage={errors?.payment_method}
+                  onChangeCallback={handleSelectOnChange}
+                  value={invoiceSettings?.payment_method}
+                  getOptionLabel={(option) => option.label}
+                  getOptionValue={(option) => option.value}
+                />
+              )}
             </div>
             <div className="col col-sm">
               <SelectBox
@@ -401,7 +447,9 @@ const Fields = ({ invoiceSubmitError }) => {
                 isDisabled={
                   ["BANKNOTE", "CARD"].includes(
                     invoiceSettings?.payment_method?.value
-                  ) || invoiceType !== "b2b"
+                  ) ||
+                  invoiceType !== "b2b" ||
+                  isCorrective
                 }
               />
             </div>
@@ -421,7 +469,9 @@ const Fields = ({ invoiceSubmitError }) => {
                 isDisabled={
                   ["BANKNOTE", "CARD"].includes(
                     invoiceSettings?.payment_method?.value
-                  ) || invoiceType !== "b2b"
+                  ) ||
+                  invoiceType !== "b2b" ||
+                  isCorrective
                 }
                 valid={!errors?.invoice_type}
                 errorMessage={errors?.invoice_type}
@@ -429,8 +479,23 @@ const Fields = ({ invoiceSubmitError }) => {
             </div>
           </div>
         </FieldSet>
-        <div className="mt-30">{<Items invoiceType={invoiceType} />}</div>
-        <Total />
+        <div className="mt-30">
+          {
+            <Items
+              invoiceType={
+                isCorrective
+                  ? invoiceToCorrect?.payload?.invoice_type
+                  : invoiceType
+              }
+              isCorrective={isCorrective}
+              invoiceToCorrect={invoiceToCorrect}
+            />
+          }
+        </div>
+        <Total
+          isCorrective={isCorrective}
+          invoiceToCorrect={invoiceToCorrect}
+        />
         {invoiceSubmitError && (
           <ErrorMessage
             messageType={invoiceSubmitError.type}

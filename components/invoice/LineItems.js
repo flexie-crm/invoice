@@ -67,9 +67,13 @@ const LineItems = ({ items, printing }) => {
     <InvoiceTable
       headings={
         <>
-          <Description>Artikulli</Description>
+          {!isMobile && <Description>Artikulli</Description>}
           {!isMobile && <Quantity>Sasia</Quantity>}
-          <Price>Çmimi</Price>
+          <Price
+            style={isMobile ? { textAlign: "left" } : { textAlign: "right" }}
+          >
+            Çmimi
+          </Price>
           <Vat>TVSH</Vat>
           <TotalTitle>Totali</TotalTitle>
         </>
@@ -80,26 +84,37 @@ const LineItems = ({ items, printing }) => {
         const itemName = getItem ? getItem.__label : item.item;
 
         return (
-          <tr key={uuidv4()}>
-            <td>{itemName}</td>
-            {!isMobile && <RightAlignedCell>{item.qty}</RightAlignedCell>}
-            <RightAlignedCell>
-              {isMobile && (
-                <span>
-                  {item.qty} <b>x</b>{" "}
-                </span>
-              )}
-              {formatCurrency(parseFloatExt(item.price).toFixed(2))}
-            </RightAlignedCell>
-            <RightAlignedCell>
-              {formatCurrency(parseFloatExt(item.vat_total).toFixed(2))}
-            </RightAlignedCell>
-            <Total>
-              <strong>
-                {formatCurrency(parseFloatExt(item.total).toFixed(2))}
-              </strong>
-            </Total>
-          </tr>
+          <>
+            {isMobile && (
+              <tr>
+                <td colSpan={3}>{itemName}</td>
+              </tr>
+            )}
+            <tr>
+              {!isMobile && <td>{itemName}</td>}
+              {!isMobile && <RightAlignedCell>{item.qty}</RightAlignedCell>}
+              <RightAlignedCell
+                style={
+                  isMobile ? { textAlign: "left" } : { textAlign: "right" }
+                }
+              >
+                {isMobile && (
+                  <span>
+                    {item.qty} <b>x</b>{" "}
+                  </span>
+                )}
+                {formatCurrency(parseFloatExt(item.price).toFixed(2))}
+              </RightAlignedCell>
+              <RightAlignedCell>
+                {formatCurrency(parseFloatExt(item.vat_total).toFixed(2))}
+              </RightAlignedCell>
+              <Total>
+                <strong>
+                  {formatCurrency(parseFloatExt(item.total).toFixed(2))}
+                </strong>
+              </Total>
+            </tr>
+          </>
         );
       })}
     </InvoiceTable>

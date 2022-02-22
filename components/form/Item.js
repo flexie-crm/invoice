@@ -29,12 +29,30 @@ const vatOptions = [
   { label: "0% Tipi 1", value: "TYPE_1" },
   { label: "0% Tipi 2", value: "TYPE_2" },
   { label: "0% Margin", value: "MARGIN_SCHEME" },
+  { label: "0% Export", value: "EXPORT_OF_GOODS" },
 ];
 
-const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
+const Item = ({
+  index,
+  onRemove,
+  onChange,
+  item,
+  products,
+  invoiceType,
+  isCorrective,
+}) => {
   const qtyInput = useRef();
   const vatInput = useRef();
-  const [itemState, setItemState] = useState();
+  const [itemState, setItemState] = useState(() => {
+    if (isCorrective) {
+      return {
+        [`items[${index}][qty]`]: item?.qty || 0,
+        [`items[${index}][price]`]: item?.price || 0,
+        [`items[${index}][vat_rate]`]: item?.vatRate?.value || "0.20",
+      };
+    }
+  });
+
   const clientCountry = useClient((state) => state.client.country, shallow);
 
   // These objects from errors would make it possibe using shallow
@@ -55,7 +73,8 @@ const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
       setItemState({
         ...itemState,
         [`items[${index}][price]`]: item?.base_price || "",
-        [`items[${index}][vat_rate]`]: item?.vat_rate || "",
+        [`items[${index}][vat_rate]`]:
+          invoiceType === "export" ? "EXPORT_OF_GOODS" : item?.vat_rate || "",
       });
 
       removeErrors([
@@ -99,7 +118,10 @@ const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
       onChange(item.id, {
         qty: qty,
         price: price,
-        vatRate: vatOptions.find((item, i) => vatRate == item.value),
+        vatRate:
+          invoiceType === "export"
+            ? { label: "0% Export", value: "EXPORT_OF_GOODS" }
+            : vatOptions.find((item, i) => vatRate == item.value),
       });
     }
   }, [itemState]);
@@ -108,17 +130,36 @@ const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
     <Wrapper>
       <div className="grid">
         <div className="col col-md col-sm mb-10">
-          <AsyncSelectBox
-            isCreatable={true}
-            hideLabels={index > 0}
-            label="Produkti ose Sherbimi"
-            name={`items[${index}][item]`}
-            placeholder="Kerko ose Shto"
-            options={products}
-            onChangeCallback={handleOnChangeCallback}
-            valid={!itemError}
-            errorMessage={itemError}
-          />
+          {isCorrective && item?.itemName ? (
+            <>
+              <Input
+                hideLabels={index > 0}
+                valid={true}
+                label="Produkti ose Sherbimi"
+                name={`items[${index}][item]`}
+                value={item?.itemName}
+                readOnly={true}
+              />
+              <Input
+                hideLabels={true}
+                type="hidden"
+                name={`items[${index}][item_hidden]`}
+                value={item?.itemHidden}
+              />
+            </>
+          ) : (
+            <AsyncSelectBox
+              isCreatable={true}
+              hideLabels={index > 0}
+              label="Produkti ose Sherbimi"
+              name={`items[${index}][item]`}
+              placeholder="Kerko ose Shto"
+              options={products}
+              onChangeCallback={handleOnChangeCallback}
+              valid={!itemError}
+              errorMessage={itemError}
+            />
+          )}
         </div>
 
         <div className="col col-1 col-md col-sm mb-10">
@@ -150,24 +191,29 @@ const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
           />
         </div>
 
-        {invoiceType !== "export" && (
-          <div className="col col-2 col-md col-sm mb-10">
-            <SelectBox
-              isSearchable={false}
-              ref={vatInput}
-              hideLabels={index > 0}
-              label="TVSH"
-              placeholder="Zgjidh"
-              options={vatOptions}
-              name={`items[${index}][vat_rate]`}
-              onChangeCallback={handleVatOnChange}
-              value={item?.vatRate}
-              getOptionLabel={(option) => option.label}
-              getOptionValue={(option) => option.value}
-              valid={true}
-            />
-          </div>
-        )}
+        <div className="col col-2 col-md col-sm mb-10">
+          <SelectBox
+            isSearchable={false}
+            ref={vatInput}
+            hideLabels={index > 0}
+            label="TVSH"
+            placeholder="Zgjidh"
+            options={
+              isCorrective && invoiceType !== "export"
+                ? vatOptions.filter((p) => p.value !== "EXPORT_OF_GOODS")
+                : vatOptions
+            }
+            name={`items[${index}][vat_rate]`}
+            onChangeCallback={handleVatOnChange}
+            value={item?.vatRate}
+            getOptionLabel={(option) => option.label}
+            getOptionValue={(option) => option.value}
+            valid={true}
+            isOptionDisabled={(option) =>
+              invoiceType === "export" && option.value !== "EXPORT_OF_GOODS"
+            }
+          />
+        </div>
 
         <div className="col col-2 col-md col-sm mb-10">
           <Input
@@ -189,7 +235,7 @@ const Item = ({ index, onRemove, onChange, item, products, invoiceType }) => {
           style={{ flex: "0 0 auto" }}
         >
           <DeleteButton
-            disabled={index == 0}
+            disabled={index == 0 || (isCorrective && item?.itemName)}
             type="button"
             className={`pb-10${index == 0 ? " mt-20 disabled-button" : ""}`}
             onClick={handleRemoveItem}

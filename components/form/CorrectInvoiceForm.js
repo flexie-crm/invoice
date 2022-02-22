@@ -24,7 +24,7 @@ const Buttons = styled(CreateInvoiceFormButtons)`
   width: 100%;
 `;
 
-const CreateInvoiceForm = ({ setIsOpen }) => {
+const CorrectInvoiceForm = ({ setIsOpen, invoiceToCorrect }) => {
   const form = useRef();
   const [invoiceSubmitError, setInvoiceSubmitError] = useState();
   const hasErrors = useValidation((state) => state.hasErrors);
@@ -121,6 +121,9 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
       data["nipt"] = session?.user?.nipt;
       data["company_name"] = session?.user?.company;
 
+      // Add NIVF reference
+      data["nivf_reference"] = invoiceToCorrect?.nivf;
+
       // Check if CASH so we should send TCR
       if (data.payment_method != "ACCOUNT") {
         data["tcr_code"] = session?.user?.tcr_code;
@@ -132,7 +135,7 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
         await fetch("/api/get/token", {
           method: "POST",
           body: JSON.stringify({
-            method: "FX_NEW_INVOICE",
+            method: "FX_CORRECT_INVOICE",
             data: {
               method: "POST",
               body: JSON.stringify(data),
@@ -160,6 +163,13 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
         setInvoiceSubmitError(false);
         setIsFormPosting(false);
         setIsOpen(false);
+      } else if (sendInvoice?.active === false) {
+        setIsFormPosting(false);
+        setInvoiceSubmitError({
+          type: "error",
+          message:
+            "Llogaria juaj nuk eshte aktive. Kontaktoni me suportin - support@flexie.io",
+        });
       } else {
         setIsFormPosting(false);
         setInvoiceSubmitError({
@@ -176,6 +186,8 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
         addErrors = { ...addErrors, [err.path]: err.message };
       });
 
+      console.log(addErrors);
+
       setErrors(addErrors);
       setIsFormPosting(false);
     }
@@ -190,13 +202,17 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
       <Backdrop />
       <Form ref={form} setIsOpen={setIsOpen} onSubmit={onSubmit}>
         {isFormPosting && <Loader />}
-        <Fields invoiceSubmitError={invoiceSubmitError} isCorrective={false} />
+        <Fields
+          invoiceSubmitError={invoiceSubmitError}
+          isCorrective={true}
+          invoiceToCorrect={invoiceToCorrect}
+        />
         <Buttons>
           <Button type="button" tertiary onClick={() => setIsOpen(false)}>
             Mbyll
           </Button>
           <Button disabled={isFormPosting} type="submit">
-            {isFormPosting ? "Fiskalizo..." : "Fiskalizo"}
+            {isFormPosting ? "Korrigjo..." : "Korrigjo"}
           </Button>
         </Buttons>
       </Form>
@@ -204,4 +220,4 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
   );
 };
 
-export default React.memo(CreateInvoiceForm);
+export default React.memo(CorrectInvoiceForm);

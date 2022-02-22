@@ -26,7 +26,6 @@ const Wrapper = styled.div`
 
 const Label = styled.label`
   grid-column: 1 / 2;
-  margin-bottom: 0.5rem;
   color: ${(props) =>
     props.valid ? props.theme.color.text.formLabel : "#EC5757"};
   transition: color 0.05s;
@@ -38,6 +37,7 @@ const DatePickerStyled = styled(ReactDatePicker)`
     ${(props) => (props.valid ? props.theme.color.form.fieldBorder : "#EC5757")};
   border-radius: 4px;
   padding: 0.78rem 0.7rem;
+  padding-bottom: 0.5rem;
   background: ${(props) => props.theme.color.form.fieldBg};
   outline: none;
   ${fontStylesA}

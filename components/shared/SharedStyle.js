@@ -6,6 +6,7 @@ export const FlexieFormInput = css`
   border: 1px solid ${(props) => props.theme.color.form.fieldBorder};
   border-radius: 4px;
   padding: 0.78rem 0.7rem;
+  padding-bottom: 0.5rem;
   background: ${(props) => props.theme.color.form.fieldBg};
   outline: none;
   ${fontStylesA}
@@ -45,8 +46,10 @@ export const SharedInput = css`
     ${(props) => (props.valid ? props.theme.color.form.fieldBorder : "#EC5757")};
   border-radius: 4px;
   padding: 0.78rem 0.7rem;
+  padding-bottom: 0.5rem;
   background: ${(props) => props.theme.color.form.fieldBg};
   outline: none;
+
   ${fontStylesA}
   color: ${(props) => props.theme.color.text.heading};
   transition: color 0.05s, border 0.05s, background 0.05s;

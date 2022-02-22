@@ -43,13 +43,12 @@ const FlexieFormWrapper = styled.div`
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     font-family: "Spartan", sans-serif;
     -webkit-transition: color 0.05s;
     transition: color 0.05s;
     color: #4f546b;
     font-size: 0.75rem;
-    line-height: 1.125;
+    line-height: 1.51;
   }
 
   .form-group p.small {
@@ -96,13 +95,12 @@ const FlexieFormWrapper = styled.div`
   label {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     font-family: "Spartan", sans-serif;
     -webkit-transition: color 0.05s;
     transition: color 0.05s;
     color: ${(props) => props.theme.color.text.formLabel};
     font-size: 0.75rem;
-    line-height: 1.125;
+    line-height: 1.51;
   }
 
   input {
@@ -461,9 +459,6 @@ const ChangeConfig = ({ user }) => {
     form.getComponent("operator_code").setValue(user.operator_code);
     form.getComponent("phone").setValue(user.phone);
     form.getComponent("nipt").setValue(user.nipt);
-    form
-      .getComponent("vat_enabled")
-      .setValue(user.vat_enabled === "1" || user.vat_enabled === true);
   };
 
   useEffect(async () => {

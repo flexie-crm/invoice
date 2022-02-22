@@ -92,6 +92,13 @@ const InvoiceInfo = ({
   const [printingMode] = localState("@printingMode", "A4");
   const [isMobile, setIsMobile] = useState(detectMobile);
 
+  const readablePaymentMethod = (type) =>
+    ({
+      BANKNOTE: "Para në dorë (CASH)",
+      CARD: "Kartë krediti ose debiti",
+      ACCOUNT: "Transfertë me bankë",
+    }[type]);
+
   useEffect(() => {
     setMounted(true);
 
@@ -237,6 +244,32 @@ const InvoiceInfo = ({
                 </p>
               )}
               {dayjs(invoice.payload?.period_end).format("DD MMMM, YYYY")}
+            </InfoValue>
+          </tr>
+        )}
+        {invoice.payload?.payment_method && (
+          <tr>
+            {!isMobile && <InfoLabel>Mënyra e pagesës</InfoLabel>}
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
+              {isMobile && (
+                <p>
+                  <b>Mënyra e pagesës</b>
+                </p>
+              )}
+              {readablePaymentMethod(invoice.payload?.payment_method)}
+            </InfoValue>
+          </tr>
+        )}
+        {invoice.payload?.invoice_type && (
+          <tr>
+            {!isMobile && <InfoLabel>Tipi i faturës</InfoLabel>}
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
+              {isMobile && (
+                <p>
+                  <b>Tipi i faturës</b>
+                </p>
+              )}
+              {invoice.payload?.invoice_type?.toUpperCase()}
             </InfoValue>
           </tr>
         )}

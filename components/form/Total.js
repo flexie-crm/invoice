@@ -43,10 +43,14 @@ const TotalValue = styled.p`
 
 const CurrencyRate = styled.div``;
 
-const Total = () => {
+const Total = ({ isCorrective, invoiceToCorrect }) => {
   const totals = useTotals((state) => state.totals);
   const [currency, setCurrency] = localState("@usedCurrency", "ALL");
-  const [currencyRate, setCurrencyRate] = useState();
+  const [currencyRate, setCurrencyRate] = useState(() => {
+    if (isCorrective) {
+      return invoiceToCorrect?.payload?.currency_rate;
+    }
+  });
 
   const { currencyRateError } = useValidation(
     (state) => ({
@@ -57,13 +61,17 @@ const Total = () => {
 
   useEffect(() => {
     if (currency !== "ALL") {
-      fetch("https://flexie.io/currency")
-        .then((response) => {
-          return response.json();
-        })
-        .then((json) => {
-          setCurrencyRate(json.currency[currency]);
-        });
+      if (isCorrective) {
+        setCurrencyRate(invoiceToCorrect?.payload?.currency_rate);
+      } else {
+        fetch("https://flexie.io/currency")
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            setCurrencyRate(json.currency[currency]);
+          });
+      }
     }
   }, [currency]);
 
@@ -80,36 +88,53 @@ const Total = () => {
       <div className="grid">
         <div className="col col-md mb-30 col-sm">
           <CurrencyWrapper onChange={handleChangeCurrency}>
-            <Checkbox
-              name="currency"
-              type="radio"
-              label="LEK"
-              value="ALL"
-              defaultChecked={currency === "ALL"}
-            />
-            <Checkbox
-              name="currency"
-              type="radio"
-              label="EUR"
-              value="EUR"
-              defaultChecked={currency === "EUR"}
-            />
-            <Checkbox
-              name="currency"
-              type="radio"
-              label="USD"
-              value="USD"
-              defaultChecked={currency === "USD"}
-            />
+            {isCorrective ? (
+              <Checkbox
+                name="currency"
+                type="radio"
+                label={
+                  invoiceToCorrect?.payload?.currency === "ALL"
+                    ? "LEK"
+                    : invoiceToCorrect?.payload?.currency
+                }
+                value={invoiceToCorrect?.payload?.currency}
+                defaultChecked={true}
+              />
+            ) : (
+              <>
+                <Checkbox
+                  name="currency"
+                  type="radio"
+                  label="LEK"
+                  value="ALL"
+                  defaultChecked={currency === "ALL"}
+                />
+                <Checkbox
+                  name="currency"
+                  type="radio"
+                  label="EUR"
+                  value="EUR"
+                  defaultChecked={currency === "EUR"}
+                />
+                <Checkbox
+                  name="currency"
+                  type="radio"
+                  label="USD"
+                  value="USD"
+                  defaultChecked={currency === "USD"}
+                />
+              </>
+            )}
           </CurrencyWrapper>
 
-          {currency !== "ALL" && (
+          {((isCorrective && invoiceToCorrect?.payload?.currency !== "ALL") ||
+            currency !== "ALL") && (
             <CurrencyRate
               className="mt-20 col col-sm col-md col-5"
               style={{ marginLeft: "-8px", marginRight: "-8px" }}
             >
               <Input
-                label="Kursi i ditës"
+                label={isCorrective ? "Kursi i këmbimit" : "Kursi i ditës"}
                 name="currency_rate"
                 value={currencyRate || ""}
                 onChange={handleCurrencyRateChange}
@@ -117,6 +142,7 @@ const Total = () => {
                 style={{ width: "calc(100% + 16px)" }}
                 valid={!currencyRateError}
                 errorMessage={currencyRateError}
+                readOnly={isCorrective}
               />
             </CurrencyRate>
           )}
@@ -128,7 +154,8 @@ const Total = () => {
             </div>
             <div className="col col-6">
               <TotalValue>
-                {currency} {formatCurrency(totals.vatTotal)}
+                {isCorrective ? invoiceToCorrect?.payload?.currency : currency}{" "}
+                {formatCurrency(totals.vatTotal)}
               </TotalValue>
             </div>
           </div>
@@ -138,7 +165,8 @@ const Total = () => {
             </div>
             <div className="col col-6">
               <TotalValue>
-                {currency} {formatCurrency(totals.totalBeforeVat)}
+                {isCorrective ? invoiceToCorrect?.payload?.currency : currency}{" "}
+                {formatCurrency(totals.totalBeforeVat)}
               </TotalValue>
             </div>
           </div>
@@ -148,7 +176,8 @@ const Total = () => {
             </div>
             <div className="col col-6">
               <TotalValue>
-                {currency} {formatCurrency(totals.totalAfterVat)}
+                {isCorrective ? invoiceToCorrect?.payload?.currency : currency}{" "}
+                {formatCurrency(totals.totalAfterVat)}
               </TotalValue>
             </div>
           </div>
@@ -160,7 +189,8 @@ const Total = () => {
             </div>
             <div className="col col-6">
               <TotalValue style={{ fontSize: "1rem", fontWeight: 600 }}>
-                {currency} {formatCurrency(totals.totalAfterVat)}
+                {isCorrective ? invoiceToCorrect?.payload?.currency : currency}{" "}
+                {formatCurrency(totals.totalAfterVat)}
               </TotalValue>
             </div>
           </div>

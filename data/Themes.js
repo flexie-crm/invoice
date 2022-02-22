@@ -71,7 +71,7 @@ export const light = {
       arrowHover: "#999999",
       linkHover: "#7e88c3",
       placeholder: "rgba(12, 14, 22, .4)",
-      boxShadow: "0 0 0 1px #1264a3, 0 0 0 5px rgb(29 155 209 / 30%)",
+      boxShadow: "0 0 0 1px #1264a3, 0 0 0 3px rgb(29 155 209 / 30%)",
     },
   },
   icon: {
@@ -153,7 +153,7 @@ export const dark = {
       link: "#ffffff",
       linkHover: "#4f546b",
       placeholder: "#76777d",
-      boxShadow: "0 0 0 1px #9277ff, 0 0 0 5px rgb(146 119 255 / 40%)",
+      boxShadow: "0 0 0 1px #9277ff, 0 0 0 3px rgb(146 119 255 / 40%)",
     },
   },
   icon: {
