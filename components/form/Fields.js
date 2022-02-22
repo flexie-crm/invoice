@@ -21,6 +21,8 @@ import useValidation from "@store/validations";
 
 const ErrorMessage = styled(SubmissionMessage)`
   margin-bottom: 15px;
+  margin-right: 0;
+  margin-left: 0;
   flex: none;
 `;
 
