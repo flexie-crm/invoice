@@ -26,6 +26,12 @@ const QrCodeSection = styled.div`
     letter-spacing: 0.09rem;
   }
 
+  @media print {
+    span {
+      color: #000 !important;
+    }
+  }
+
   @media only screen and (max-width: 624px) {
     align-items: flex-end;
   }
@@ -40,6 +46,13 @@ const InfoHeading = styled.th`
     padding: 7px 7px 4px 7px;
     color: #fff;
     background: #4f546b;
+  }
+
+  @media print {
+    span {
+      background: #000;
+      color: #fff;
+    }
   }
 `;
 

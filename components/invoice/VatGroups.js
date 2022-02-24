@@ -48,9 +48,21 @@ const VatGroups = ({
           {!isMobile && <ExTitle>Arsyeja e perjashtimit nga TVSH</ExTitle>}
           <LeftAlignTh isMobile={isMobile}>Artikuj</LeftAlignTh>
           {!isMobile && <LeftAlignTh>Kodi TVSH</LeftAlignTh>}
-          <LeftAlignTh>Vlera Tatueshme</LeftAlignTh>
-          <LeftAlignTh>Niveli TVSH</LeftAlignTh>
-          <LeftAlignTh>Vlera TVSH</LeftAlignTh>
+          <LeftAlignTh
+            dangerouslySetInnerHTML={{
+              __html: isMobile ? "Vlera<br>Tatueshme" : "Vlera Tatueshme",
+            }}
+          />
+          <LeftAlignTh
+            dangerouslySetInnerHTML={{
+              __html: isMobile ? "Shkalla<br>TVSH %" : "Shkalla TVSH %",
+            }}
+          />
+          <LeftAlignTh
+            dangerouslySetInnerHTML={{
+              __html: isMobile ? "Vlera<br>TVSH" : "Vlera TVSH",
+            }}
+          />
         </>
       }
     >

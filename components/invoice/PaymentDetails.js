@@ -20,6 +20,12 @@ const InfoHeading = styled.th`
     color: #fff;
     background: #4f546b;
   }
+
+  @media print {
+    span {
+      background: #000;
+    }
+  }
 `;
 
 const InfoLabel = styled.td`

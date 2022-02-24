@@ -13,12 +13,21 @@ const InvoiceTableContainer = styled.table`
     padding: 6px 0 2px 0;
     text-transform: uppercase;
     vertical-align: bottom;
+
+    @media print {
+      color: #000;
+      border-bottom: 2px solid #000;
+    }
   }
 
   td {
     padding: 2px 0;
     ${fontStylesB}
     font-size: 80%;
+
+    @media print {
+      color: #000;
+    }
   }
 
   tbody tr:first-child td {
@@ -33,6 +42,13 @@ const InvoiceTableContainer = styled.table`
     tbody tr:last-child td {
       padding-bottom: 25px;
       border-bottom: 2px solid #ddd;
+    }
+
+    @media print {
+        tbody tr:last-child td {
+        padding-bottom: 25px;
+        border-bottom: 2px solid #000;
+      } 
     }
   `}
 `;

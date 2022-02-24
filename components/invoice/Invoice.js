@@ -29,6 +29,8 @@ const Container = styled.div`
   @media print {
     box-shadow: none;
     border-radius: 0;
+    margin-top: 0;
+    padding: 2mm;
   }
 `;
 
@@ -41,6 +43,12 @@ const QrCodeSection = styled.div`
     ${fontStylesB}
     margin-top: 4px;
     letter-spacing: 0.05rem;
+  }
+
+  @media print {
+    span {
+      color: #000;
+    }
   }
 `;
 
@@ -150,7 +158,7 @@ const Invoice = (props, ref) => {
 
       {isMobile && (
         <div className="grid">
-          <div className="col col-6 mb-0">
+          <div className="col col-12 mb-20">
             <QrCodeSection>
               {mounted ? (
                 <QrCode size={120} value={invoice?.qr_code_url || "UNKNOWN"} />
@@ -174,10 +182,7 @@ const Invoice = (props, ref) => {
             </QrCodeSection>
           </div>
           {invoice?.qr_code_payment_details && (
-            <div
-              className="col col-6 mb-0"
-              style={{ display: "flex", justifyContent: "flex-end" }}
-            >
+            <div className="col col-12">
               <QrCodeSection>
                 {mounted ? (
                   <QrCode size={120} value={invoice?.qr_code_payment_details} />
