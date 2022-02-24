@@ -138,12 +138,14 @@ const InvoiceInfo = ({
         <tr>
           {!isMobile && <InfoLabel>Data e faturës:</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
                 <b>Data e faturës</b>
+                <span className="pl-5">{invoiceDate}</span>
               </p>
+            ) : (
+              invoiceDate
             )}
-            {invoiceDate}
           </InfoValue>
           {!isMobile && (
             <td rowSpan="7" valign="top">
@@ -174,74 +176,95 @@ const InvoiceInfo = ({
         <tr>
           {!isMobile && <InfoLabel>Numri i faturës:</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
-                <b>Numri i faturës</b>
+                <b>Nr. faturës</b>
+                <span className="pl-5">{invoiceNumber}</span>
               </p>
+            ) : (
+              invoiceNumber
             )}
-            {invoiceNumber}
           </InfoValue>
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Monedha e faturës:</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
-                <b>Monedha e faturës</b>
+                <b>Monedha</b>
+                <span className="pl-5">
+                  {invoice.currency}
+                  {invoice.currency != "ALL" &&
+                    ` - kursi i këmbimit ${invoice.currency_rate}`}
+                </span>
               </p>
+            ) : (
+              invoice.currency +
+              (invoice.currency != "ALL" &&
+                ` - kursi i këmbimit ${invoice.currency_rate}`)
             )}
-            {invoice.currency}
-            {invoice.currency != "ALL" &&
-              ` - kursi i këmbimit ${invoice.currency_rate}`}
           </InfoValue>
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Njësia e biznesit</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
                 <b>Njësia e biznesit</b>
+                <span className="pl-5">{invoice.payload?.business_unit}</span>
               </p>
+            ) : (
+              invoice.payload?.business_unit
             )}
-            {invoice.payload?.business_unit}
           </InfoValue>
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Kodi i operatorit</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
                 <b>Kodi i operatorit</b>
+                <span className="pl-5">{invoice.payload?.operator_code}</span>
               </p>
+            ) : (
+              invoice.payload?.operator_code
             )}
-            {invoice.payload?.operator_code}
           </InfoValue>
         </tr>
-        {invoice.payload?.tcr_code && (
+        {/** It seems like we do not need to show TCR Code in invoice */}
+        {/* {invoice.payload?.tcr_code && (
           <tr>
             {!isMobile && <InfoLabel>Kodi i arkës</InfoLabel>}
             <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
+              {isMobile ? (
                 <p>
                   <b>Kodi i arkës</b>
+                  <span className="pl-5">{invoice.payload?.tcr_code}</span>
                 </p>
+              ) : (
+                invoice.payload?.tcr_code
               )}
-              {invoice.payload?.tcr_code}
             </InfoValue>
           </tr>
-        )}
+        )} */}
         {invoice.payload?.period_start && (
           <tr>
             {!isMobile && (
               <InfoLabel>Fillimi i periudhës së faturimit</InfoLabel>
             )}
             <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
+              {isMobile ? (
                 <p>
-                  <b>Fillimi i periudhës së faturimit</b>
+                  <b>Fillimi i periudhës</b>
+                  <span className="pl-5">
+                    {dayjs(invoice.payload?.period_start).format(
+                      "DD MMMM, YYYY"
+                    )}
+                  </span>
                 </p>
+              ) : (
+                dayjs(invoice.payload?.period_start).format("DD MMMM, YYYY")
               )}
-              {dayjs(invoice.payload?.period_start).format("DD MMMM, YYYY")}
             </InfoValue>
           </tr>
         )}
@@ -251,12 +274,16 @@ const InvoiceInfo = ({
               <InfoLabel>Mbarimi i periudhës së faturimit</InfoLabel>
             )}
             <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
+              {isMobile ? (
                 <p>
-                  <b>Mbarimi i periudhës së faturimit</b>
+                  <b>Mbarimi i periudhës</b>
+                  <span className="pl-5">
+                    {dayjs(invoice.payload?.period_end).format("DD MMMM, YYYY")}
+                  </span>
                 </p>
+              ) : (
+                dayjs(invoice.payload?.period_end).format("DD MMMM, YYYY")
               )}
-              {dayjs(invoice.payload?.period_end).format("DD MMMM, YYYY")}
             </InfoValue>
           </tr>
         )}
@@ -264,12 +291,16 @@ const InvoiceInfo = ({
           <tr>
             {!isMobile && <InfoLabel>Mënyra e pagesës</InfoLabel>}
             <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
+              {isMobile ? (
                 <p>
                   <b>Mënyra e pagesës</b>
+                  <span className="pl-5">
+                    {readablePaymentMethod(invoice.payload?.payment_method)}
+                  </span>
                 </p>
+              ) : (
+                readablePaymentMethod(invoice.payload?.payment_method)
               )}
-              {readablePaymentMethod(invoice.payload?.payment_method)}
             </InfoValue>
           </tr>
         )}
@@ -277,35 +308,43 @@ const InvoiceInfo = ({
           <tr>
             {!isMobile && <InfoLabel>Tipi i faturës</InfoLabel>}
             <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
+              {isMobile ? (
                 <p>
                   <b>Tipi i faturës</b>
+                  <span className="pl-5">
+                    {invoice.payload?.invoice_type?.toUpperCase()}
+                  </span>
                 </p>
+              ) : (
+                invoice.payload?.invoice_type?.toUpperCase()
               )}
-              {invoice.payload?.invoice_type?.toUpperCase()}
             </InfoValue>
           </tr>
         )}
         <tr>
           {!isMobile && <InfoLabel>NSLF</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
                 <b>NSLF</b>
+                <span className="pl-5">{nslf}</span>
               </p>
+            ) : (
+              nslf
             )}
-            {nslf}
           </InfoValue>
         </tr>
         <tr>
           {!isMobile && <InfoLabel>NIVF</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
                 <b>NIVF</b>
+                <span className="pl-5">{nivf}</span>
               </p>
+            ) : (
+              nivf
             )}
-            {nivf}
           </InfoValue>
         </tr>
       </InvoiceTable>
@@ -323,45 +362,58 @@ const InvoiceInfo = ({
         <tr>
           {!isMobile && <InfoLabel>Emri Tregtar</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
-                <b>Emri Tregtar</b>
+                {/* <b>Emri Tregtar</b> */}
+                <b
+                  dangerouslySetInnerHTML={{ __html: session?.user?.company }}
+                />
               </p>
+            ) : (
+              session?.user?.company
             )}
-            {session?.user?.company}
           </InfoValue>
         </tr>
         <tr>
           {!isMobile && <InfoLabel>NIPT</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
                 <b>NIPT</b>
+                <span className="pl-5">{session?.user?.nipt}</span>
               </p>
+            ) : (
+              session?.user?.nipt
             )}
-            {session?.user?.nipt}
-          </InfoValue>
-        </tr>
-        <tr>
-          {!isMobile && <InfoLabel>Adresa</InfoLabel>}
-          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
-              <p>
-                <b>Adresa</b>
-              </p>
-            )}
-            {session?.user?.address}
           </InfoValue>
         </tr>
         <tr>
           {!isMobile && <InfoLabel>Qyteti</InfoLabel>}
           <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-            {isMobile && (
+            {isMobile ? (
               <p>
                 <b>Qyteti</b>
+                <span className="pl-5">{session?.user?.city}, ALB</span>
               </p>
+            ) : (
+              session?.user?.city + `, ALB`
             )}
-            {session?.user?.city}, ALB
+          </InfoValue>
+        </tr>
+        <tr>
+          {!isMobile && <InfoLabel>Adresa</InfoLabel>}
+          <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
+            {isMobile ? (
+              <p>
+                <b>Adresa</b>
+                <span
+                  className="pl-5"
+                  dangerouslySetInnerHTML={{ __html: session?.user?.address }}
+                />
+              </p>
+            ) : (
+              session?.user?.address
+            )}
           </InfoValue>
         </tr>
       </InvoiceTable>
@@ -380,45 +432,56 @@ const InvoiceInfo = ({
           <tr>
             {!isMobile && <InfoLabel>Emri Tregtar</InfoLabel>}
             <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
+              {isMobile ? (
                 <p>
-                  <b>Emri Tregtar</b>
+                  {/* <b>Emri Tregtar</b> */}
+                  <b dangerouslySetInnerHTML={{ __html: companyName }} />
                 </p>
+              ) : (
+                <span dangerouslySetInnerHTML={{ __html: companyName }} />
               )}
-              <span dangerouslySetInnerHTML={{ __html: companyName }} />
             </InfoValue>
           </tr>
           <tr>
             {!isMobile && <InfoLabel>NIPT</InfoLabel>}
             <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
+              {isMobile ? (
                 <p>
                   <b>NIPT</b>
+                  <span className="pl-5">{nuis}</span>
                 </p>
+              ) : (
+                nuis
               )}
-              {nuis}
-            </InfoValue>
-          </tr>
-          <tr>
-            {!isMobile && <InfoLabel>Adresa</InfoLabel>}
-            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
-                <p>
-                  <b>Adresa</b>
-                </p>
-              )}
-              <span dangerouslySetInnerHTML={{ __html: address }} />
             </InfoValue>
           </tr>
           <tr>
             {!isMobile && <InfoLabel>Qyteti</InfoLabel>}
             <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
-              {isMobile && (
+              {isMobile ? (
                 <p>
                   <b>Qyteti</b>
+                  <span className="pl-5">{cityCountry}</span>
                 </p>
+              ) : (
+                cityCountry
               )}
-              {cityCountry}
+            </InfoValue>
+          </tr>
+          <tr>
+            {!isMobile && <InfoLabel>Adresa</InfoLabel>}
+            <InfoValue isMobile={isMobile} {...(isMobile && { colSpan: 2 })}>
+              {isMobile ? (
+                <p>
+                  <b>Adresa</b>
+                  <span
+                    className="pl-5"
+                    dangerouslySetInnerHTML={{ __html: address }}
+                  />
+                </p>
+              ) : (
+                <span dangerouslySetInnerHTML={{ __html: address }} />
+              )}
             </InfoValue>
           </tr>
         </InvoiceTable>
