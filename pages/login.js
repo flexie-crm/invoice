@@ -5,11 +5,13 @@ import styled from "styled-components";
 import Head from "next/head";
 import Input from "@components/Input";
 import Button from "@shared/Buttons";
-import Router from "next/router";
+// import Router from "next/router";
 import { loginValidation } from "@data/Form";
 import useValidation from "@store/validations";
 import useLoader from "@store/loaders";
 import { ExplainError } from "@shared/SharedStyle";
+import { useQueryClient } from "react-query";
+import Store from "store";
 
 const LoginWrapper = styled.div`
   width: 100%;
@@ -100,21 +102,28 @@ export default function Login({ csrfToken }) {
         setIsFormPosting(false);
         setErrorLogin(error);
       } else {
-        // window.location.href = url;
-        Router.push(url);
+        window.location.href = url;
+        // Router.push(url);
       }
     } catch (errors) {
       // Just in case set it to false here too
       setIsFormPosting(false);
 
       let addErrors = {};
-      errors.inner.map((err) => {
+      errors?.inner?.map((err) => {
         addErrors = { ...addErrors, [err.path]: err.message };
       });
 
       setErrors(addErrors);
     }
   };
+
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    queryClient.invalidateQueries();
+    Store.remove("@banks");
+  }, []);
 
   useEffect(() => {
     // On UnMount remove isFormPosting
