@@ -23,6 +23,7 @@ export default function InvoicesList() {
   const [page, setPage] = useState(0);
   const themeContext = useContext(ThemeContext);
   const queryClient = useQueryClient();
+
   const { isLoading, isError, error, data, isFetching, isPreviousData } =
     useQuery(
       ["invoices", page],
@@ -59,7 +60,7 @@ export default function InvoicesList() {
   return (
     <>
       <Wrapper>
-        {isLoading ? (
+        {isFetching ? (
           <div style={{ width: "100%" }}>
             <Skeleton
               baseColor={themeContext.color.invoiceItem.bg}
