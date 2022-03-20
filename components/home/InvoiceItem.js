@@ -32,7 +32,7 @@ const StyledLink = styled.a`
   }
 
   @media only screen and (min-width: 768px) {
-    grid-template-columns: 5rem 9rem 1fr min-content min-content min-content;
+    grid-template-columns: 6rem 10rem 1fr min-content min-content min-content;
     grid-template-rows: min-content;
     align-items: center;
     width: 100%;
