@@ -53,67 +53,9 @@ const CorrectInvoiceForm = ({ setIsOpen, invoiceToCorrect }) => {
         return false;
       }
 
-      // Check period start and period end
-      // as they are kind of complex to be handled from YUP
-      if (data.period_start && data.period_end) {
-        const startDate = dayjs(data.period_start, "YYYY-MM-DD");
-        const endDate = dayjs(data.period_end, "YYYY-MM-DD");
-
-        if (endDate.isBefore(startDate) || endDate.isSame(startDate)) {
-          setErrors({
-            period_start: "- duhet me heret.",
-            period_end: "- duhet me vone.",
-          });
-
-          return false;
-        }
-
-        if (!startDate.isSame(endDate, "month")) {
-          setErrors({
-            period_start: "- duhet brenda muajit.",
-            period_end: "- duhet brenda muajit.",
-          });
-
-          return false;
-        }
-      }
-
-      if (data.period_start && !data.period_end) {
-        setErrors({
-          period_end: "- duhet vendosur.",
-        });
-
-        return false;
-      }
-
-      if (!data.period_start && data.period_end) {
-        setErrors({
-          period_start: "- duhet vendosur.",
-        });
-
-        return false;
-      }
-
-      // Define CASH/NONCASH payment_type
-      switch (data["payment_method"]) {
-        case "BANKNOTE":
-        case "CARD":
-        case "CHECK":
-        case "SVOUCHER":
-        case "COMPANY":
-        case "ORDER":
-          data["payment_type"] = "CASH";
-          break;
-        case "ACCOUNT":
-        case "FACTORING":
-        case "COMPENSATION":
-        case "TRANSFER":
-        case "WAIVER":
-        case "KIND":
-        case "OTHER":
-          data["payment_type"] = "NONCASH";
-          break;
-      }
+      // Payment type and method
+      data["payment_method"] = invoiceToCorrect?.payload?.payment_method;
+      data["payment_type"] = invoiceToCorrect?.payload?.payment_type;
 
       // Add user stuff to data
       data["operator_code"] = session?.user?.operator_code;
@@ -121,8 +63,18 @@ const CorrectInvoiceForm = ({ setIsOpen, invoiceToCorrect }) => {
       data["nipt"] = session?.user?.nipt;
       data["company_name"] = session?.user?.company;
 
-      // Add NIVF reference
+      // Add NIVF reference and date issued
       data["nivf_reference"] = invoiceToCorrect?.nivf;
+      data["nslf_reference"] = invoiceToCorrect?.nslf;
+      data["invoice_created_date"] = invoiceToCorrect?.invoice_created_date;
+
+      // Add original invoice type
+      data["invoice_type_original"] = invoiceToCorrect?.payload?.invoice_type;
+
+      if (invoiceToCorrect?.payload?.auto_invoice_type) {
+        data["auto_invoice_type"] =
+          invoiceToCorrect?.payload?.auto_invoice_type;
+      }
 
       // Check if CASH so we should send TCR
       if (data.payment_method != "ACCOUNT") {
@@ -146,10 +98,10 @@ const CorrectInvoiceForm = ({ setIsOpen, invoiceToCorrect }) => {
 
       if (sendInvoice?.ok) {
         // Do an optimistic update right away
-        queryClient.setQueryData(["invoices", 0], (old) => ({
-          invoices: [sendInvoice, ...old.invoices],
-          total: old.total + 1,
-        }));
+        // queryClient.setQueryData(["invoices", 0], (old) => ({
+        //   invoices: [sendInvoice, ...old.invoices],
+        //   total: old.total + 1,
+        // }));
 
         // Add invoce details into cache
         queryClient.setQueryData(["invoice", sendInvoice.nivf], sendInvoice);
@@ -186,7 +138,7 @@ const CorrectInvoiceForm = ({ setIsOpen, invoiceToCorrect }) => {
         addErrors = { ...addErrors, [err.path]: err.message };
       });
 
-      console.log(addErrors);
+      console.log(errors);
 
       setErrors(addErrors);
       setIsFormPosting(false);
