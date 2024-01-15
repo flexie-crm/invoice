@@ -47,6 +47,7 @@ const Button = styled(ButtonPlus)`
 export default function InvoiceHeader({
   className,
   status,
+  type,
   printHandler,
   setCorrectiveIsOpen,
 }) {
@@ -59,7 +60,8 @@ export default function InvoiceHeader({
       <Status>Status</Status>
       <InvoiceStatus status={status} />
       <Buttons>
-        <Button
+        
+        {type != "CORRECTIVE" && <Button
           hidePlus
           alert
           onClick={() => {
@@ -68,7 +70,7 @@ export default function InvoiceHeader({
           }}
         >
           {isFormLoading ? "Korrigjo..." : "Korrigjo"}
-        </Button>
+        </Button>}
         <Button
           hidePlus
           onClick={() => {

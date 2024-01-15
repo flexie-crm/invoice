@@ -74,7 +74,7 @@ export default function InvoicesList() {
           data?.invoices?.map((invoice) => {
             return (
               <InvoiceItem
-                key={invoice.nivf}
+                key={invoice.nivf ?? Math.random()}
                 id={invoice.nivf}
                 issueDate={invoice.invoice_created_date}
                 clientName={invoice.company}

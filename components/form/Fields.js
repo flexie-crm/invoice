@@ -410,7 +410,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
                     paymentMethods.filter(
                       (item) =>
                         item.value === invoiceToCorrect?.payload?.payment_method
-                    )[0].label || ""
+                    )[0]?.label || ""
                   }
                   valid={true}
                   readOnly={true}

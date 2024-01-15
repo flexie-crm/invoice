@@ -66,7 +66,7 @@ const LineItems = ({ items, printing }) => {
   return (
     <InvoiceTable
       headings={
-        <>
+        <React.Fragment key={uuidv4()}>
           {!isMobile && <Description>Artikulli</Description>}
           {!isMobile && <Quantity>Sasia</Quantity>}
           <Price
@@ -76,15 +76,15 @@ const LineItems = ({ items, printing }) => {
           </Price>
           <Vat>TVSH</Vat>
           <TotalTitle>Totali</TotalTitle>
-        </>
+        </React.Fragment>
       }
     >
-      {items.map((item, i) => {
+      {items.map((item, index) => {
         const getItem = getJson(item.item);
         const itemName = getItem ? getItem.__label : item.item;
 
         return (
-          <>
+          <React.Fragment key={index}>
             {isMobile && (
               <tr>
                 <td colSpan={3}>{itemName}</td>
@@ -114,7 +114,7 @@ const LineItems = ({ items, printing }) => {
                 </strong>
               </Total>
             </tr>
-          </>
+          </React.Fragment>
         );
       })}
     </InvoiceTable>

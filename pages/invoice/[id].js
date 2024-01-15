@@ -85,6 +85,7 @@ export default function InvoiceDetails() {
             <InvoiceHeader
               className="invoice-page-header"
               status={data?.status}
+              type={data?.invoice_type}
               printHandler={printHandler}
               setCorrectiveIsOpen={setCorrectiveIsOpen}
             />

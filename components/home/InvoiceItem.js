@@ -125,7 +125,7 @@ export default function InvoiceItem({
   dayjs.locale("sq");
 
   return (
-    <Link href={`/invoice/${id}`} passHref={true} scroll={true}>
+    <Link href={`/invoice/${id ?? 'not-found'}`} passHref={true} scroll={true}>
       <StyledLink>
         <Id>
           <span style={{ textTransform: "uppercase" }}>{invoiceType}</span>
