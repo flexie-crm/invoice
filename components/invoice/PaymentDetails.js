@@ -105,7 +105,7 @@ const PaymentDetails = ({ invoice, payload, dueDate, printing }) => {
               <QrCodeSection>
                 {mounted ? (
                   <QrCode
-                    size={105}
+                    size={120}
                     value={invoice?.qr_code_payment_details || "UNKNOWN"}
                   />
                 ) : (
@@ -114,8 +114,8 @@ const PaymentDetails = ({ invoice, payload, dueDate, printing }) => {
                     highlightColor="#dbd2fe"
                     inline={true}
                     count={1}
-                    height={105}
-                    width={105}
+                    height={120}
+                    width={120}
                     style={{
                       display: "grid",
                       width: "100%",
