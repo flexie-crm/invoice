@@ -376,7 +376,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
                     placeholderText="Zgjidh nje date"
                     valid={!errors?.period_start}
                     errorMessage={errors?.period_start}
-                    dateFormat="yyyy-MM-dd"
+                    dateFormat="dd/MM/yyyy"
                     onChange={() => removeErrors(["period_start"])}
                   />
                 </div>
@@ -387,7 +387,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
                     placeholderText="Zgjidh nje date"
                     valid={!errors?.period_end}
                     errorMessage={errors?.period_end}
-                    dateFormat="yyyy-MM-dd"
+                    dateFormat="dd/MM/yyyy"
                     onChange={() => removeErrors(["period_end"])}
                   />
                 </div>

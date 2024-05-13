@@ -112,6 +112,12 @@ const AsyncSelectBox = (props, ref) => {
       <SelectWrapper>
         {isCreatable ? (
           <StyledCreatableSelect
+            styles={{
+              input: (baseStyles, state) => ({
+                ...fontStylesA,
+                margin: '0 !important',
+              }),
+            }}
             ref={ref}
             isClearable
             valid={valid}

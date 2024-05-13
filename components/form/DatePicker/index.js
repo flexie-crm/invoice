@@ -41,6 +41,7 @@ const DatePickerStyled = styled(ReactDatePicker)`
   padding: 0.7rem;
   background: ${(props) => props.theme.color.form.fieldBg};
   outline: none;
+  ${fontStylesA}
   color: ${(props) => props.theme.color.text.heading};
   transition: color 0.05s, border 0.05s, background 0.05s;
 
@@ -75,7 +76,7 @@ const DatePickerStyled = styled(ReactDatePicker)`
 const CalendarIcon = styled.img`
   position: absolute;
   right: 13px;
-  bottom: 13px;
+  bottom: 11px;
 `;
 
 const DatePicker = ({ label, name, valid, errorMessage, ...rest }) => {

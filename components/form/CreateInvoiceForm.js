@@ -39,6 +39,9 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
 
+  const customParseFormat = require('dayjs/plugin/customParseFormat');
+  dayjs.extend(customParseFormat);
+
   async function onSubmit(event) {
     event.preventDefault();
     const data = serialize(form.current, { hash: true });
@@ -56,8 +59,8 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
       // Check period start and period end
       // as they are kind of complex to be handled from YUP
       if (data.period_start && data.period_end) {
-        const startDate = dayjs(data.period_start, "YYYY-MM-DD");
-        const endDate = dayjs(data.period_end, "YYYY-MM-DD");
+        let startDate = dayjs(data.period_start, "DD/MM/YYYY");
+        let endDate = dayjs(data.period_end, "DD/MM/YYYY");
 
         if (endDate.isBefore(startDate) || endDate.isSame(startDate)) {
           setErrors({
@@ -76,6 +79,9 @@ const CreateInvoiceForm = ({ setIsOpen }) => {
 
           return false;
         }
+
+        data.period_start = startDate.format('YYYY-MM-DD');
+        data.period_end = endDate.format('YYYY-MM-DD');
       }
 
       if (data.period_start && !data.period_end) {
