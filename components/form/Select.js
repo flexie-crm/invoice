@@ -12,6 +12,7 @@ const Wrapper = styled.div`
 const Label = styled.label`
   color: ${(props) => props.theme.color.text.formLabel};
   transition: color 0.05s;
+  margin-bottom: 2px;
 `;
 
 const SelectWrapper = styled.div`
@@ -29,6 +30,7 @@ const SelectWrapper = styled.div`
 
 const StyledSelect = styled.select`
   width: 100%;
+  height: 37px;
   border: 1px solid ${(props) => props.theme.color.form.fieldBorder};
   border-radius: 4px;
   padding: 0.8rem 0.9rem;

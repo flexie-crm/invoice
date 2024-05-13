@@ -29,18 +29,18 @@ const Label = styled.label`
   color: ${(props) =>
     props.valid ? props.theme.color.text.formLabel : "#EC5757"};
   transition: color 0.05s;
+  margin-bottom: 2px;
 `;
 
 const DatePickerStyled = styled(ReactDatePicker)`
   width: 100%;
+  height: 37px;
   border: 1px solid
     ${(props) => (props.valid ? props.theme.color.form.fieldBorder : "#EC5757")};
   border-radius: 4px;
-  padding: 0.78rem 0.7rem;
-  padding-bottom: 0.5rem;
+  padding: 0.7rem;
   background: ${(props) => props.theme.color.form.fieldBg};
   outline: none;
-  ${fontStylesA}
   color: ${(props) => props.theme.color.text.heading};
   transition: color 0.05s, border 0.05s, background 0.05s;
 

@@ -32,6 +32,7 @@ const Label = styled.label`
   color: ${(props) =>
     props.valid ? props.theme.color.text.formLabel : "#EC5757"};
   transition: color 0.05s;
+  margin-bottom: 2px;
 `;
 
 const SelectWrapper = styled.div`
@@ -41,7 +42,7 @@ const SelectWrapper = styled.div`
 
 const sharedStyleForSelect = css`
   .Select__control {
-    height: 40px;
+    height: 37px;
     width: 100%;
     border: 1px solid
       ${(props) =>
@@ -69,6 +70,7 @@ const sharedStyleForSelect = css`
 
   .Select__single-value {
     color: ${(props) => props.theme.color.text.heading};
+    top: 10px !important; 
   }
 
   .Select__control:hover {

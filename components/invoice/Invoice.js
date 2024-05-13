@@ -141,9 +141,9 @@ const Invoice = (props, ref) => {
           : {})}
       />
 
-      {invoice?.payload?.payment_method == "ACCOUNT" &&
-        invoice.invoice_type == "b2b" &&
-        invoice.country_code == "ALB" && (
+      {invoice?.payload?.payment_method.toUpperCase() == "ACCOUNT" &&
+        invoice.invoice_type?.toUpperCase() == "B2B" &&
+        invoice.country_code?.toUpperCase() == "ALB" && (
           <PaymentDetails
             printing={printing}
             invoice={invoice}

@@ -110,7 +110,7 @@ const Item = ({
   };
 
   useEffect(() => {
-    const qty = itemState?.[`items[${index}][qty]`] || 0;
+    const qty = itemState?.[`items[${index}][qty]`] || 1;
     const price = itemState?.[`items[${index}][price]`] || 0;
     const vatRate = itemState?.[`items[${index}][vat_rate]`] || "0.20";
 
@@ -217,7 +217,7 @@ const Item = ({
 
         <div className="col col-2 col-md col-sm mb-10">
           <Input
-            label={invoiceType === "export" ? "Totali" : "Totali me TVSH"}
+            label="Totali"
             type="number"
             name={`items[${index}][total]`}
             hideLabels={index > 0}

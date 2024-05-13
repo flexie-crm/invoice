@@ -48,7 +48,7 @@ const FlexieFormWrapper = styled.div`
     transition: color 0.05s;
     color: #4f546b;
     font-size: 0.75rem;
-    line-height: 1.51;
+    line-height: normal;
   }
 
   .form-group p.small {
@@ -100,7 +100,8 @@ const FlexieFormWrapper = styled.div`
     transition: color 0.05s;
     color: ${(props) => props.theme.color.text.formLabel};
     font-size: 0.75rem;
-    line-height: 1.51;
+    line-height: normal;
+    margin-bottom: 2px;
   }
 
   input {

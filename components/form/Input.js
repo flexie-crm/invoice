@@ -34,6 +34,7 @@ const Label = styled.label`
   color: ${(props) =>
     props.valid ? props.theme.color.text.formLabel : "#EC5757"};
   transition: color 0.05s;
+  margin-bottom: 2px;
 `;
 
 const Field = styled.input`

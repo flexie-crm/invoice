@@ -60,7 +60,6 @@ export default function InvoiceHeader({
       <Status>Status</Status>
       <InvoiceStatus status={status} />
       <Buttons>
-        
         {type != "CORRECTIVE" && <Button
           hidePlus
           alert
