@@ -108,6 +108,14 @@ export default function Settings({ initialOpenedItem, user }) {
               Fjalekalimi
             </SettingItem>
             <SettingItem
+              onClick={(e) => handleSettingOpenedItem("produktet")}
+              isSelected={
+                (cookies?.openedItem || initialOpenedItem) === "produktet"
+              }
+            >
+              Produktet
+            </SettingItem>
+            <SettingItem
               onClick={(e) => handleSettingOpenedItem("bankat")}
               isSelected={
                 (cookies?.openedItem || initialOpenedItem) === "bankat"

@@ -80,6 +80,7 @@ const BankItem = ({ index, bank, onRemove }) => {
     <div className="grid">
       <div className="col col-md col-sm col-2">
         <SelectBox
+          isSearchable={false}
           instanceId={`currency_${index}`}
           hideLabels={index > 0}
           label="Monedha"
@@ -95,6 +96,7 @@ const BankItem = ({ index, bank, onRemove }) => {
       </div>
       <div className="col col-md col-sm col-4">
         <SelectBox
+          isSearchable={false}
           instanceId={`bank_${index}`}
           placeholder="Zgjidh Banken"
           hideLabels={index > 0}
