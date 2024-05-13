@@ -132,7 +132,7 @@ const StyledDeleteButton = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 3rem;
+  height: 2.7rem;
   border: none;
   background: transparent;
   cursor: pointer;

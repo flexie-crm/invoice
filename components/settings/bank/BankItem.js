@@ -78,7 +78,7 @@ const BankItem = ({ index, bank, onRemove }) => {
 
   return (
     <div className="grid">
-      <div className="col col-md col-sm col-2">
+      <div className="col col-md col-sm" style={{maxWidth: '100px'}}>
         <SelectBox
           isSearchable={false}
           instanceId={`currency_${index}`}

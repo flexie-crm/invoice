@@ -68,7 +68,7 @@ export default function InvoiceHeader({
             setCorrectiveIsOpen(true);
           }}
         >
-          {isFormLoading ? "Korrigjo..." : "Korrigjo"}
+          {isFormLoading ? "Anullo..." : "Anullo"}
         </Button>}
         <Button
           hidePlus

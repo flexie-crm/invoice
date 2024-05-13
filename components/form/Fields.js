@@ -400,7 +400,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
           className={(invoiceType === "auto" || isCorrective) && "mt-15"}
         >
           <Legend>Detajet e farures</Legend>
-          <div className="grid">
+          <div className={`grid${isCorrective ? ' hidden' : ''}`}>
             <div className="col col-sm">
               {isCorrective ? (
                 <Input
@@ -481,7 +481,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
             </div>
           </div>
         </FieldSet>
-        <div className="mt-30">
+        <div className={!isCorrective && "mt-30"}>
           {
             <Items
               invoiceType={

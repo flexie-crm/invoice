@@ -39,6 +39,12 @@ export const FlexieFormInput = css`
     ${(props) =>
       props?.type === "number" ? "-moz-appearance: textfield;" : ""}
   }
+
+  ${({ readOnly }) => readOnly && css`
+    background-color: #f5f5f5;
+    color: #555;
+    cursor: default;
+  `}
 `;
 
 export const SharedInput = css`
@@ -92,6 +98,12 @@ export const SharedInput = css`
       :focus {
         border: none;
       }
+    `}
+
+    ${({ readOnly }) => readOnly && css`
+      background-color: #f5f5f5;
+      color: #555;
+      cursor: default;
     `}
 `;
 

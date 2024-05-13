@@ -164,7 +164,7 @@ const CorrectInvoiceForm = ({ setIsOpen, invoiceToCorrect }) => {
             Mbyll
           </Button>
           <Button disabled={isFormPosting} type="submit">
-            {isFormPosting ? "Korrigjo..." : "Korrigjo"}
+            {isFormPosting ? "Anullo..." : "Anullo"}
           </Button>
         </Buttons>
       </Form>

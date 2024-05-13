@@ -179,7 +179,7 @@ const Items = ({ invoiceType, isCorrective, invoiceToCorrect }) => {
           );
         })}
         <Button
-          className="mt-10"
+          className={`mt-10${isCorrective ? ' hidden' : ''}`}
           type="button"
           quaternary
           wide

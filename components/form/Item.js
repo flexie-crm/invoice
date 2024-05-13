@@ -46,14 +46,14 @@ const Item = ({
   const [itemState, setItemState] = useState(() => {
     if (isCorrective) {
       return {
-        [`items[${index}][qty]`]: item?.qty || 0,
+        [`items[${index}][qty]`]: -Math.abs(item?.qty) || 0,
         [`items[${index}][price]`]: item?.price || 0,
         [`items[${index}][vat_rate]`]: item?.vatRate?.value || "0.20",
       };
     }
   });
 
-  const clientCountry = useClient((state) => state.client.country, shallow);
+  // const clientCountry = useClient((state) => state.client.country, shallow);
 
   // These objects from errors would make it possibe using shallow
   // to not rerender all items due to change on remove below
@@ -174,12 +174,13 @@ const Item = ({
             placeholder="0"
             valid={!qtyError}
             errorMessage={qtyError}
+            readOnly={isCorrective}
           />
         </div>
 
-        <div className="col col-2 col-md col-sm mb-10">
+        <div className="col col-2 col-md col-sm mb-5">
           <Input
-            label="Cmimi"
+            label="Çmimi"
             type="number"
             name={`items[${index}][price]`}
             hideLabels={index > 0}
@@ -188,10 +189,30 @@ const Item = ({
             placeholder="0.00"
             valid={!priceError}
             errorMessage={priceError}
+            readOnly={isCorrective}
           />
         </div>
 
         <div className="col col-2 col-md col-sm mb-10">
+        {isCorrective && item?.itemName ? (
+          <>
+            <Input
+              hideLabels={index > 0}
+              valid={true}
+              label="TVSH"
+              name={`items[${index}][vat_rate_dummy]`}
+              value={item?.vatRate?.label}
+              readOnly={true}
+            />
+            <Input
+              hideLabels={true}
+              type="hidden"
+              name={`items[${index}][vat_rate]`}
+              value={item?.vatRate?.value}
+              readOnly
+            />
+          </>
+        ) : (  
           <SelectBox
             isSearchable={false}
             ref={vatInput}
@@ -200,7 +221,7 @@ const Item = ({
             placeholder="Zgjidh"
             options={
               isCorrective && invoiceType !== "export"
-                ? vatOptions.filter((p) => p.value !== "EXPORT_OF_GOODS")
+                ? vatOptions.filter((p) => p.value === item?.vatRate?.value)
                 : vatOptions
             }
             name={`items[${index}][vat_rate]`}
@@ -213,6 +234,7 @@ const Item = ({
               invoiceType === "export" && option.value !== "EXPORT_OF_GOODS"
             }
           />
+        )}
         </div>
 
         <div className="col col-2 col-md col-sm mb-10">
@@ -239,6 +261,7 @@ const Item = ({
             type="button"
             className={`pb-10${index == 0 ? " mt-20 disabled-button" : ""}`}
             onClick={handleRemoveItem}
+            style={index == 0 ? { height: '2.45rem' } : {}}
           />
         </div>
 
