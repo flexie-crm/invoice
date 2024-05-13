@@ -9,6 +9,7 @@ export const light = {
     form: {
       bg: "#ffffff",
       fieldBg: "#ffffff",
+      fieldBgReadOnly: "#f5f5f5",
       fieldBorder: "#a1a1a1",
     },
     explainError: {
@@ -101,6 +102,7 @@ export const dark = {
     form: {
       bg: "#141625",
       fieldBg: "#1e2139",
+      fieldBgReadOnly: "#1e2139",
       fieldBorder: "#252945",
     },
     btn: {

@@ -41,8 +41,8 @@ export const FlexieFormInput = css`
   }
 
   ${({ readOnly }) => readOnly && css`
-    background-color: #f5f5f5;
-    color: #555;
+    background: ${(props) => props.theme.color.form.fieldBgReadOnly};
+    color: ${(props) => props.theme.color.text.heading};
     cursor: default;
   `}
 `;
@@ -101,8 +101,8 @@ export const SharedInput = css`
     `}
 
     ${({ readOnly }) => readOnly && css`
-      background-color: #f5f5f5;
-      color: #555;
+      background: ${(props) => props.theme.color.form.fieldBgReadOnly};
+      color: ${(props) => props.theme.color.text.heading};
       cursor: default;
     `}
 `;
