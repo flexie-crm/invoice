@@ -145,7 +145,7 @@ const paymentMethods = [
 
 const documentType = [
   { label: "Fature Standarte P1", value: "P1", default: true },
-  { label: "Fature Standarte P2", value: "P2", default: true },
+  { label: "Fature Standarte P2", value: "P2" },
   { label: "Fature Parapagimi P6", value: "P6" },
 ];
 
@@ -327,7 +327,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
         )}
 
         {!isCorrective && (invoiceType === "b2b" || invoiceType === "export") && (
-          <Panel className="mb-30 mt-20">
+          <Panel className="mb-30 mt-20 hidden">
             <PanelHeader
               opened={isCollapsedOpen}
               onClick={() => setIsCollapsedOpen((state) => !state)}
@@ -353,21 +353,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
             >
               <div className="grid pt-10">
                 <div className="col col-sm col-md">
-                  <SelectBox
-                    isSearchable={false}
-                    label="Afati Pageses"
-                    name="due_date"
-                    onChangeCallback={handleSelectOnChange}
-                    value={
-                      invoiceSettings?.due_date && {
-                        label: invoiceSettings?.due_date?.label,
-                        value: invoiceSettings?.due_date?.value,
-                      }
-                    }
-                    options={dueDate}
-                    valid={!errors?.due_date}
-                    errorMessage={errors?.due_date}
-                  />
+                  
                 </div>
                 <div className="col col-sm col-md">
                   <DatePicker
@@ -400,7 +386,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
           className={(invoiceType === "auto" || isCorrective) && "mt-15"}
         >
           <Legend>Detajet e farures</Legend>
-          <div className={`grid${isCorrective ? ' hidden' : ''}`}>
+          <div style={{marginBottom: '30px'}} className={`grid${isCorrective || invoiceType !== 'b2b' ? ' hidden' : ''}`}>
             <div className="col col-sm">
               {isCorrective ? (
                 <Input
@@ -458,6 +444,37 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
             <div className="col col-sm">
               <SelectBox
                 isSearchable={false}
+                label="Afati Pageses"
+                name="due_date"
+                onChangeCallback={handleSelectOnChange}
+                value={
+                  invoiceSettings?.due_date && {
+                    label: invoiceSettings?.due_date?.label,
+                    value: invoiceSettings?.due_date?.value,
+                  }
+                }
+                options={dueDate}
+                valid={!errors?.due_date}
+                errorMessage={errors?.due_date}
+                isDisabled={
+                  ["BANKNOTE", "CARD"].includes(
+                    invoiceSettings?.payment_method?.value
+                  ) ||
+                  invoiceType !== "b2b" ||
+                  isCorrective
+                }
+              />
+
+              <Input
+                hideLabels={true}
+                type="hidden"
+                name="business_process"
+                value="P1"
+                readOnly
+              />
+
+              {/* <SelectBox
+                isSearchable={false}
                 label="Tipi Fatures"
                 name="business_process"
                 onChangeCallback={handleSelectOnChange}
@@ -477,23 +494,19 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
                 }
                 valid={!errors?.invoice_type}
                 errorMessage={errors?.invoice_type}
-              />
+              /> */}
             </div>
           </div>
         </FieldSet>
-        <div className={!isCorrective && "mt-30"}>
-          {
-            <Items
-              invoiceType={
-                isCorrective
-                  ? invoiceToCorrect?.payload?.invoice_type
-                  : invoiceType
-              }
-              isCorrective={isCorrective}
-              invoiceToCorrect={invoiceToCorrect}
-            />
+        <Items
+          invoiceType={
+            isCorrective
+              ? invoiceToCorrect?.payload?.invoice_type
+              : invoiceType
           }
-        </div>
+          isCorrective={isCorrective}
+          invoiceToCorrect={invoiceToCorrect}
+        />
         <Total
           isCorrective={isCorrective}
           invoiceToCorrect={invoiceToCorrect}

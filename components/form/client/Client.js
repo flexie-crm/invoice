@@ -216,7 +216,7 @@ const Client = ({ isCorrective, invoiceToCorrect }) => {
             />
           )}
         </ClientWrapper>
-        <ClientWrapper className="grid">
+        <ClientWrapper style={{marginBottom: "15px"}} className="grid">
           {isCorrective ? (
             <Input
               wrapperClassName="col col-6 col-md"
