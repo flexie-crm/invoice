@@ -212,6 +212,7 @@ const TcrOperations = () => {
 
             <div className="col col-6 col-sm col-md">
               <SelectBox
+                isSearchable={false}
                 instanceId
                 label="Veprimi në Arkë"
                 options={[
