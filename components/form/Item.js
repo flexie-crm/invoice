@@ -184,7 +184,7 @@ const Item = ({
           />
         </div>
 
-        <div className="col col-2 col-md col-sm mb-5">
+        <div className="col col-2 col-md col-sm mb-10">
           <Input
             label="Çmimi"
             type="number"

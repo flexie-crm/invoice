@@ -416,7 +416,7 @@ const Fields = ({ invoiceSubmitError, isCorrective, invoiceToCorrect }) => {
                 />
               )}
             </div>
-            <div className="col col-5">
+            <div className="col col-5 col-sm">
               <SelectBox
                 isSearchable={false}
                 label="Banka"
