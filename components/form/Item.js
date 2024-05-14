@@ -126,6 +126,12 @@ const Item = ({
     }
   }, [itemState]);
 
+  const runtimeVatOptions = isCorrective && invoiceType !== "export"
+    ? vatOptions.filter((p) => p.value === item?.vatRate?.value)
+    : invoiceType === "export"
+    ? vatOptions.filter((p) => p.value === "EXPORT_OF_GOODS")
+    : vatOptions.filter((p) => p.value !== "EXPORT_OF_GOODS");
+
   return (
     <Wrapper>
       <div className="grid">
@@ -219,14 +225,14 @@ const Item = ({
             hideLabels={index > 0}
             label="TVSH"
             placeholder="Zgjidh"
-            options={
-              isCorrective && invoiceType !== "export"
-                ? vatOptions.filter((p) => p.value === item?.vatRate?.value)
-                : vatOptions
-            }
+            options={runtimeVatOptions}
             name={`items[${index}][vat_rate]`}
             onChangeCallback={handleVatOnChange}
-            value={item?.vatRate}
+            value={
+              invoiceType === "export" 
+                ? vatOptions.filter((p) => p.value === "EXPORT_OF_GOODS") 
+                : item?.vatRate
+            }
             getOptionLabel={(option) => option.label}
             getOptionValue={(option) => option.value}
             valid={true}
